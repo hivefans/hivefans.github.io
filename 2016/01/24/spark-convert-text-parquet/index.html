@@ -1,0 +1,806 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="parquet,spark," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="列式存储布局（比如 Parquet）可以加速查询，因为它只检查所有需要的列并对它们的值执行计算，因此只读取一个数据文件或表的小部分数据。Parquet 还支持灵活的压缩选项，因此可以显著减少磁盘上的存储。如果您在 HDFS 上拥有基于文本的数据文件或表，而且正在使用 Spark SQL 对它们执行查询，那么强烈推荐将文本数据文件转换为 Parquet 数据文件，以实现性能和存储收益。当然，转换需要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将 Spark 中的文本转换为 Parquet 以提升性能">
+<meta property="og:url" content="http://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/index.html">
+<meta property="og:site_name" content="东杰书屋">
+<meta property="og:description" content="列式存储布局（比如 Parquet）可以加速查询，因为它只检查所有需要的列并对它们的值执行计算，因此只读取一个数据文件或表的小部分数据。Parquet 还支持灵活的压缩选项，因此可以显著减少磁盘上的存储。如果您在 HDFS 上拥有基于文本的数据文件或表，而且正在使用 Spark SQL 对它们执行查询，那么强烈推荐将文本数据文件转换为 Parquet 数据文件，以实现性能和存储收益。当然，转换需要">
+<meta property="og:updated_time" content="2016-01-24T11:03:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="将 Spark 中的文本转换为 Parquet 以提升性能">
+<meta name="twitter:description" content="列式存储布局（比如 Parquet）可以加速查询，因为它只检查所有需要的列并对它们的值执行计算，因此只读取一个数据文件或表的小部分数据。Parquet 还支持灵活的压缩选项，因此可以显著减少磁盘上的存储。如果您在 HDFS 上拥有基于文本的数据文件或表，而且正在使用 Spark SQL 对它们执行查询，那么强烈推荐将文本数据文件转换为 Parquet 数据文件，以实现性能和存储收益。当然，转换需要">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 将 Spark 中的文本转换为 Parquet 以提升性能 | 东杰书屋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">东杰书屋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">环境不会改变，解决之道在于改变自己。</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                将 Spark 中的文本转换为 Parquet 以提升性能
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-24T19:03:24+08:00" content="2016-01-24">
+              2016-01-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/24/spark-convert-text-parquet/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-convert-text-parquet/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+          
+          <span>&nbsp; | &nbsp;
+          <span id="busuanzi_value_page_pv" ></span>次阅读
+          </span>    
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>列式存储布局（比如 Parquet）可以加速查询，因为它只检查所有需要的列并对它们的值执行计算，因此只读取一个数据文件或表的小部分数据。Parquet 还支持灵活的压缩选项，因此可以显著减少磁盘上的存储。<br>如果您在 HDFS 上拥有基于文本的数据文件或表，而且正在使用 Spark SQL 对它们执行查询，那么强烈推荐将文本数据文件转换为 Parquet 数据文件，以实现性能和存储收益。当然，转换需要时间，但查询性能的提升在某些情况下可能达到 30 倍或更高，存储的节省可高达 75%！<br>已有文章介绍使用 Parquet 存储为 BigSQL、Hive 和 Impala 带来类似的性能收益，本文将介绍如何编写一个简单的 Scala 应用程序，将现有的基于文本的数据文件或表转换为 Parquet 数据文件，还将展示给 Spark SQL 带来的实际存储节省和查询性能提升。</p>
+<h3 id="u8BA9_u6211_u4EEC_u8F6C_u6362_u4E3A_Parquet__u5427_uFF01"><a href="#u8BA9_u6211_u4EEC_u8F6C_u6362_u4E3A_Parquet__u5427_uFF01" class="headerlink" title="让我们转换为 Parquet 吧！"></a>让我们转换为 Parquet 吧！</h3><p>Spark SQL 提供了对读取和写入 Parquet 文件的支持，能够自动保留原始数据的模式。Parquet 模式通过 Data Frame API，使数据文件对 Spark SQL 应用程序 “不言自明”。当然，Spark SQL 还支持读取已存储为 Parquet 的现有 Hive 表，但您需要配置 Spark，以便使用 Hive 的元存储来加载所有信息。在我们的示例中，不涉及 Hive 元存储。<br>以下 Scala 代码示例将读取一个基于文本的 CSV 表，并将它写入 Parquet 表：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert</span>(</span>sqlContext: <span class="type">SQLContext</span>, filename: <span class="type">String</span>, schema: <span class="type">StructType</span>, tablename: <span class="type">String</span>) &#123;</span><br><span class="line">     <span class="comment">// import text-based table first into a data frame</span></span><br><span class="line">     <span class="keyword">val</span> df = sqlContext.read.format(<span class="string">"com.databricks.spark.csv"</span>).</span><br><span class="line">       schema(schema).option(<span class="string">"delimiter"</span>, <span class="string">"|"</span>).load(filename)</span><br><span class="line">     <span class="comment">// now simply write to a parquet file</span></span><br><span class="line">     df.write.parquet(<span class="string">"/user/spark/data/parquet/"</span>+tablename)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// usage exampe -- a tpc-ds table called catalog_page</span></span><br><span class="line"> schema= <span class="type">StructType</span>(<span class="type">Array</span>(</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_page_sk"</span>,        <span class="type">IntegerType</span>,<span class="literal">false</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_page_id"</span>,        <span class="type">StringType</span>,<span class="literal">false</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_start_date_sk"</span>,          <span class="type">IntegerType</span>,<span class="literal">true</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_end_date_sk"</span>,            <span class="type">IntegerType</span>,<span class="literal">true</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_department"</span>,             <span class="type">StringType</span>,<span class="literal">true</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_number"</span>,         <span class="type">LongType</span>,<span class="literal">true</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_page_number"</span>,    <span class="type">LongType</span>,<span class="literal">true</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_description"</span>,            <span class="type">StringType</span>,<span class="literal">true</span>),</span><br><span class="line">         <span class="type">StructField</span>(<span class="string">"cp_type"</span>,                   <span class="type">StringType</span>,<span class="literal">true</span>)))</span><br><span class="line"> convert(sqlContext,</span><br><span class="line">         hadoopdsPath+<span class="string">"/catalog_page/*"</span>,</span><br><span class="line">         schema,</span><br><span class="line">         <span class="string">"catalog_page"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码将会读取 hadoopdsPath+”/catalog_page/* 中基于文本的 CSV 文件，并将转换的 Parquet 文件保存在 /user/spark/data/parquet/ 下。此外，转换的 Parquet 文件会在 gzip 中自动压缩，因为 Spark 变量 spark.sql.parquet.compression.codec 已在默认情况下设置为 gzip。您还可以将压缩编解码器设置为 uncompressed、snappy 或 lzo。</p>
+<h3 id="u8F6C_u6362_1_TB__u6570_u636E_u5C06_u82B1_u8D39_u591A_u957F_u65F6_u95F4_uFF1F"><a href="#u8F6C_u6362_1_TB__u6570_u636E_u5C06_u82B1_u8D39_u591A_u957F_u65F6_u95F4_uFF1F" class="headerlink" title="转换 1 TB 数据将花费多长时间？"></a>转换 1 TB 数据将花费多长时间？</h3><p>50 分钟，在一个 6 数据节点的 Spark v1.5.1 集群上可达到约 20 GB/分的吞吐量。使用的总内存约为 500GB。HDFS 上最终的 Parquet 文件的格式为：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/user/spark/data/parquet/catalog_page/part-r-<span class="number">00000</span>-<span class="number">9</span>ff58e65-<span class="number">0674</span>-<span class="number">440</span>a-<span class="number">883</span>d-<span class="number">256370</span>f33c66.gz.parquet</span><br><span class="line">/user/spark/data/parquet/catalog_page/part-r-<span class="number">00001</span>-<span class="number">9</span>ff58e65-<span class="number">0674</span>-<span class="number">440</span>a-<span class="number">883</span>d-<span class="number">256370</span>f33c66.gz.parquet</span><br></pre></td></tr></table></figure></p>
+<h3 id="u5B58_u50A8_u8282_u7701"><a href="#u5B58_u50A8_u8282_u7701" class="headerlink" title="存储节省"></a>存储节省</h3><p>以下 Linux 输出显示了 TEXT 和 PARQUET 在 HDFS 上的大小比较：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hadoop fs -du -h <span class="operator">-s</span> /user/spark/hadoopds1000g</span><br><span class="line">    <span class="number">897.9</span> G  /user/spark/hadoopds1000g</span><br><span class="line">    % hadoop fs -du -h <span class="operator">-s</span> /user/spark/data/parquet</span><br><span class="line">    <span class="number">231.4</span> G  /user/spark/data/parquet</span><br></pre></td></tr></table></figure></p>
+<p>1 TB 数据的存储节省了将近 75%！</p>
+<h3 id="u67E5_u8BE2_u6027_u80FD_u63D0_u5347"><a href="#u67E5_u8BE2_u6027_u80FD_u63D0_u5347" class="headerlink" title="查询性能提升"></a>查询性能提升</h3><p>Parquet 文件是自描述性的，所以保留了模式。要将 Parquet 文件加载到 DataFrame 中并将它注册为一个 temp 表，可执行以下操作：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> df = sqlContext.read.parquet(filename)</span><br><span class="line">      df.show</span><br><span class="line">      df.registerTempTable(tablename)</span><br></pre></td></tr></table></figure></p>
+<p>要对比性能，然后可以分别对 TEXT 和 PARQUET 表运行以下查询（假设所有其他 tpc-ds 表也都已转换为 Parquet）。您可以利用 spark-sql-perf 测试工具包来执行查询测试。举例而言，现在来看看 TPC-DS 基准测试中的查询 #76，<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">("q76", """</span><br><span class="line">            | <span class="operator"><span class="keyword">SELECT</span></span><br><span class="line">            |    channel, col_name, d_year, d_qoy, i_category, <span class="keyword">COUNT</span>(*) sales_cnt,</span><br><span class="line">            |    <span class="keyword">SUM</span>(ext_sales_price) sales_amt</span><br><span class="line">            | <span class="keyword">FROM</span>(</span><br><span class="line">            |    <span class="keyword">SELECT</span></span><br><span class="line">            |        <span class="string">'store'</span> <span class="keyword">as</span> channel, ss_store_sk col_name, d_year, d_qoy, i_category,</span><br><span class="line">            |        ss_ext_sales_price ext_sales_price</span><br><span class="line">            |    <span class="keyword">FROM</span> store_sales, item, date_dim</span><br><span class="line">            |    <span class="keyword">WHERE</span> ss_store_sk <span class="keyword">IS</span> <span class="literal">NULL</span></span><br><span class="line">            |      <span class="keyword">AND</span> ss_sold_date_sk=d_date_sk</span><br><span class="line">            |      <span class="keyword">AND</span> ss_item_sk=i_item_sk</span><br><span class="line">            |    <span class="keyword">UNION</span> ALL</span><br><span class="line">            |    <span class="keyword">SELECT</span></span><br><span class="line">            |        <span class="string">'web'</span> <span class="keyword">as</span> channel, ws_ship_customer_sk col_name, d_year, d_qoy, i_category,</span><br><span class="line">            |        ws_ext_sales_price ext_sales_price</span><br><span class="line">            |    <span class="keyword">FROM</span> web_sales, item, date_dim</span><br><span class="line">            |    <span class="keyword">WHERE</span> ws_ship_customer_sk <span class="keyword">IS</span> <span class="literal">NULL</span></span><br><span class="line">            |      <span class="keyword">AND</span> ws_sold_date_sk=d_date_sk</span><br><span class="line">            |      <span class="keyword">AND</span> ws_item_sk=i_item_sk</span><br><span class="line">            |    <span class="keyword">UNION</span> ALL</span><br><span class="line">            |    <span class="keyword">SELECT</span></span><br><span class="line">            |        <span class="string">'catalog'</span> <span class="keyword">as</span> channel, cs_ship_addr_sk col_name, d_year, d_qoy, i_category,</span><br><span class="line">            |        cs_ext_sales_price ext_sales_price</span><br><span class="line">            |    <span class="keyword">FROM</span> catalog_sales, item, date_dim</span><br><span class="line">            |    <span class="keyword">WHERE</span> cs_ship_addr_sk <span class="keyword">IS</span> <span class="literal">NULL</span></span><br><span class="line">            |      <span class="keyword">AND</span> cs_sold_date_sk=d_date_sk</span><br><span class="line">            |      <span class="keyword">AND</span> cs_item_sk=i_item_sk) foo</span><br><span class="line">            | <span class="keyword">GROUP</span> <span class="keyword">BY</span> channel, col_name, d_year, d_qoy, i_category</span><br><span class="line">            | <span class="keyword">ORDER</span> <span class="keyword">BY</span> channel, col_name, d_year, d_qoy, i_category</span><br><span class="line">            | <span class="keyword">limit</span> <span class="number">100</span></span></span><br></pre></td></tr></table></figure></p>
+<p>查询时间如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TIME               TEXT     PARQUET</span><br><span class="line">Query time (sec)    <span class="number">698</span>          <span class="number">21</span></span><br></pre></td></tr></table></figure></p>
+<p>参考资料<br><a href="https://developer.ibm.com/hadoop/blog/2015/12/03/parquet-for-spark-sql/" target="_blank" rel="external">英文原文。</a><br>在 <a href="http://www.ibm.com/developerworks/cn/bigdata/" target="_blank" rel="external">developerWorks 大数据和分析专区</a>，了解关于大数据的更多信息，获取技术文档、how-to 文章、培训、下载、产品信息以及其他资源。<br>加入 <a href="http://www.ibm.com/developerworks/cn/community/" target="_blank" rel="external">developerWorks 中文社区</a>，查看开发人员推动的博客、论坛、组和维基，并与其他 developerWorks 用户交流。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/parquet/" rel="tag">#parquet</a>
+          
+            <a href="/tags/spark/" rel="tag">#spark</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/24/spark-ha/" rel="next" title="Spark Standalone模式HA环境搭建">
+                <i class="fa fa-chevron-left"></i> Spark Standalone模式HA环境搭建
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/01/24/spark-convert-text-parquet/"
+     data-title="将 Spark 中的文本转换为 Parquet 以提升性能"
+     data-content=""
+     data-url="http://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/01/24/spark-convert-text-parquet/"
+           data-title="将 Spark 中的文本转换为 Parquet 以提升性能" data-url="http://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/author.jpg"
+               alt="东杰" />
+          <p class="site-author-name" itemprop="name">东杰</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hivefans" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/sdj1225" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u8BA9_u6211_u4EEC_u8F6C_u6362_u4E3A_Parquet__u5427_uFF01"><span class="nav-number">1.</span> <span class="nav-text">让我们转换为 Parquet 吧！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8F6C_u6362_1_TB__u6570_u636E_u5C06_u82B1_u8D39_u591A_u957F_u65F6_u95F4_uFF1F"><span class="nav-number">2.</span> <span class="nav-text">转换 1 TB 数据将花费多长时间？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B58_u50A8_u8282_u7701"><span class="nav-number">3.</span> <span class="nav-text">存储节省</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u67E5_u8BE2_u6027_u80FD_u63D0_u5347"><span class="nav-number">4.</span> <span class="nav-text">查询性能提升</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">东杰</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hivefans"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
