@@ -67,7 +67,7 @@ shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现�
 <meta property="og:site_name" content="东杰书屋">
 <meta property="og:description" content="前言借用和董神的一段对话说下背景：
 shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
-<meta property="og:updated_time" content="2016-01-27T10:24:11.000Z">
+<meta property="og:updated_time" content="2016-01-27T10:24:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark Sort Based Shuffle内存分析">
 <meta name="twitter:description" content="前言借用和董神的一段对话说下背景：
@@ -251,7 +251,7 @@ shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现�
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-27T18:24:11+08:00" content="2016-01-27">
+            <time itemprop="dateCreated" datetime="2016-01-27T18:24:52+08:00" content="2016-01-27">
               2016-01-27
             </time>
           </span>
@@ -376,6 +376,7 @@ shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现�
     </div>
 
     <footer class="post-footer">
+    
       
         <div class="post-tags">
           
@@ -390,13 +391,17 @@ shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/24/scala-rumen-biji/" rel="next" title="scala入门笔记">
-                <i class="fa fa-chevron-left"></i> scala入门笔记
+              <a href="/2016/01/24/spark-convert-text-parquet/" rel="next" title="将 Spark 中的文本转换为 Parquet 以提升性能">
+                <i class="fa fa-chevron-left"></i> 将 Spark 中的文本转换为 Parquet 以提升性能
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/27/scala-rumen-biji/" rel="prev" title="scala入门笔记">
+                scala入门笔记 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -435,6 +440,7 @@ shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现�
 
 
           </div>
+          
           
 
 
