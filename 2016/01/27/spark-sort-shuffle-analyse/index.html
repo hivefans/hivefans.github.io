@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,yarn," />
+  <meta name="keywords" content="shuffle,spark," />
 
 
 
@@ -59,21 +59,19 @@
 
 
 
-<meta name="description" content="为什么要使用YARN?数据共享、资源利用率、更方便的管理集群等。详情参见：http://www.cnblogs.com/luogankun/p/3887019.html
-Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MAVEN_OPTS=&quot;-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize">
+<meta name="description" content="前言借用和董神的一段对话说下背景：
+shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spark on yarn">
-<meta property="og:url" content="http://blog.djstudy.net/2016/01/24/spark-on-yarn/index.html">
+<meta property="og:title" content="Spark Sort Based Shuffle内存分析">
+<meta property="og:url" content="http://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="为什么要使用YARN?数据共享、资源利用率、更方便的管理集群等。详情参见：http://www.cnblogs.com/luogankun/p/3887019.html
-Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MAVEN_OPTS=&quot;-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize">
-<meta property="og:image" content="http://blog.djstudy.net/images/yarn-client.png">
-<meta property="og:image" content="http://blog.djstudy.net/images/yarn-cluster.png">
-<meta property="og:updated_time" content="2016-01-24T08:08:20.000Z">
+<meta property="og:description" content="前言借用和董神的一段对话说下背景：
+shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
+<meta property="og:updated_time" content="2016-01-27T09:54:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="spark on yarn">
-<meta name="twitter:description" content="为什么要使用YARN?数据共享、资源利用率、更方便的管理集群等。详情参见：http://www.cnblogs.com/luogankun/p/3887019.html
-Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MAVEN_OPTS=&quot;-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize">
+<meta name="twitter:title" content="Spark Sort Based Shuffle内存分析">
+<meta name="twitter:description" content="前言借用和董神的一段对话说下背景：
+shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
 
 
 
@@ -91,7 +89,7 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
   };
 </script>
 
-  <title> spark on yarn | 东杰书屋 </title>
+  <title> Spark Sort Based Shuffle内存分析 | 东杰书屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -241,7 +239,7 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
             
             
               
-                spark on yarn
+                Spark Sort Based Shuffle内存分析
               
             
           </h1>
@@ -253,8 +251,8 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T16:08:20+08:00" content="2016-01-24">
-              2016-01-24
+            <time itemprop="dateCreated" datetime="2016-01-27T17:54:45+08:00" content="2016-01-27">
+              2016-01-27
             </time>
           </span>
 
@@ -283,8 +281,8 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/01/24/spark-on-yarn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-on-yarn/" itemprop="commentsCount"></span>
+                <a href="/2016/01/27/spark-sort-shuffle-analyse/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/27/spark-sort-shuffle-analyse/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -310,18 +308,61 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
       
 
       
-        <h2 id="u4E3A_u4EC0_u4E48_u8981_u4F7F_u7528YARN_3F"><a href="#u4E3A_u4EC0_u4E48_u8981_u4F7F_u7528YARN_3F" class="headerlink" title="为什么要使用YARN?"></a>为什么要使用YARN?</h2><p>数据共享、资源利用率、更方便的管理集群等。<br>详情参见：<a href="http://www.cnblogs.com/luogankun/p/3887019.html" target="_blank" rel="external">http://www.cnblogs.com/luogankun/p/3887019.html</a></p>
-<h2 id="Spark_YARN_u7248_u672C_u7F16_u8BD1"><a href="#Spark_YARN_u7248_u672C_u7F16_u8BD1" class="headerlink" title="Spark YARN版本编译"></a>Spark YARN版本编译</h2><p>编译hadoop对应的支持YARN的Spark版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> MAVEN_OPTS=<span class="string">"-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"</span></span><br><span class="line">$ mvn clean package -DskipTests -Phadoop-<span class="number">2.3</span> -Dhadoop.version=<span class="number">2.3</span>.<span class="number">0</span>-cdh5.<span class="number">0.0</span> -Dprotobuf.version=<span class="number">2.5</span>.<span class="number">0</span> -Pyarn -Phive</span><br></pre></td></tr></table></figure></p>
-<p>详情参见：<a href="http://www.cnblogs.com/luogankun/p/3798403.html" target="_blank" rel="external">Spark On YARN</a></p>
-<p>Spark的Cluster Manager负责管理启动executor进程，集群可以是Standalone、YARN和Mesos<br>每个SparkContext（换句话说是：Application）对应一个ApplicationMaster（Application启动过程中的第一个容器<br>ApplicationMaster负责和ResourceManager打交道，并请求资源，当获取资源之后通知NodeManager为其启动container； 每个Container中运行一个ExecutorBackend<br>ResourceManager决定哪些Application可以运行、什么时候运行以及在哪些NodeManager上运行； NodeManager的Container上运行executor进程<br>在Standalone模式中有Worker的概念，而在Spark On YARN中没有Worker的概念<br>由于executor是运行在container中，故container内存要大于executor的内存<br>Spark On YARN有两种：</p>
-<h3 id="yarn-client"><a href="#yarn-client" class="headerlink" title="yarn-client"></a>yarn-client</h3><p>Client和Driver运行在一起，ApplicationMaster只负责获取资源<br>　　Client会和请求到的资源container通信来调度他们进行工作，也就是说Client不能退出滴；<br>　　日志信息输出能输出在终端控制台上，适用于交互或者调试，也就是希望快速地看到application的输出，比如SparkStreaming<br><img src="/images/yarn-client.png" alt="yarn-client" title="yarn client"></p>
-<h3 id="yarn-cluster"><a href="#yarn-cluster" class="headerlink" title="yarn-cluster"></a>yarn-cluster</h3><p>Driver和ApplicationMaster运行在一起；负责向YARN申请资源，并检测作业的运行状况；executor运行在container中<br>　　提交Application之后，即使关掉了Client，作业仍然会继续在YARN上运行<br>　　日志信息不会输出在终端控制台上<br><img src="/images/yarn-cluster.png" alt="yarn-cluster" title="yarn cluster"></p>
-<h3 id="u63D0_u4EA4Spark_u4F5C_u4E1A_u5230YARN"><a href="#u63D0_u4EA4Spark_u4F5C_u4E1A_u5230YARN" class="headerlink" title="提交Spark作业到YARN"></a>提交Spark作业到YARN</h3><p>提交命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-submit \</span><br><span class="line">  --class &lt;main-class&gt;</span><br><span class="line">  --master &lt;master-url&gt; \</span><br><span class="line">  --deploy-mode &lt;deploy-mode&gt; \</span><br><span class="line">  ... <span class="comment"># other options</span></span><br><span class="line">  &lt;application-jar&gt; \</span><br><span class="line">  [application-arguments]</span><br></pre></td></tr></table></figure></p>
-<h3 id="u63D0_u4EA4_u672C_u5730jar"><a href="#u63D0_u4EA4_u672C_u5730jar" class="headerlink" title="提交本地jar"></a>提交本地jar</h3><p>提交到yarn-cluster/yarn-client<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-submit \</span><br><span class="line">  --class org.apache.spark.examples.SparkPi \</span><br><span class="line">  --master yarn-cluster \  <span class="comment"># can also be `yarn-client` for client mode</span></span><br><span class="line">  --executor-memory <span class="number">20</span>G \</span><br><span class="line">  --num-executors <span class="number">50</span> \</span><br><span class="line">  /path/to/examples.jar \</span><br></pre></td></tr></table></figure></p>
-<p>如果采用的是yarn-cluster的方式运行的话，想停止执行应用，需要去多个node上干掉；而在yarn-client模式运行时，只需要在client上干掉应用即可。<br>提交到standalone<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-submit \</span><br><span class="line">  --class org.apache.spark.examples.SparkPi \</span><br><span class="line">  --master spark://<span class="number">207.184</span>.<span class="number">161.138</span>:<span class="number">7077</span> \</span><br><span class="line">  --executor-memory <span class="number">20</span>G \</span><br><span class="line">  --total-executor-cores <span class="number">100</span> \</span><br><span class="line">  /path/to/examples.jar \</span><br></pre></td></tr></table></figure></p>
-<h3 id="u63D0_u4EA4hdfs_u4E0A_u7684jar"><a href="#u63D0_u4EA4hdfs_u4E0A_u7684jar" class="headerlink" title="提交hdfs上的jar"></a>提交hdfs上的jar</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ ./bin/spark-submit \</span><br><span class="line">  --class org.apache.spark.examples.SparkPi \</span><br><span class="line">  --master yarn-cluster \  <span class="comment"># can also be `yarn-client` for client mode</span></span><br><span class="line">  --executor-memory <span class="number">20</span>G \</span><br><span class="line">  --num-executors <span class="number">50</span> \</span><br><span class="line">  hdfs://hadoop000:<span class="number">8020</span>/lib/examples.jar \</span><br></pre></td></tr></table></figure>
-<p>如果没有在spark-env.sh文件中配置HADOOP_CONF_DIR或者YARN_CONF_DIR，可以在提交作业前指定形如<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> HADOOP_CONF_DIR=XXX</span><br><span class="line">$ ./bin/spark-submit \</span><br><span class="line">  --class org.apache.spark.examples.SparkPi \</span><br><span class="line">  --master yarn-cluster \  <span class="comment"># can also be `yarn-client` for client mode</span></span><br><span class="line">  --executor-memory <span class="number">20</span>G \</span><br><span class="line">  --num-executors <span class="number">50</span> \</span><br><span class="line">  /path/to/examples.jar</span><br></pre></td></tr></table></figure></p>
-<p>详情参见：<a href="http://spark.apache.org/docs/latest/submitting-applications.html" target="_blank" rel="external">http://spark.apache.org/docs/latest/submitting-applications.html</a></p>
+        <h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>借用和董神的一段对话说下背景：</p>
+<p>shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuffle已经优化到头了。为了解决hash shuffle性能差的问题，又引入sort shuffle，完全借鉴mapreduce实现，每个map产生一个文件，彻底解决了扩展性问题<br>目前Sort Based Shuffle 是作为默认Shuffle类型的。Shuffle 是一个很复杂的过程，任何一个环节都足够写一篇文章。所以这里，我尝试换个方式，从实用的角度出发，让读者有两方面的收获：</p>
+<p>剖析哪些环节，哪些代码可能会让内存产生问题<br>控制相关内存的参数<br>有时候，我们宁可程序慢点，也不要OOM，至少要先跑步起来，希望这篇文章能够让你达成这个目标。</p>
+<p>同时我们会提及一些类名，这些类方便你自己想更深入了解时，可以方便的找到他们，自己去探个究竟。</p>
+<h2 id="Shuffle__u6982_u89C8"><a href="#Shuffle__u6982_u89C8" class="headerlink" title="Shuffle 概览"></a>Shuffle 概览</h2><p>Spark 的Shuffle 分为 Write,Read 两阶段。我们预先建立三个概念：</p>
+<p>Write 对应的是ShuffleMapTask,具体的写操作ExternalSorter来负责</p>
+<p>Read 阶段由ShuffleRDD里的HashShuffleReader来完成。如果拉来的数据如果过大，需要落地，则也由ExternalSorter来完成的</p>
+<p>所有Write 写完后，才会执行Read。 他们被分成了两个不同的Stage阶段。</p>
+<p>也就是说，Shuffle Write ,Shuffle Read 两阶段都可能需要落磁盘，并且通过Disk Merge 来完成最后的Sort归并排序。</p>
+<h2 id="Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790"><a href="#Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790" class="headerlink" title="Shuffle Write 内存消耗分析"></a>Shuffle Write 内存消耗分析</h2><p>Shuffle Write 的入口链路为：<br>org.apache.spark.scheduler.ShuffleMapTask<br>—&gt; org.apache.spark.shuffle.sort.SortShuffleWriter<br>   —&gt; org.apache.spark.util.collection.ExternalSorter<br>会产生内存瓶颈的其实就是 org.apache.spark.util.collection.ExternalSorter。我们看看这个复杂的ExternalSorter都有哪些地方在占用内存：</p>
+<p>第一个地：</p>
+<p>private var map = new PartitionedAppendOnlyMap[K, C]<br>我们知道，数据都是先写内存，内存不够了，才写磁盘。这里的map就是那个放数据的内存了。</p>
+<p>这个PartitionedAppendOnlyMap内部维持了一个数组，是这样的：</p>
+<p>private var data = new Array<a href="/2 * capacity">AnyRef</a><br>也就是他消耗的并不是Storage的内存，所谓Storage内存，指的是由blockManager管理起来的内存。</p>
+<p>PartitionedAppendOnlyMap 放不下，要落地，那么不能硬生生的写磁盘，所以需要个buffer,然后把buffer再一次性写入磁盘文件。这个buffer是由参数</p>
+<p>spark.shuffle.file.buffer=32k<br>控制的。数据获取的过程中，序列化反序列化，也是需要空间的，所以Spark 对数量做了限制，通过如下参数控制：</p>
+<p> spark.shuffle.spill.batchSize=10000<br>假设一个Executor的可使用的Core为 C个，那么对应需要的内存消耗为：</p>
+<p> C <em> 32k + C </em> 10000个Record + C <em> PartitionedAppendOnlyMap<br>这么看来，写文件的buffer不是问题，而序列化的batchSize也不是问题，几万或者十几万个Record 而已。那C </em> PartitionedAppendOnlyMap 到底会有多大呢？我先给个结论:</p>
+<p>   C <em> PartitionedAppendOnlyMap &lt; ExecutorHeapMemeory </em> 0.2 * 0.8<br>怎么得到上面的结论呢？核心店就是要判定PartitionedAppendOnlyMap 需要占用多少内存，而它到底能占用内存，则由触发写磁盘动作决定，因为一旦写磁盘，PartitionedAppendOnlyMap所占有的内存就会被释放。下面是判断是否写磁盘的逻辑代码：</p>
+<p> estimatedSize = map.estimateSize()<br> if (maybeSpill(map, estimatedSize)) {<br>          map = new PartitionedAppendOnlyMap[K, C]<br> }<br>每放一条记录，就会做一次内存的检查，看PartitionedAppendOnlyMap 到底占用了多少内存。如果真是这样，假设检查一次内存1ms, 1kw 就不得了的时间了。所以肯定是不行的，所以 estimateSize其实是使用采样算法来做的。</p>
+<p>第二个，我们也不希望mayBeSpill太耗时,所以 maybeSpill 方法里就搞了很多东西，减少耗时。我们看看都设置了哪些防线</p>
+<p>首先会判定要不要执行内部逻辑：</p>
+<p>   elementsRead % 32 == 0 &amp;&amp; currentMemory &gt;= myMemoryThreshold<br>每隔32次会进行一次检查，并且要当前PartitionedAppendOnlyMap currentMemory &gt; myMemoryThreshold 才会进一步判定是不是要spill.</p>
+<p>其中 myMemoryThreshold可通过如下配置获得初始值</p>
+<p>spark.shuffle.spill.initialMemoryThreshold =  5 <em> 1024 </em> 1024<br>接着会向 shuffleMemoryManager 要 2 * currentMemory - myMemoryThreshold 的内存，shuffleMemoryManager 是被Executor 所有正在运行的Task(Core) 共享的，能够分配出去的内存是：</p>
+<p>ExecutorHeapMemeory <em> 0.2 </em> 0.8<br>上面的数字可通过下面两个配置来更改：</p>
+<p>spark.shuffle.memoryFraction=0.2<br>spark.shuffle.safetyFraction=0.8<br>如果无法获取到足够的内存，就会触发真的spill操作了。</p>
+<p>看到这里，上面的结论就显而易见了。</p>
+<p>然而，这里我们忽略了一个很大的问题，就是</p>
+<p> estimatedSize = map.estimateSize()<br>为什么说它是大问题，前面我们说了，estimateSize 是近似估计，所以有可能估的不准，也就是实际内存会远远超过预期。</p>
+<p>具体的大家可以看看 org.apache.spark.util.collection.SizeTracker</p>
+<p>我这里给出一个结论：</p>
+<p>如果你内存开的比较大，其实反倒风险更高，因为estimateSize 并不是每次都去真实的算缓存。它是通过采样来完成的，而采样的周期不是固定的，而是指数增长的，比如第一次采样完后，PartitionedAppendOnlyMap 要经过1.1次的update/insert操作之后才进行第二次采样，然后经过1.1*.1.1次之后进行第三次采样，以此递推，假设你内存开的大，那PartitionedAppendOnlyMap可能要经过几十万次更新之后之后才会进行一次采样，然后才能计算出新的大小，这个时候几十万次更新带来的新的内存压力，可能已经让你的GC不堪重负了。</p>
+<p>当然，这是一种折中，因为确实不能频繁采样。</p>
+<p>如果你不想出现这种问题，要么自己替换实现这个类，要么将</p>
+<p>spark.shuffle.safetyFraction=0.8<br>设置的更小一些。</p>
+<p>Shuffle Read 内存消耗分析<br>Shuffle Read 的入口链路为：</p>
+<p>org.apache.spark.rdd.ShuffledRDD<br>—&gt; org.apache.spark.shuffle.sort.HashShuffleReader<br>   —&gt;  org.apache.spark.util.collection.ExternalAppendOnlyMap<br>   —&gt;  org.apache.spark.util.collection.ExternalSorter<br>Shuffle Read 会更复杂些，尤其是从各个节点拉取数据。但这块不是不是我们的重点。按流程，主要有：</p>
+<p>获取待拉取数据的迭代器<br>使用AppendOnlyMap/ExternalAppendOnlyMap 做combine<br>如果需要对key排序，则使用ExternalSorter<br>其中1后续会单独列出文章。3我们在write阶段已经讨论过。所以这里重点是第二个步骤，combine阶段。</p>
+<p>如果你开启了</p>
+<p>spark.shuffle.spill=true<br>则使用ExternalAppendOnlyMap，否则使用AppendOnlyMap。两者的区别是，前者如果内存不够，则落磁盘，会发生spill操作，后者如果内存不够，直接OOM了。</p>
+<p>这里我们会重点分析ExternalAppendOnlyMap。</p>
+<p>ExternalAppendOnlyMap 作为内存缓冲数据的对象如下：</p>
+<p> private var currentMap = new SizeTrackingAppendOnlyMap[K, C]<br>如果currentMap 对象向申请不到内存，就会触发spill动作。判定内存是否充足的逻辑和Shuffle Write 完全一致。</p>
+<p>Combine做完之后，ExternalAppendOnlyMap 会返回一个Iterator，叫做ExternalIterator,这个Iterator背后的数据源是所有spill文件以及当前currentMap里的数据。</p>
+<p>我们进去 ExternalIterator 看看，唯一的一个占用内存的对象是这个优先队列：</p>
+<p>   private val mergeHeap = new mutable.PriorityQueue[StreamBuffer]<br>mergeHeap 里元素数量等于所有spill文件个数加一。StreamBuffer 的结构：</p>
+<p> private class StreamBuffer(<br>                    val iterator: BufferedIterator[(K, C)],<br>                    val pairs: ArrayBuffer[(K, C)])<br>其中iterator 只是一个对象引用，pairs 应该保存的是iterator里的第一个元素(如果hash有冲突的话，则为多个)</p>
+<p>所以mergeHeap 应该不占用什么内存。到这里我们看看应该占用多少内存。依然假设 CoreNum 为 C,则</p>
+<p>  C <em> 32k + C  </em> mergeHeap  + C * SizeTrackingAppendOnlyMap<br>所以这一段占用内存较大的依然是 SizeTrackingAppendOnlyMap ，一样的，他的值也符合如下公式</p>
+<p> C <em> SizeTrackingAppendOnlyMap &lt; ExecutorHeapMemeory </em> 0.2 * 0.8<br>ExternalAppendOnlyMap 的目的是做Combine,然后如果你还设置了Order,那么接着会启用 ExternalSorter 来完成排序。</p>
+<p>经过上文对Shuffle Write的使用，相比大家也对ExternalSorter有一定的了解了，此时应该占用内存的地方最大不超过下面的这个值：</p>
+<p> C <em> SizeTrackingAppendOnlyMap  + C </em> PartitionedAppendOnlyMap<br>不过即使如此，因为他们共享一个shuffleMemoryManager，则理论上只有这么大：</p>
+<p> C <em> SizeTrackingAppendOnlyMap &lt;  ExecutorHeapMemeory </em> 0.2 * 0.8<br>分析到这里，我们可以做个总结：</p>
+<p>Shuffle Read阶段如果内存不足，有两个阶段会落磁盘，分别是Combine 和 Sort 阶段。对应的都会spill小文件，并且产生读。<br>Shuffle Read 阶段如果开启了spill功能，则基本能保证内存控制在 ExecutorHeapMemeory <em> 0.2 </em> 0.8 之内。<br>后话<br>如果大家对Sort Shuffle 落磁盘文件这块感兴趣，还可以看看这篇文章 <a href="http://www.jianshu.com/p/2d837bf2dab6" target="_blank" rel="external">Spark Shuffle Write阶段磁盘文件分析</a><br>转载 <a href="http://www.jianshu.com/p/c83bb237caa8" target="_blank" rel="external">http://www.jianshu.com/p/c83bb237caa8</a></p>
 
       
     </div>
@@ -330,9 +371,9 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag">#spark</a>
+            <a href="/tags/shuffle/" rel="tag">#shuffle</a>
           
-            <a href="/tags/yarn/" rel="tag">#yarn</a>
+            <a href="/tags/spark/" rel="tag">#spark</a>
           
         </div>
       
@@ -341,17 +382,13 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/24/hdp-spark-shell-error/" rel="next" title="ambari hdp中部署apache spark运行spark shell遇到的错误解决">
-                <i class="fa fa-chevron-left"></i> ambari hdp中部署apache spark运行spark shell遇到的错误解决
+              <a href="/2016/01/24/scala-rumen-biji/" rel="next" title="scala入门笔记">
+                <i class="fa fa-chevron-left"></i> scala入门笔记
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/01/24/spark-ha/" rel="prev" title="Spark Standalone模式HA环境搭建">
-                Spark Standalone模式HA环境搭建 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -366,10 +403,10 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/01/24/spark-on-yarn/"
-     data-title="spark on yarn"
+        <div class="ds-share flat" data-thread-key="2016/01/27/spark-sort-shuffle-analyse/"
+     data-title="Spark Sort Based Shuffle内存分析"
      data-content=""
-     data-url="http://blog.djstudy.net/2016/01/24/spark-on-yarn/">
+     data-url="http://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -396,8 +433,8 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/01/24/spark-on-yarn/"
-           data-title="spark on yarn" data-url="http://blog.djstudy.net/2016/01/24/spark-on-yarn/">
+      <div class="ds-thread" data-thread-key="2016/01/27/spark-sort-shuffle-analyse/"
+           data-title="Spark Sort Based Shuffle内存分析" data-url="http://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/">
       </div>
     
   </div>
@@ -520,7 +557,7 @@ Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MA
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E3A_u4EC0_u4E48_u8981_u4F7F_u7528YARN_3F"><span class="nav-number">1.</span> <span class="nav-text">为什么要使用YARN?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark_YARN_u7248_u672C_u7F16_u8BD1"><span class="nav-number">2.</span> <span class="nav-text">Spark YARN版本编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yarn-client"><span class="nav-number">2.1.</span> <span class="nav-text">yarn-client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yarn-cluster"><span class="nav-number">2.2.</span> <span class="nav-text">yarn-cluster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u63D0_u4EA4Spark_u4F5C_u4E1A_u5230YARN"><span class="nav-number">2.3.</span> <span class="nav-text">提交Spark作业到YARN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u63D0_u4EA4_u672C_u5730jar"><span class="nav-number">2.4.</span> <span class="nav-text">提交本地jar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u63D0_u4EA4hdfs_u4E0A_u7684jar"><span class="nav-number">2.5.</span> <span class="nav-text">提交hdfs上的jar</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u524D_u8A00"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shuffle__u6982_u89C8"><span class="nav-number">2.</span> <span class="nav-text">Shuffle 概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790"><span class="nav-number">3.</span> <span class="nav-text">Shuffle Write 内存消耗分析</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

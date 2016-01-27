@@ -4,7 +4,7 @@
   <subtitle><![CDATA[环境不会改变，解决之道在于改变自己。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.djstudy.net/"/>
-  <updated>2016-01-24T11:28:07.000Z</updated>
+  <updated>2016-01-27T09:54:45.000Z</updated>
   <id>http://blog.djstudy.net/</id>
   
   <author>
@@ -13,6 +13,81 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Spark Sort Based Shuffle内存分析]]></title>
+    <link href="http://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/"/>
+    <id>http://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/</id>
+    <published>2016-01-27T09:54:45.000Z</published>
+    <updated>2016-01-27T09:54:45.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>借用和董神的一段对话说下背景：</p>
+<p>shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuffle已经优化到头了。为了解决hash shuffle性能差的问题，又引入sort shuffle，完全借鉴mapreduce实现，每个map产生一个文件，彻底解决了扩展性问题<br>目前Sort Based Shuffle 是作为默认Shuffle类型的。Shuffle 是一个很复杂的过程，任何一个环节都足够写一篇文章。所以这里，我尝试换个方式，从实用的角度出发，让读者有两方面的收获：</p>
+<p>剖析哪些环节，哪些代码可能会让内存产生问题<br>控制相关内存的参数<br>有时候，我们宁可程序慢点，也不要OOM，至少要先跑步起来，希望这篇文章能够让你达成这个目标。</p>
+<p>同时我们会提及一些类名，这些类方便你自己想更深入了解时，可以方便的找到他们，自己去探个究竟。</p>
+<h2 id="Shuffle__u6982_u89C8"><a href="#Shuffle__u6982_u89C8" class="headerlink" title="Shuffle 概览"></a>Shuffle 概览</h2><p>Spark 的Shuffle 分为 Write,Read 两阶段。我们预先建立三个概念：</p>
+<p>Write 对应的是ShuffleMapTask,具体的写操作ExternalSorter来负责</p>
+<p>Read 阶段由ShuffleRDD里的HashShuffleReader来完成。如果拉来的数据如果过大，需要落地，则也由ExternalSorter来完成的</p>
+<p>所有Write 写完后，才会执行Read。 他们被分成了两个不同的Stage阶段。</p>
+<p>也就是说，Shuffle Write ,Shuffle Read 两阶段都可能需要落磁盘，并且通过Disk Merge 来完成最后的Sort归并排序。</p>
+<h2 id="Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790"><a href="#Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790" class="headerlink" title="Shuffle Write 内存消耗分析"></a>Shuffle Write 内存消耗分析</h2><p>Shuffle Write 的入口链路为：<br>org.apache.spark.scheduler.ShuffleMapTask<br>—&gt; org.apache.spark.shuffle.sort.SortShuffleWriter<br>   —&gt; org.apache.spark.util.collection.ExternalSorter<br>会产生内存瓶颈的其实就是 org.apache.spark.util.collection.ExternalSorter。我们看看这个复杂的ExternalSorter都有哪些地方在占用内存：</p>
+<p>第一个地：</p>
+<p>private var map = new PartitionedAppendOnlyMap[K, C]<br>我们知道，数据都是先写内存，内存不够了，才写磁盘。这里的map就是那个放数据的内存了。</p>
+<p>这个PartitionedAppendOnlyMap内部维持了一个数组，是这样的：</p>
+<p>private var data = new Array<a href="/2 * capacity">AnyRef</a><br>也就是他消耗的并不是Storage的内存，所谓Storage内存，指的是由blockManager管理起来的内存。</p>
+<p>PartitionedAppendOnlyMap 放不下，要落地，那么不能硬生生的写磁盘，所以需要个buffer,然后把buffer再一次性写入磁盘文件。这个buffer是由参数</p>
+<p>spark.shuffle.file.buffer=32k<br>控制的。数据获取的过程中，序列化反序列化，也是需要空间的，所以Spark 对数量做了限制，通过如下参数控制：</p>
+<p> spark.shuffle.spill.batchSize=10000<br>假设一个Executor的可使用的Core为 C个，那么对应需要的内存消耗为：</p>
+<p> C <em> 32k + C </em> 10000个Record + C <em> PartitionedAppendOnlyMap<br>这么看来，写文件的buffer不是问题，而序列化的batchSize也不是问题，几万或者十几万个Record 而已。那C </em> PartitionedAppendOnlyMap 到底会有多大呢？我先给个结论:</p>
+<p>   C <em> PartitionedAppendOnlyMap &lt; ExecutorHeapMemeory </em> 0.2 * 0.8<br>怎么得到上面的结论呢？核心店就是要判定PartitionedAppendOnlyMap 需要占用多少内存，而它到底能占用内存，则由触发写磁盘动作决定，因为一旦写磁盘，PartitionedAppendOnlyMap所占有的内存就会被释放。下面是判断是否写磁盘的逻辑代码：</p>
+<p> estimatedSize = map.estimateSize()<br> if (maybeSpill(map, estimatedSize)) {<br>          map = new PartitionedAppendOnlyMap[K, C]<br> }<br>每放一条记录，就会做一次内存的检查，看PartitionedAppendOnlyMap 到底占用了多少内存。如果真是这样，假设检查一次内存1ms, 1kw 就不得了的时间了。所以肯定是不行的，所以 estimateSize其实是使用采样算法来做的。</p>
+<p>第二个，我们也不希望mayBeSpill太耗时,所以 maybeSpill 方法里就搞了很多东西，减少耗时。我们看看都设置了哪些防线</p>
+<p>首先会判定要不要执行内部逻辑：</p>
+<p>   elementsRead % 32 == 0 &amp;&amp; currentMemory &gt;= myMemoryThreshold<br>每隔32次会进行一次检查，并且要当前PartitionedAppendOnlyMap currentMemory &gt; myMemoryThreshold 才会进一步判定是不是要spill.</p>
+<p>其中 myMemoryThreshold可通过如下配置获得初始值</p>
+<p>spark.shuffle.spill.initialMemoryThreshold =  5 <em> 1024 </em> 1024<br>接着会向 shuffleMemoryManager 要 2 * currentMemory - myMemoryThreshold 的内存，shuffleMemoryManager 是被Executor 所有正在运行的Task(Core) 共享的，能够分配出去的内存是：</p>
+<p>ExecutorHeapMemeory <em> 0.2 </em> 0.8<br>上面的数字可通过下面两个配置来更改：</p>
+<p>spark.shuffle.memoryFraction=0.2<br>spark.shuffle.safetyFraction=0.8<br>如果无法获取到足够的内存，就会触发真的spill操作了。</p>
+<p>看到这里，上面的结论就显而易见了。</p>
+<p>然而，这里我们忽略了一个很大的问题，就是</p>
+<p> estimatedSize = map.estimateSize()<br>为什么说它是大问题，前面我们说了，estimateSize 是近似估计，所以有可能估的不准，也就是实际内存会远远超过预期。</p>
+<p>具体的大家可以看看 org.apache.spark.util.collection.SizeTracker</p>
+<p>我这里给出一个结论：</p>
+<p>如果你内存开的比较大，其实反倒风险更高，因为estimateSize 并不是每次都去真实的算缓存。它是通过采样来完成的，而采样的周期不是固定的，而是指数增长的，比如第一次采样完后，PartitionedAppendOnlyMap 要经过1.1次的update/insert操作之后才进行第二次采样，然后经过1.1*.1.1次之后进行第三次采样，以此递推，假设你内存开的大，那PartitionedAppendOnlyMap可能要经过几十万次更新之后之后才会进行一次采样，然后才能计算出新的大小，这个时候几十万次更新带来的新的内存压力，可能已经让你的GC不堪重负了。</p>
+<p>当然，这是一种折中，因为确实不能频繁采样。</p>
+<p>如果你不想出现这种问题，要么自己替换实现这个类，要么将</p>
+<p>spark.shuffle.safetyFraction=0.8<br>设置的更小一些。</p>
+<p>Shuffle Read 内存消耗分析<br>Shuffle Read 的入口链路为：</p>
+<p>org.apache.spark.rdd.ShuffledRDD<br>—&gt; org.apache.spark.shuffle.sort.HashShuffleReader<br>   —&gt;  org.apache.spark.util.collection.ExternalAppendOnlyMap<br>   —&gt;  org.apache.spark.util.collection.ExternalSorter<br>Shuffle Read 会更复杂些，尤其是从各个节点拉取数据。但这块不是不是我们的重点。按流程，主要有：</p>
+<p>获取待拉取数据的迭代器<br>使用AppendOnlyMap/ExternalAppendOnlyMap 做combine<br>如果需要对key排序，则使用ExternalSorter<br>其中1后续会单独列出文章。3我们在write阶段已经讨论过。所以这里重点是第二个步骤，combine阶段。</p>
+<p>如果你开启了</p>
+<p>spark.shuffle.spill=true<br>则使用ExternalAppendOnlyMap，否则使用AppendOnlyMap。两者的区别是，前者如果内存不够，则落磁盘，会发生spill操作，后者如果内存不够，直接OOM了。</p>
+<p>这里我们会重点分析ExternalAppendOnlyMap。</p>
+<p>ExternalAppendOnlyMap 作为内存缓冲数据的对象如下：</p>
+<p> private var currentMap = new SizeTrackingAppendOnlyMap[K, C]<br>如果currentMap 对象向申请不到内存，就会触发spill动作。判定内存是否充足的逻辑和Shuffle Write 完全一致。</p>
+<p>Combine做完之后，ExternalAppendOnlyMap 会返回一个Iterator，叫做ExternalIterator,这个Iterator背后的数据源是所有spill文件以及当前currentMap里的数据。</p>
+<p>我们进去 ExternalIterator 看看，唯一的一个占用内存的对象是这个优先队列：</p>
+<p>   private val mergeHeap = new mutable.PriorityQueue[StreamBuffer]<br>mergeHeap 里元素数量等于所有spill文件个数加一。StreamBuffer 的结构：</p>
+<p> private class StreamBuffer(<br>                    val iterator: BufferedIterator[(K, C)],<br>                    val pairs: ArrayBuffer[(K, C)])<br>其中iterator 只是一个对象引用，pairs 应该保存的是iterator里的第一个元素(如果hash有冲突的话，则为多个)</p>
+<p>所以mergeHeap 应该不占用什么内存。到这里我们看看应该占用多少内存。依然假设 CoreNum 为 C,则</p>
+<p>  C <em> 32k + C  </em> mergeHeap  + C * SizeTrackingAppendOnlyMap<br>所以这一段占用内存较大的依然是 SizeTrackingAppendOnlyMap ，一样的，他的值也符合如下公式</p>
+<p> C <em> SizeTrackingAppendOnlyMap &lt; ExecutorHeapMemeory </em> 0.2 * 0.8<br>ExternalAppendOnlyMap 的目的是做Combine,然后如果你还设置了Order,那么接着会启用 ExternalSorter 来完成排序。</p>
+<p>经过上文对Shuffle Write的使用，相比大家也对ExternalSorter有一定的了解了，此时应该占用内存的地方最大不超过下面的这个值：</p>
+<p> C <em> SizeTrackingAppendOnlyMap  + C </em> PartitionedAppendOnlyMap<br>不过即使如此，因为他们共享一个shuffleMemoryManager，则理论上只有这么大：</p>
+<p> C <em> SizeTrackingAppendOnlyMap &lt;  ExecutorHeapMemeory </em> 0.2 * 0.8<br>分析到这里，我们可以做个总结：</p>
+<p>Shuffle Read阶段如果内存不足，有两个阶段会落磁盘，分别是Combine 和 Sort 阶段。对应的都会spill小文件，并且产生读。<br>Shuffle Read 阶段如果开启了spill功能，则基本能保证内存控制在 ExecutorHeapMemeory <em> 0.2 </em> 0.8 之内。<br>后话<br>如果大家对Sort Shuffle 落磁盘文件这块感兴趣，还可以看看这篇文章 <a href="http://www.jianshu.com/p/2d837bf2dab6" target="_blank" rel="external">Spark Shuffle Write阶段磁盘文件分析</a><br>转载 <a href="http://www.jianshu.com/p/c83bb237caa8" target="_blank" rel="external">http://www.jianshu.com/p/c83bb237caa8</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>借用和董神的一段对话说下背景：</p>
+<p>shuffle共有三种，别人讨论的是hash shuffl]]>
+    </summary>
+    
+      <category term="shuffle" scheme="http://blog.djstudy.net/tags/shuffle/"/>
+    
+      <category term="spark" scheme="http://blog.djstudy.net/tags/spark/"/>
+    
+      <category term="spark" scheme="http://blog.djstudy.net/categories/spark/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[scala入门笔记]]></title>
