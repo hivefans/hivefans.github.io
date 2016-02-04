@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.djstudy.net/2016/02/04/presto-parquet-airpal/</loc>
+    <lastmod>2016-02-04T11:30:21.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.djstudy.net/about/index.html</loc>
     <lastmod>2016-01-30T09:11:24.000Z</lastmod>
   </url>
