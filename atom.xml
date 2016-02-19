@@ -4,7 +4,7 @@
   <subtitle><![CDATA[环境不会改变，解决之道在于改变自己。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.djstudy.net/"/>
-  <updated>2016-02-19T03:32:28.000Z</updated>
+  <updated>2016-02-19T03:37:46.000Z</updated>
   <id>http://blog.djstudy.net/</id>
   
   <author>
@@ -18,9 +18,9 @@
     <title><![CDATA[Service discovery with consul and consul-template]]></title>
     <link href="http://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/"/>
     <id>http://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/</id>
-    <published>2016-02-19T03:32:28.000Z</published>
-    <updated>2016-02-19T03:32:28.000Z</updated>
-    <content type="html"><![CDATA[<p>I talked in the past about an <img src="http://agiletesting.blogspot.com/2013/12/ops-design-pattern-local-haproxy.html" alt="&quot;Ops Design Pattern: local haproxy talking to service layer&quot;">. I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the layer below it. So each webapp server has a local haproxy that talks to all API nodes it sends requests to. Similarly, each API node has a local haproxy that talks to all e-commerce nodes it needs info from.</p>
+    <published>2016-02-19T03:37:46.000Z</published>
+    <updated>2016-02-19T03:37:46.000Z</updated>
+    <content type="html"><![CDATA[<p>I talked in the past about an <a href="http://agiletesting.blogspot.com/2013/12/ops-design-pattern-local-haproxy.html" target="_blank" rel="external">“Ops Design Pattern: local haproxy talking to service layer”</a>. I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the layer below it. So each webapp server has a local haproxy that talks to all API nodes it sends requests to. Similarly, each API node has a local haproxy that talks to all e-commerce nodes it needs info from.</p>
 <p>This seemed like a good idea at a time, but it turns out it has a couple of annoying drawbacks:<br>each local haproxy runs health checks against N nodes, so if you have M nodes running haproxy, each of the N nodes will receive M health checks; if M and N are large, then you have a health check storm on your hands<br>to take a node out of a cluster at any given layer, we tag it as ‘inactive’ in Chef, then run chef-client on all nodes that run haproxy and talk to the inactive node at layers above it; this gets old pretty fast, especially when you’re doing anything that might conflict with Chef and that the chef-client run might overwrite (I know, I know, you’re not supposed to do anything of that nature, but we are all human :-)<br>For the second point, we are experimenting with haproxyctl so that we don’t have to run chef-client on every node running haproxy. But it still feels like a heavy-handed approach.</p>
 <p>If I were to do this again (which I might), I would still have an haproxy instance in front of our webapp servers, but for communicating from one layer of services to another I would use a proper service discovery tool such as grampa Apache ZooKeeper or the newer kids on the block, etcd from CoreOS and consul from HashiCorp.</p>
 <p>I settled on consul for now, so in this post I am going to show how you can use consul in conjunction with the recently released consul-template to discover services and to automate configuration changes. At the same time, I wanted to experiment a bit with Ansible as a configuration management tool. So the steps I’ll describe were actually automated with Ansible, but I’ll leave that for another blog post.</p>
@@ -76,7 +76,7 @@
 <p>I’ve been running this as a test on lb2. I don’t consider my setup quite production-ready because I don’t have monitoring in place, and I also want to experiment with consul security tokens for better security. But this is a pattern that I think will work.</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>I talked in the past about an <img src="http://agiletesting.blogspot.com/2013/12/ops-design-pattern-local-haproxy.html" alt="&quot;Ops De]]>
+    <![CDATA[<p>I talked in the past about an <a href="http://agiletesting.blogspot.com/2013/12/ops-design-pattern-local-haproxy.html" target="_blank" re]]>
     </summary>
     
       <category term="consul" scheme="http://blog.djstudy.net/tags/consul/"/>
