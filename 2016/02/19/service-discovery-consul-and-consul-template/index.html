@@ -1,0 +1,864 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="consul," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="I talked in the past about an . I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the lay">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Service discovery with consul and consul-template">
+<meta property="og:url" content="http://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/index.html">
+<meta property="og:site_name" content="东杰书屋">
+<meta property="og:description" content="I talked in the past about an . I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the lay">
+<meta property="og:image" content="http://agiletesting.blogspot.com/2013/12/ops-design-pattern-local-haproxy.html">
+<meta property="og:updated_time" content="2016-02-19T03:32:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Service discovery with consul and consul-template">
+<meta name="twitter:description" content="I talked in the past about an . I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the lay">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6242999463699285000,
+      author: 'hivefans'
+    }
+  };
+</script>
+
+  <title> Service discovery with consul and consul-template | 东杰书屋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?05207dc6d0c785fb39a80bb5af7c3d8a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">东杰书屋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">环境不会改变，解决之道在于改变自己。</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Service discovery with consul and consul-template
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-19T11:32:28+08:00" content="2016-02-19">
+              2016-02-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/distribution/" itemprop="url" rel="index">
+                    <span itemprop="name">distribution </span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/19/service-discovery-consul-and-consul-template/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/19/service-discovery-consul-and-consul-template/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+          
+          <span>&nbsp; | &nbsp;
+          <span id="busuanzi_value_page_pv" ></span>次阅读
+          </span>    
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>I talked in the past about an <img src="http://agiletesting.blogspot.com/2013/12/ops-design-pattern-local-haproxy.html" alt="&quot;Ops Design Pattern: local haproxy talking to service layer&quot;">. I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the layer below it. So each webapp server has a local haproxy that talks to all API nodes it sends requests to. Similarly, each API node has a local haproxy that talks to all e-commerce nodes it needs info from.</p>
+<p>This seemed like a good idea at a time, but it turns out it has a couple of annoying drawbacks:<br>each local haproxy runs health checks against N nodes, so if you have M nodes running haproxy, each of the N nodes will receive M health checks; if M and N are large, then you have a health check storm on your hands<br>to take a node out of a cluster at any given layer, we tag it as ‘inactive’ in Chef, then run chef-client on all nodes that run haproxy and talk to the inactive node at layers above it; this gets old pretty fast, especially when you’re doing anything that might conflict with Chef and that the chef-client run might overwrite (I know, I know, you’re not supposed to do anything of that nature, but we are all human :-)<br>For the second point, we are experimenting with haproxyctl so that we don’t have to run chef-client on every node running haproxy. But it still feels like a heavy-handed approach.</p>
+<p>If I were to do this again (which I might), I would still have an haproxy instance in front of our webapp servers, but for communicating from one layer of services to another I would use a proper service discovery tool such as grampa Apache ZooKeeper or the newer kids on the block, etcd from CoreOS and consul from HashiCorp.</p>
+<p>I settled on consul for now, so in this post I am going to show how you can use consul in conjunction with the recently released consul-template to discover services and to automate configuration changes. At the same time, I wanted to experiment a bit with Ansible as a configuration management tool. So the steps I’ll describe were actually automated with Ansible, but I’ll leave that for another blog post.</p>
+<p>The scenario I am going to describe involves 2 haproxy instances, each pointing to 2 Wordpress servers running Apache, PHP and MySQL, with Varnish fronting the Wordpress application. One of the 2 Wordpress servers is considered primary as far as haproxy is concerned, and the other one is a backup server, which will only get requests if the primary server is down. All servers are running Ubuntu 12.04.</p>
+<p>Install and run the consul agent on all nodes</p>
+<p>The agent will start in server mode on the 2 haproxy nodes, and in agent mode on the 2 Wordpress nodes.</p>
+<p>I first deployed consul to the 2 haproxy nodes. I used a modified version of the ansible-consul role from jivesoftware. The configuration file /etc/consul.cfg for the first server (lb1) is:</p>
+<p>{<br>  “domain”: “consul.”,<br>  “data_dir”: “/opt/consul/data”,<br>  “log_level”: “INFO”,<br>  “node_name”: “lb1”,<br>  “server”: true,<br>  “bind_addr”: “10.0.0.1”,<br>  “datacenter”: “us-west-1b”,<br>  “bootstrap”: true,<br>  “rejoin_after_leave”: true<br>}</p>
+<p>(and similar for lb2, with only node_name and bind_addr changed to lb2 and 10.0.0.2 respectively)</p>
+<p>The ansible-consul role also creates a consul user and group, and an upstart configuration file like this:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/init/consul.conf</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Consul Agent (Upstart unit)</span></span><br><span class="line">description <span class="string">"Consul Agent"</span></span><br><span class="line">start on (<span class="built_in">local</span>-filesystems and net-device-up IFACE!=lo)</span><br><span class="line">stop on runlevel [<span class="number">06</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">exec</span> sudo -u consul -g consul /opt/consul/bin/consul agent -config-dir /etc/consul.d -config-file=/etc/consul.conf &gt;&gt; /var/<span class="built_in">log</span>/consul <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line">respawn</span><br><span class="line">respawn <span class="built_in">limit</span> <span class="number">10</span> <span class="number">10</span></span><br><span class="line"><span class="built_in">kill</span> timeout <span class="number">10</span></span><br><span class="line"></span><br><span class="line">To start/stop consul, I use:</span><br><span class="line"></span><br><span class="line"><span class="comment"># start consul</span></span><br><span class="line"><span class="comment"># stop consul</span></span><br></pre></td></tr></table></figure>
+<p>Note that “server” is set to true and “bootstrap” is also set to true, which means that each consul server will be the leader of a cluster with 1 member, itself. To join the 2 servers into a consul cluster, I did the following:<br>join lb1 to lb2: on lb1 run consul join 10.0.0.2<br>tail /var/log/consul on lb1, note messages complaining about both consul servers (lb1 and lb2) running in bootstrap mode<br>stop consul on lb1: stop consul<br>edit /etc/consul.conf on lb1 and set  “bootstrap”: false<br>start consul on lb1: start consul<br>tail /var/log/consul on both lb1 and lb2; it should show no more errors<br>run consul info on both lb1 and lb2; the output should show server=true on both nodes, but leader=true only on lb2<br>Next I ran the consul agent in regular non-server mode on the 2 Wordpress nodes. The configuration file /etc/consul.cfg on node wordpress1 was:</p>
+<p>{<br>  “domain”: “consul.”,<br>  “data_dir”: “/opt/consul/data”,<br>  “log_level”: “INFO”,<br>  “node_name”: “wordpress1”,<br>  “server”: false,<br>  “bind_addr”: “10.0.1.1”,<br>  “datacenter”: “us-west-1b”,<br>  “rejoin_after_leave”: true<br>}</p>
+<p>(and similar for wordpress2, with the node_name set to wordpress2 and bind_addr set to 10.0.1.2)</p>
+<p>After starting up the agents via upstart, I joined them to lb2 (although the could be joined to any of the existing members of the cluster). I ran this on both wordpress1 and wordpress2:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># consul join 10.0.0.2</span></span><br><span class="line"></span><br><span class="line">At this point, running consul members on any of the <span class="number">4</span> nodes should show all <span class="number">4</span> members of the cluster:</span><br><span class="line"></span><br><span class="line">Node          Address         Status  Type    Build  Protocol</span><br><span class="line">lb1           <span class="number">10.0</span>.<span class="number">0.1</span>:<span class="number">8301</span>   alive   server  <span class="number">0.4</span>.<span class="number">0</span>  <span class="number">2</span></span><br><span class="line">wordpress2    <span class="number">10.0</span>.<span class="number">1.2</span>:<span class="number">8301</span>   alive   client  <span class="number">0.4</span>.<span class="number">0</span>  <span class="number">2</span></span><br><span class="line">lb2           <span class="number">10.0</span>.<span class="number">0.2</span>:<span class="number">8301</span>   alive   server  <span class="number">0.4</span>.<span class="number">0</span>  <span class="number">2</span></span><br><span class="line">wordpress1    <span class="number">10.0</span>.<span class="number">1.1</span>:<span class="number">8301</span>   alive   client  <span class="number">0.4</span>.<span class="number">0</span>  <span class="number">2</span></span><br></pre></td></tr></table></figure></p>
+<p>Install and run dnsmasq on all nodes</p>
+<p>The ansible-consul role does this for you. Consul piggybacks on DNS resolution for service naming, and by default the domain names internal to Consul start with consul. In my case they are configured in consul.cfg via “domain”: “consul.”</p>
+<p>The dnsmasq configuration file for consul is:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/dnsmasq.d/10-consul</span></span><br><span class="line"></span><br><span class="line">server=/consul./<span class="number">127.0</span>.<span class="number">0.1</span><span class="comment">#8600</span></span><br></pre></td></tr></table></figure></p>
+<p>This causes dnsmasq to provide DNS resolution for domain names starting with consul. by querying a DNS server on 127.0.0.1 running on port 8600 (which is the port the local consul agent listens on to provide DNS resolution).</p>
+<p>To start/stop dnsmasq, use: service dnsmasq start | stop.</p>
+<p>Now that dnsmasq is running, you can look up names that end in .node.consul from any member node of the consul cluster (there are 4 member nodes in my cluster, 2 servers and 2 agents). For example, I ran this on lb2:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ dig wordpress1.node.consul</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG <span class="number">9.8</span>.<span class="number">1</span>-P1 &lt;&lt;&gt;&gt; wordpress1.node.consul</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: <span class="number">2511</span></span><br><span class="line">;; flags: qr aa rd ra; QUERY: <span class="number">1</span>, ANSWER: <span class="number">1</span>, AUTHORITY: <span class="number">0</span>, ADDITIONAL: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;wordpress1.node.consul.  IN A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">wordpress1.node.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.1</span></span><br><span class="line"></span><br><span class="line">;; Query time: <span class="number">1</span> msec</span><br><span class="line">;; SERVER: <span class="number">127.0</span>.<span class="number">0.1</span><span class="comment">#53(127.0.0.1)</span></span><br><span class="line">;; WHEN: Fri Nov <span class="number">14</span> <span class="number">00</span>:<span class="number">09</span>:<span class="number">16</span> <span class="number">2014</span></span><br><span class="line">;; MSG SIZE  rcvd: <span class="number">76</span></span><br></pre></td></tr></table></figure></p>
+<p>Configure services and checks on consul agent nodes</p>
+<p>Internal DNS resolution within the .consul domain becomes even more useful when nodes define services and checks. For example, the 2 Wordpress nodes run varnish and apache (on port 80 and port 443) so we can define 3 services as JSON files in /etc/consul.d. On wordpress1, which is our active/primary node in haproxy, I defined these services:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">$ cat http_service.json</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"service"</span>: &#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"http"</span>,</span><br><span class="line">        <span class="string">"tags"</span>: [<span class="string">"primary"</span>],</span><br><span class="line">        <span class="string">"port"</span>:<span class="number">80</span>,</span><br><span class="line">        <span class="string">"check"</span>: &#123;</span><br><span class="line">                <span class="string">"id"</span>: <span class="string">"http_check"</span>,</span><br><span class="line">                <span class="string">"name"</span>: <span class="string">"HTTP Health Check"</span>,</span><br><span class="line">   <span class="string">"script"</span>: <span class="string">"curl -H 'Host=www.mydomain.com' http://localhost"</span>,</span><br><span class="line">         <span class="string">"interval"</span>: <span class="string">"5s"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ cat ssl_service.json</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"service"</span>: &#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"ssl"</span>,</span><br><span class="line">        <span class="string">"tags"</span>: [<span class="string">"primary"</span>],</span><br><span class="line">        <span class="string">"port"</span>:<span class="number">443</span>,</span><br><span class="line">        <span class="string">"check"</span>: &#123;</span><br><span class="line">                <span class="string">"id"</span>: <span class="string">"ssl_check"</span>,</span><br><span class="line">                <span class="string">"name"</span>: <span class="string">"SSL Health Check"</span>,</span><br><span class="line">   <span class="string">"script"</span>: <span class="string">"curl -k -H 'Host=www.mydomain.com' https://localhost:443"</span>,</span><br><span class="line">         <span class="string">"interval"</span>: <span class="string">"5s"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ cat varnish_service.json</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"service"</span>: &#123;</span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"varnish"</span>,</span><br><span class="line">        <span class="string">"tags"</span>: [<span class="string">"primary"</span>],</span><br><span class="line">        <span class="string">"port"</span>:<span class="number">6081</span> ,</span><br><span class="line">        <span class="string">"check"</span>: &#123;</span><br><span class="line">                <span class="string">"id"</span>: <span class="string">"varnish_check"</span>,</span><br><span class="line">                <span class="string">"name"</span>: <span class="string">"Varnish Health Check"</span>,</span><br><span class="line">   <span class="string">"script"</span>: <span class="string">"curl http://localhost:6081"</span>,</span><br><span class="line">         <span class="string">"interval"</span>: <span class="string">"5s"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Each service we defined has a name, a port and a check with its own ID, name, script that runs whenever the check is executed, and an interval that specifies how often the check is run. In the examples above I specified simple curl commands against the ports that these services are running on. Note also that each service has a list of tags associated with it. In my case, the services on wordpress1 have the tag “primary”. The services defined on wordpress2 are identical to the ones on wordpress1 with the only difference being the tag, which on wordpress2 is “backup”.</p>
+<p>After restarting consul on wordpress1 and wordpress2, the following service-related DNS names are available for resolution on all nodes in the consul cluster (I am going to include only relevant portions of the dig output):<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ dig varnish.service.consul</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">varnish.service.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.1</span></span><br><span class="line">varnish.service.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.2</span></span><br></pre></td></tr></table></figure></p>
+<p>This name resolves in DNS round-robin fashion to the IP addresses of all nodes that are running the varnish service, regardless of their tags and regardless of the data centers that their nodes run in. In our case, it resolves to the IP addresses of wordpress1 and wordpress2.</p>
+<p>Note that the IP address of a given node only appears in the DNS result set if the service running on that node has a healty check. If the check fails, then consul’s DNS service will not include the IP of the node in the result set. This is very important for the dynamic discovery of healthy services.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ dig varnish.service.us-west-<span class="number">1</span>b.consul</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">varnish.service.us-west-<span class="number">1</span>b.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.2</span></span><br><span class="line">varnish.service.us-west-<span class="number">1</span>b.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.1</span></span><br></pre></td></tr></table></figure></p>
+<p>If we include the data center (in our case us-west-1b) in the DNS name we query, then only the services running on nodes in that data center will be returned in the result set. In our case though, all nodes run in the us-west-1b data center, so this query returns, like the previous one, the IP addresses of wordpress1 and wordpress2. Note that the IPs can be returned in any order, because of DNS round-robin. In this case the IP of wordpress2 was first.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ dig SRV varnish.service.consul</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">varnish.service.consul. <span class="number">0</span> IN SRV <span class="number">1</span> <span class="number">1</span> <span class="number">6081</span> wordpress1.node.us-west-<span class="number">1</span>b.consul.</span><br><span class="line">varnish.service.consul. <span class="number">0</span> IN SRV <span class="number">1</span> <span class="number">1</span> <span class="number">6081</span> wordpress2.node.us-west-<span class="number">1</span>b.consul.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">wordpress1.node.us-west-<span class="number">1</span>b.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.1</span></span><br><span class="line">wordpress2.node.us-west-<span class="number">1</span>b.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.2</span></span><br></pre></td></tr></table></figure></p>
+<p>A useful feature of the consul DNS service is that it returns the port number that a given service runs on when queried for an SRV record. So this query returns the names and IPs of the nodes that the varnish service runs on, as well as the port number, which in this case is 6081. The application querying for the SRV record needs to interpret this extra piece of information, but this is very useful for the discovery of internal services that might run on non-standard port numbers.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ dig primary.varnish.service.consul</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">primary.varnish.service.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.1</span></span><br><span class="line"></span><br><span class="line">$ dig backup.varnish.service.consul</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">backup.varnish.service.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.2</span></span><br></pre></td></tr></table></figure></p>
+<p>The 2 DNS queries above show that it’s possible to query a service by its tag, in our case ‘primary’ vs. ‘backup’. The result set will contain the IP addresses of the nodes tagged with the specific tag and running the specific service we asked for. This feature will prove useful when dealing with consul-template in haproxy, as I’ll show later in this post.</p>
+<p>Load balance across services</p>
+<p>It’s easy now to see how an application can take advantage of the internal DNS service provided by consul and load balance across services. For example, an application that needs to load balance across the 2 varnish services on wordpress1 and wordpress2 would use varnish.service.consul as the DNS name it talks to when it needs to hit varnish. Every time this DNS name is resolved, a random node from wordpress1 and wordpress2 is returned via the DNS round-robin mechanism. If varnish were to run on a non-standard port number, the application would need to issue a DNS request for the SRV record in order to obtain the port number as well as the IP address to hit.</p>
+<p>Note that this method of load balancing has health checks built in. If the varnish health check fails on one of the nodes providing the varnish service, that node’s IP address will not be included in the DNS result set returned by the DNS query for that service.</p>
+<p>Also note that the DNS query can be customized for the needs of the application, which can query for a specific data center, or a specific tag, as I showed in the examples above.</p>
+<p>Force a node out of service</p>
+<p>I am still looking for the best way to take nodes in and out of service for maintenance or other purposes. One way I found so far is to deregister a given service via the Consul HTTP API. Here is an example of a curl command that accomplishes that, executed on node wordpress1:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v http://localhost:<span class="number">8500</span>/v1/agent/service/deregister/varnish</span><br><span class="line">* About to connect() to localhost port <span class="number">8500</span> (<span class="comment">#0)</span></span><br><span class="line">*   Trying <span class="number">127.0</span>.<span class="number">0.1</span>... connected</span><br><span class="line">&gt; GET /v1/agent/service/deregister/varnish HTTP/<span class="number">1.1</span></span><br><span class="line">&gt; User-Agent: curl/<span class="number">7.22</span>.<span class="number">0</span> (x86_64-pc-linux-gnu) libcurl/<span class="number">7.22</span>.<span class="number">0</span> OpenSSL/<span class="number">1.0</span>.<span class="number">1</span> zlib/<span class="number">1.2</span>.<span class="number">3.4</span> libidn/<span class="number">1.23</span> librtmp/<span class="number">2.3</span></span><br><span class="line">&gt; Host: localhost:<span class="number">8500</span></span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">&lt; Date: Mon, <span class="number">17</span> Nov <span class="number">2014</span> <span class="number">19</span>:<span class="number">01</span>:<span class="number">06</span> GMT</span><br><span class="line">&lt; Content-Length: <span class="number">0</span></span><br><span class="line">&lt; Content-Type: text/plain; charset=utf-<span class="number">8</span></span><br><span class="line">&lt;</span><br><span class="line">* Connection <span class="comment">#0 to host localhost left intact</span></span><br><span class="line">* Closing connection <span class="comment">#0</span></span><br></pre></td></tr></table></figure></p>
+<p>The effect of this command is that the varnish service on node wordpress1 is ‘deregistered’, which for my purposes means ‘marked as down’. DNS queries for varnish.service.consul will only return the IP address of wordpress2:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ dig varnish.service.consul</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">varnish.service.consul. <span class="number">0</span> IN A <span class="number">10.0</span>.<span class="number">1.2</span></span><br></pre></td></tr></table></figure></p>
+<p>We can also use the Consul HTTP API to verify that the varnish service does not appear in the list of active services on node wordpress1. We’ll use the /agent/services API call and we’ll save the output to a file called services.out, then we’ll use the jq tool to pretty-print the output:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v http://localhost:<span class="number">8500</span>/v1/agent/services -o services.out</span><br><span class="line"></span><br><span class="line">$ jq . &lt;&lt;&lt; `cat services.out`</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"http"</span>: &#123;</span><br><span class="line">    <span class="string">"ID"</span>: <span class="string">"http"</span>,</span><br><span class="line">    <span class="string">"Service"</span>: <span class="string">"http"</span>,</span><br><span class="line">    <span class="string">"Tags"</span>: [</span><br><span class="line">      <span class="string">"primary"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"Port"</span>: <span class="number">80</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">"ssl"</span>: &#123;</span><br><span class="line">    <span class="string">"ID"</span>: <span class="string">"ssl"</span>,</span><br><span class="line">    <span class="string">"Service"</span>: <span class="string">"ssl"</span>,</span><br><span class="line">    <span class="string">"Tags"</span>: [</span><br><span class="line">      <span class="string">"primary"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"Port"</span>: <span class="number">443</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Note that only the http and ssl services are shown.</p>
+<p>Force a node back in service</p>
+<p>Again, I am still looking for the best way to mark as service as ‘up’ once it was marked as ‘down’. One way would be to register the service via the Consul HTTP API, and that requires issuing a POST request with the payload being the JSON configuration file for that service. Another way is to just restart the consul agent on the node in question. This will register the service that had been deregistered previously.</p>
+<p>Install and configure consul-template</p>
+<p>For the next few steps, I am going to show how to use consul-template in conjuction with consul for discovering services and configuring haproxy based on the discovered services.</p>
+<p>I automated the installation and configuration of consul-template via an Ansible role that I put on Github, but I am going to discuss the main steps here. See also the instructions on the consul-template Github page.</p>
+<p>In my Ansible role, I copy the consul-template binary to the target node (in my case the 2 haproxy nodes lb1 and lb2), then create a directory structure /opt/consul-template/{bin,config,templates}. The consul-template configuration file is /opt/consul-template/config/consul-template.cfg and it looks like this in my case:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ cat config/consul-template.cfg</span><br><span class="line">consul = <span class="string">"127.0.0.1:8500"</span></span><br><span class="line"></span><br><span class="line">template &#123;</span><br><span class="line">  <span class="built_in">source</span> = <span class="string">"/opt/consul-template/templates/haproxy.ctmpl"</span></span><br><span class="line">  destination = <span class="string">"/etc/haproxy/haproxy.cfg"</span></span><br><span class="line">  <span class="built_in">command</span> = <span class="string">"service haproxy restart"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Note that consul-template needs to be able to talk a consul agent, which in my case is the local agent listening on port 8500. The template that consul-template maintains is defined in another file,  /opt/consul-template/templates/haproxy.ctmpl. What consul-template does is monitor changes to that file via changes to the services referenced in the file. Upon any such change, consul-template will generate a new target file based on the template and copy it to the destination file, which in my case is the haproxy config file /etc/haproxy/haproxy.cfg. Finally, consul-template will executed a command, which in my case is the restarting of the haproxy service.</p>
+<p>Here is the actual template file for my haproxy config, which is written in the Go template format:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">$ cat /opt/consul-template/templates/haproxy.ctmpl</span><br><span class="line"></span><br><span class="line">global</span><br><span class="line">  <span class="built_in">log</span> <span class="number">127.0</span>.<span class="number">0.1</span>   <span class="built_in">local</span>0</span><br><span class="line">  maxconn <span class="number">4096</span></span><br><span class="line">  user haproxy</span><br><span class="line">  group haproxy</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">  <span class="built_in">log</span>     global</span><br><span class="line">  mode    http</span><br><span class="line">  option  dontlognull</span><br><span class="line">  retries <span class="number">3</span></span><br><span class="line">  option redispatch</span><br><span class="line">  timeout connect <span class="number">5</span>s</span><br><span class="line">  timeout client <span class="number">50</span>s</span><br><span class="line">  timeout server <span class="number">50</span>s</span><br><span class="line">  balance  roundrobin</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set up application listeners here.</span></span><br><span class="line"></span><br><span class="line">frontend http</span><br><span class="line">  maxconn &#123;&#123;key <span class="string">"service/haproxy/maxconn"</span>&#125;&#125;</span><br><span class="line">  <span class="built_in">bind</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">80</span></span><br><span class="line">  default_backend servers-http-varnish</span><br><span class="line"></span><br><span class="line">backend servers-http-varnish</span><br><span class="line">  balance            roundrobin</span><br><span class="line">  option httpchk GET /</span><br><span class="line">  option  httplog</span><br><span class="line">&#123;&#123;range service <span class="string">"primary.varnish"</span>&#125;&#125;</span><br><span class="line">    server &#123;&#123;.Node&#125;&#125; &#123;&#123;.Address&#125;&#125;:&#123;&#123;.Port&#125;&#125; weight <span class="number">1</span> check port &#123;&#123;.Port&#125;&#125;</span><br><span class="line">&#123;&#123;end&#125;&#125;</span><br><span class="line">&#123;&#123;range service <span class="string">"backup.varnish"</span>&#125;&#125;</span><br><span class="line">    server &#123;&#123;.Node&#125;&#125; &#123;&#123;.Address&#125;&#125;:&#123;&#123;.Port&#125;&#125; backup weight <span class="number">1</span> check port &#123;&#123;.Port&#125;&#125;</span><br><span class="line">&#123;&#123;end&#125;&#125;</span><br><span class="line"></span><br><span class="line">frontend https</span><br><span class="line">  maxconn            &#123;&#123;key <span class="string">"service/haproxy/maxconn"</span>&#125;&#125;</span><br><span class="line">  mode               tcp</span><br><span class="line">  <span class="built_in">bind</span>               <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">443</span></span><br><span class="line">  default_backend    servers-https</span><br><span class="line"></span><br><span class="line">backend servers-https</span><br><span class="line">  mode               tcp</span><br><span class="line">  option             tcplog</span><br><span class="line">  balance            roundrobin</span><br><span class="line">&#123;&#123;range service <span class="string">"primary.ssl"</span>&#125;&#125;</span><br><span class="line">    server &#123;&#123;.Node&#125;&#125; &#123;&#123;.Address&#125;&#125;:&#123;&#123;.Port&#125;&#125; weight <span class="number">1</span> check port &#123;&#123;.Port&#125;&#125;</span><br><span class="line">&#123;&#123;end&#125;&#125;</span><br><span class="line">&#123;&#123;range service <span class="string">"backup.ssl"</span>&#125;&#125;</span><br><span class="line">    server &#123;&#123;.Node&#125;&#125; &#123;&#123;.Address&#125;&#125;:&#123;&#123;.Port&#125;&#125; backup weight <span class="number">1</span> check port &#123;&#123;.Port&#125;&#125;</span><br><span class="line">&#123;&#123;end&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>To the trained eye, this looks like a regular haproxy configuration file, with the exception of the portions bolded above. These are Go template snippets which rely on a couple of template functions exposed by consul-template above and beyond what the Go templating language offers. Specifically, the key function queries a key stored in the Consul key/value store and outputs the value associated with that key (or an empty string if the value doesn’t exist). The service function queries a consul service by its DNS name and returns a result set used inside the range statement. The variables inside the result set can be inspected for properties such as Node, Address and Port, which correspond to the Consul service node name, IP address and port number for that particular service.</p>
+<p>In my example above, I use the value of the key service/haproxy/maxconn as the value of maxconn. In the http-varnish backend, I used 2 sets of services names, primary.varnish and backup.varnish, because I wanted to differentiate in haproxy.cfg between the primary server (wordpress1 in my case) and the backup server (wordpress2). In the ssl backend, I did the same but with the ssl service.</p>
+<p>Everything so far would work fine with the exception of the key/value pair represented by the key service/haproxy/maxconn. To define that pair, I used the Consul key/value store API (this can be run on any member of the Consul cluster):<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">$ cat <span class="built_in">set</span>_haproxy_maxconn.sh</span><br><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"></span></span><br><span class="line">MAXCONN=<span class="number">4000</span></span><br><span class="line"></span><br><span class="line">curl -X PUT <span class="operator">-d</span> <span class="string">"<span class="variable">$MAXCONN</span>"</span> http://localhost:<span class="number">8500</span>/v1/kv/service/haproxy/maxconn</span><br><span class="line"></span><br><span class="line">To verify that the value was <span class="built_in">set</span>, I used:</span><br><span class="line"></span><br><span class="line">$ cat query_consul_kv.sh</span><br><span class="line"><span class="shebang">#!/bin/bash</span><br><span class="line"></span></span><br><span class="line">curl -v http://localhost:<span class="number">8500</span>/v1/kv/?recurse</span><br><span class="line"></span><br><span class="line">$ ./query_consul_kv.sh</span><br><span class="line">* About to connect() to localhost port <span class="number">8500</span> (<span class="comment">#0)</span></span><br><span class="line">*   Trying <span class="number">127.0</span>.<span class="number">0.1</span>... connected</span><br><span class="line">&gt; GET /v1/kv/?recurse HTTP/<span class="number">1.1</span></span><br><span class="line">&gt; User-Agent: curl/<span class="number">7.22</span>.<span class="number">0</span> (x86_64-pc-linux-gnu) libcurl/<span class="number">7.22</span>.<span class="number">0</span> OpenSSL/<span class="number">1.0</span>.<span class="number">1</span> zlib/<span class="number">1.2</span>.<span class="number">3.4</span> libidn/<span class="number">1.23</span> librtmp/<span class="number">2.3</span></span><br><span class="line">&gt; Host: localhost:<span class="number">8500</span></span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">&lt; Content-Type: application/json</span><br><span class="line">&lt; X-Consul-Index: <span class="number">30563</span></span><br><span class="line">&lt; X-Consul-Knownleader: <span class="literal">true</span></span><br><span class="line">&lt; X-Consul-Lastcontact: <span class="number">0</span></span><br><span class="line">&lt; Date: Mon, <span class="number">17</span> Nov <span class="number">2014</span> <span class="number">23</span>:<span class="number">01</span>:<span class="number">07</span> GMT</span><br><span class="line">&lt; Content-Length: <span class="number">118</span></span><br><span class="line">&lt;</span><br><span class="line">* Connection <span class="comment">#0 to host localhost left intact</span></span><br><span class="line">* Closing connection <span class="comment">#0</span></span><br><span class="line">[&#123;<span class="string">"CreateIndex"</span>:<span class="number">10995</span>,<span class="string">"ModifyIndex"</span>:<span class="number">30563</span>,<span class="string">"LockIndex"</span>:<span class="number">0</span>,<span class="string">"Key"</span>:<span class="string">"service/haproxy/maxconn"</span>,<span class="string">"Flags"</span>:<span class="number">0</span>,<span class="string">"Value"</span>:<span class="string">"NDAwMA=="</span>&#125;]</span><br></pre></td></tr></table></figure></p>
+<p>At this point, everything is ready for starting up the consul-template service (in Ubuntu), I did it via this Upstart configuration file:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cat /etc/init/consul-template.conf</span></span><br><span class="line"><span class="comment"># Consul Template (Upstart unit)</span></span><br><span class="line">description <span class="string">"Consul Template"</span></span><br><span class="line">start on (<span class="built_in">local</span>-filesystems and net-device-up IFACE!=lo)</span><br><span class="line">stop on runlevel [<span class="number">06</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">exec</span> /opt/consul-template/bin/consul-template  -config=/opt/consul-template/config/consul-template.cfg &gt;&gt; /var/<span class="built_in">log</span>/consul-template <span class="number">2</span>&gt;&amp;<span class="number">1</span></span><br><span class="line"></span><br><span class="line">respawn</span><br><span class="line">respawn <span class="built_in">limit</span> <span class="number">10</span> <span class="number">10</span></span><br><span class="line"><span class="built_in">kill</span> timeout <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># start consul-template</span></span><br></pre></td></tr></table></figure></p>
+<p>Once consul-template starts, it will peform the actions corresponding to the functions defined in the template file /opt/consul-template/templates/haproxy.ctmpl. In my case, it will query Consul for the value of the key service/haproxy/maxconn and for information about the 2 Consul services varnish.service and ssl.service. It will then save the generated file to /etc/haproxy/haproxy.cfg and it will restart the haproxy service. The relevant snippets from haproxy.cfg are:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">frontend http</span><br><span class="line">  maxconn <span class="number">4000</span></span><br><span class="line">  <span class="built_in">bind</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">80</span></span><br><span class="line">  default_backend servers-http</span><br><span class="line"></span><br><span class="line">backend servers-http</span><br><span class="line">  balance            roundrobin</span><br><span class="line">  option httpchk GET /</span><br><span class="line">  option  httplog</span><br><span class="line"></span><br><span class="line">    server wordpress1 <span class="number">10.0</span>.<span class="number">1.1</span>:<span class="number">6081</span> weight <span class="number">1</span> check port <span class="number">6081</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    server wordpress2 <span class="number">10.0</span>.<span class="number">1.2</span>:<span class="number">6081</span> backup weight <span class="number">1</span> check port <span class="number">6081</span></span><br><span class="line"></span><br><span class="line">and</span><br><span class="line"></span><br><span class="line">frontend https</span><br><span class="line">  maxconn            <span class="number">4000</span></span><br><span class="line">  mode               tcp</span><br><span class="line">  <span class="built_in">bind</span>               <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">443</span></span><br><span class="line">  default_backend    servers-https</span><br><span class="line"></span><br><span class="line">backend servers-https</span><br><span class="line">  mode               tcp</span><br><span class="line">  option             tcplog</span><br><span class="line">  balance            roundrobin</span><br><span class="line"></span><br><span class="line">    server wordpress1 <span class="number">10.0</span>.<span class="number">1.1</span>:<span class="number">443</span> weight <span class="number">1</span> check port <span class="number">443</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    server wordpress2 <span class="number">10.0</span>.<span class="number">1.2</span>:<span class="number">443</span> backup weight <span class="number">1</span> check port <span class="number">443</span></span><br></pre></td></tr></table></figure></p>
+<p>I’ve been running this as a test on lb2. I don’t consider my setup quite production-ready because I don’t have monitoring in place, and I also want to experiment with consul security tokens for better security. But this is a pattern that I think will work.</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+    
+      
+        <div class="post-tags">
+          
+            <a href="/tags/consul/" rel="tag">#consul</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/04/presto-parquet-airpal/" rel="next" title="Presto, Parquet & Airpal">
+                <i class="fa fa-chevron-left"></i> Presto, Parquet & Airpal
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/02/19/service-discovery-consul-and-consul-template/"
+     data-title="Service discovery with consul and consul-template"
+     data-content=""
+     data-url="http://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/02/19/service-discovery-consul-and-consul-template/"
+           data-title="Service discovery with consul and consul-template" data-url="http://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/author.jpg"
+               alt="东杰" />
+          <p class="site-author-name" itemprop="name">东杰</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hivefans" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/sdj1225" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">东杰</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hivefans"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
