@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.djstudy.net/2016/02/27/how-many-shards-index/</loc>
+    <lastmod>2016-02-27T02:58:52.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/</loc>
     <lastmod>2016-02-19T03:37:46.000Z</lastmod>
   </url>
