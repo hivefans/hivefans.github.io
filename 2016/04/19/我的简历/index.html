@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ha,spark," />
+  <meta name="keywords" content="spark, hadoop" />
 
 
 
@@ -59,19 +59,58 @@
 
 
 
-<meta name="description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
+<meta name="description" content="个人信息
+
+史东杰/男/1980 
+本科/河北科技师范学院计算机系 
+工作年限：12年
+微博：@hivefans东杰 
+技术博客：http://blog.csdn.net/jiedushi 
+Github： https://github.com/hivefans
+期望城市：北京
+
+
+联系方式
+手机：15010879483
+Email：shidongjie@gmail.com
+QQ：85573879">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark Standalone模式HA环境搭建">
-<meta property="og:url" content="http://blog.djstudy.net/2016/01/24/spark-ha/index.html">
+<meta property="og:title" content="东杰书屋">
+<meta property="og:url" content="http://blog.djstudy.net/2016/04/19/我的简历/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
-<meta property="og:updated_time" content="2016-01-24T08:13:04.000Z">
+<meta property="og:description" content="个人信息
+
+史东杰/男/1980 
+本科/河北科技师范学院计算机系 
+工作年限：12年
+微博：@hivefans东杰 
+技术博客：http://blog.csdn.net/jiedushi 
+Github： https://github.com/hivefans
+期望城市：北京
+
+
+联系方式
+手机：15010879483
+Email：shidongjie@gmail.com
+QQ：85573879">
+<meta property="og:updated_time" content="2016-04-16T09:54:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark Standalone模式HA环境搭建">
-<meta name="twitter:description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
+<meta name="twitter:title" content="东杰书屋">
+<meta name="twitter:description" content="个人信息
+
+史东杰/男/1980 
+本科/河北科技师范学院计算机系 
+工作年限：12年
+微博：@hivefans东杰 
+技术博客：http://blog.csdn.net/jiedushi 
+Github： https://github.com/hivefans
+期望城市：北京
+
+
+联系方式
+手机：15010879483
+Email：shidongjie@gmail.com
+QQ：85573879">
 
 
 
@@ -89,7 +128,7 @@
   };
 </script>
 
-  <title> Spark Standalone模式HA环境搭建 | 东杰书屋 </title>
+  <title>  | 东杰书屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +288,7 @@
             
             
               
-                Spark Standalone模式HA环境搭建
+                
               
             
           </h1>
@@ -261,38 +300,19 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T16:13:04+08:00" content="2016-01-24">
-              2016-01-24
+            <time itemprop="dateCreated" datetime="2016-04-19T07:20:22+08:00" content="2016-04-19">
+              2016-04-19
             </time>
           </span>
 
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/01/24/spark-ha/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-ha/" itemprop="commentsCount"></span>
+                <a href="/2016/04/19/我的简历/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/19/我的简历/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -318,10 +338,51 @@
       
 
       
-        <p>Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA<br>本篇只介绍基于ZK的HA环境搭建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ SPARK_HOME/conf/spark-env.sh</span><br></pre></td></tr></table></figure></p>
-<p>添加SPARK_DAEMON_JAVA_OPTS的配置信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> SPARK_DAEMON_JAVA_OPTS=<span class="string">"-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop000:2181,hadoop001:2181,hadoop002:2181 -Dspark.deploy.zookeeper.dir=/spark"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A"><a href="#u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A" class="headerlink" title="配置参数说明："></a>配置参数说明：</h3><p>spark.deploy.recoveryMode: 设置恢复模式为zk，默认为NONE<br>spark.deploy.zookeeper.url: 设置ZK集群的url，形如：192.168.1.100:2181,192.168.1.101:2181<br>spark.deploy.zookeeper.dir: 设置zk保存恢复状态的路径，默认为spark<br>实现HA的原理：利用ZK的Leader Election机制，选择一个Active状态的Master，其余的Master均为Standby状态；当Active状态的Master死掉后，通过ZK选举一个Standby状态的Master为Active状态。</p>
-<h3 id="u6D4B_u8BD5_u6B65_u9AA4_uFF1A"><a href="#u6D4B_u8BD5_u6B65_u9AA4_uFF1A" class="headerlink" title="测试步骤："></a>测试步骤：</h3><p>启动standalone集群后，在各个Standby节点上启动start-master.sh，jps观察是否已经正确启动Master进程；<br>将Active状态的Master kill掉，观察8080端口对应的页面，发现已经从Standby状态中选举出一个当作Active状态。<br>采用ZK后由于会有多个Master，在提交任务时不知道哪个为Active状态的Master，可以采用如下的方式提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spark-shell –master spark://hadoop000:<span class="number">7077</span>,hadoop001:<span class="number">7077</span>,hadoop002:<span class="number">7077</span> –executor-memory <span class="number">2</span>g –total-executor-cores <span class="number">1</span></span><br><span class="line">详细信息参见官方文档：http://spark.apache.org/docs/latest/spark-standalone.html<span class="comment">#standby-masters-with-zookeeper</span></span><br></pre></td></tr></table></figure></p>
+        <h1 id="u4E2A_u4EBA_u4FE1_u606F"><a href="#u4E2A_u4EBA_u4FE1_u606F" class="headerlink" title="个人信息"></a>个人信息</h1><hr>
+<ul>
+<li>史东杰/男/1980 </li>
+<li>本科/河北科技师范学院计算机系 </li>
+<li>工作年限：12年</li>
+<li>微博：<a href="/%7Chttp://weibo.com/sdj1225">@hivefans东杰</a> </li>
+<li>技术博客：<a href="http://blog.csdn.net/jiedushi" target="_blank" rel="external">http://blog.csdn.net/jiedushi</a> </li>
+<li>Github： <a href="https://github.com/hivefans" target="_blank" rel="external">https://github.com/hivefans</a></li>
+<li>期望城市：北京</li>
+</ul>
+<hr>
+<h1 id="u8054_u7CFB_u65B9_u5F0F"><a href="#u8054_u7CFB_u65B9_u5F0F" class="headerlink" title="联系方式"></a>联系方式</h1><ul>
+<li>手机：15010879483</li>
+<li>Email：shidongjie@gmail.com</li>
+<li>QQ：85573879</li>
+</ul>
+<hr>
+<h1 id="u5DE5_u4F5C_u7ECF_u5386"><a href="#u5DE5_u4F5C_u7ECF_u5386" class="headerlink" title="工作经历"></a>工作经历</h1><h2 id="u5317_u4EAC_u91D1_u5C71_u4E91_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2016_u5E744_u6708__7E_2016_u5E744_u6708__uFF09__u9AD8_u7EA7_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u5317_u4EAC_u91D1_u5C71_u4E91_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2016_u5E744_u6708__7E_2016_u5E744_u6708__uFF09__u9AD8_u7EA7_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="北京金山云科技有限公司 （ 2016年4月 ~ 2016年4月 ） 高级开发工程师"></a>北京金山云科技有限公司 （ 2016年4月 ~ 2016年4月 ） 高级开发工程师</h2><h3 id="CDN_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u8BA1_u7B97"><a href="#CDN_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u8BA1_u7B97" class="headerlink" title="CDN日志实时分析计算"></a>CDN日志实时分析计算</h3><p>对整个架构进行调整优化，对flume日志收集性能参数进行监控调优，Elasticsearch集群性能调整优化后，QPS提高了40%。</p>
+<hr>
+<h2 id="u6C47_u7F51_u5929_u4E0B_u5317_u4EAC_u5206_u516C_u53F8__uFF08_2014_u5E7412_u6708__7E_2016_u5E743_u6708__uFF09__u6280_u672F_u603B_u76D1"><a href="#u6C47_u7F51_u5929_u4E0B_u5317_u4EAC_u5206_u516C_u53F8__uFF08_2014_u5E7412_u6708__7E_2016_u5E743_u6708__uFF09__u6280_u672F_u603B_u76D1" class="headerlink" title="汇网天下北京分公司 （ 2014年12月 ~ 2016年3月 ） 技术总监"></a>汇网天下北京分公司 （ 2014年12月 ~ 2016年3月 ） 技术总监</h2><h3 id="u67D0_u7701_u7535_u4FE1_u5927_u6570_u636E_u9879_u76EE"><a href="#u67D0_u7701_u7535_u4FE1_u5927_u6570_u636E_u9879_u76EE" class="headerlink" title="某省电信大数据项目"></a>某省电信大数据项目</h3><p>带大数据项目组做某省的大数据离线统计分析以及实时统计9个业务项目。<br>我在此项目负责了整个项目架构设计，对项目中实时统计分析相关组件</p>
+<ul>
+<li>Flume(HDFSsink、Spooldir source、Kafka sink)二次开发优化。 </li>
+<li>利用HBase协处理器开发实时统计日志</li>
+<li>hangout读取Kafka写入Elasticsearch二次开发。</li>
+</ul>
+<h3 id="u516C_u53F8DMP_u5E73_u53F0"><a href="#u516C_u53F8DMP_u5E73_u53F0" class="headerlink" title="公司DMP平台"></a>公司DMP平台</h3><ul>
+<li>设计公司DMP平台架构与部署</li>
+<li>开发分布式配置管理系统</li>
+</ul>
+<hr>
+<h2 id="u5317_u4EAC_u66B4_u98CE_u79D1_u6280_u80A1_u4EFD_u6709_u9650_u516C_u53F8__uFF08_2013_u5E743_u6708__7E_2014_u5E7412_u6708__uFF09Hadoop_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u5317_u4EAC_u66B4_u98CE_u79D1_u6280_u80A1_u4EFD_u6709_u9650_u516C_u53F8__uFF08_2013_u5E743_u6708__7E_2014_u5E7412_u6708__uFF09Hadoop_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="北京暴风科技股份有限公司 （ 2013年3月 ~ 2014年12月 ）Hadoop开发工程师"></a>北京暴风科技股份有限公司 （ 2013年3月 ~ 2014年12月 ）Hadoop开发工程师</h2><h3 id="PhpHBaseAdmin"><a href="#PhpHBaseAdmin" class="headerlink" title="PhpHBaseAdmin"></a>PhpHBaseAdmin</h3><p>个人独立开发此项目，前端（bootstrap+kendoui）和后台程序开发（python+php+HBase thrift）,该Web项目对HBase表操作以及查看表数据以及HBase监控效率有了很大提高。</p>
+<h3 id="Hadoop_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u5E73_u53F0"><a href="#Hadoop_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u5E73_u53F0" class="headerlink" title="Hadoop日志实时分析平台"></a>Hadoop日志实时分析平台</h3><p>该项目主要是汇聚Hadoop系统日志，写入Elasticsearch，利用kibana查看系统中错误日志，更快速的查找系统问题以及对hadoop作业统计可视化等。</p>
+<hr>
+<h2 id="u9AD8_u5FB7_u8F6F_u4EF6__uFF08_2011_u5E744_u6708__7E_2013_u5E7412_u6708__uFF09_u8FD0_u8425_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u9AD8_u5FB7_u8F6F_u4EF6__uFF08_2011_u5E744_u6708__7E_2013_u5E7412_u6708__uFF09_u8FD0_u8425_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="高德软件 （ 2011年4月 ~ 2013年12月 ）运营开发工程师"></a>高德软件 （ 2011年4月 ~ 2013年12月 ）运营开发工程师</h2><h3 id="u5730_u56FE_u65E5_u5FD7_u7EDF_u8BA1_u5206_u6790_u7CFB_u7EDF"><a href="#u5730_u56FE_u65E5_u5FD7_u7EDF_u8BA1_u5206_u6790_u7CFB_u7EDF" class="headerlink" title="地图日志统计分析系统"></a>地图日志统计分析系统</h3><p>该项目主要利用Hive离线统计地图访问日志，结果导入mysql，利用highcharts做图表可视化。</p>
+<hr>
+<h2 id="u4EE5_u5CAD_u533B_u836F_u96C6_u56E2__uFF08_2004_u5E748_u6708__7E_2011_u5E744_u6708__uFF09_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u4EE5_u5CAD_u533B_u836F_u96C6_u56E2__uFF08_2004_u5E748_u6708__7E_2011_u5E744_u6708__uFF09_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="以岭医药集团 （ 2004年8月 ~ 2011年4月 ）开发工程师"></a>以岭医药集团 （ 2004年8月 ~ 2011年4月 ）开发工程师</h2><p>负责公司CMS系统开发以及网站服务器系统部署维护等。</p>
+<hr>
+<h1 id="u5F00_u6E90_u9879_u76EE_u548C_u4F5C_u54C1"><a href="#u5F00_u6E90_u9879_u76EE_u548C_u4F5C_u54C1" class="headerlink" title="开源项目和作品"></a>开源项目和作品</h1><h2 id="u5F00_u6E90_u9879_u76EE"><a href="#u5F00_u6E90_u9879_u76EE" class="headerlink" title="开源项目"></a>开源项目</h2><p><a href="https://github.com/hivefans/phphbaseadmin" target="_blank" rel="external">phpHBaseAdmin</a><br>利用hbase thrift+codeigniter+python+bootstrap开发的一个查看、修改、删除hbase表记录,批量删除表，创建表，监控zookeeper的一个web ui工具。<br><a href="https://github.com/hivefans/bigdesk" target="_blank" rel="external">bigdesk</a><br>Elasticsearch性能监控工具，原来项目不兼容Elasticsearch 2.X版本，经过二次开发可以兼容现在的2.x版本。</p>
+<h2 id="u51FA_u7248_u4E66_u7C4D"><a href="#u51FA_u7248_u4E66_u7C4D" class="headerlink" title="出版书籍"></a>出版书籍</h2><p><a href="http://item.jd.com/11739810.html" target="_blank" rel="external">《Flume构建高可用、可扩展的海量日志采集系统》</a></p>
+<h1 id="u6280_u80FD_u6E05_u5355"><a href="#u6280_u80FD_u6E05_u5355" class="headerlink" title="技能清单"></a>技能清单</h1><ul>
+<li>熟练掌握Hadoop分布式集群的搭建、编程、内部机制以及性能优化；</li>
+<li>熟悉MapReduce、HDFS、YARN的原理，熟悉分布式计算模型；</li>
+<li>熟悉hadoop相关框架，有kafka、Flume、Hive、HBase、Zookeeper开发经验；       </li>
+<li>熟悉ElasticSearch原理以及开发;</li>
+</ul>
 
       
     </div>
@@ -329,30 +390,18 @@
     <footer class="post-footer">
     
       
-        <div class="post-tags">
-          
-            <a href="/tags/ha/" rel="tag">#ha</a>
-          
-            <a href="/tags/spark/" rel="tag">#spark</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/24/spark-on-yarn/" rel="next" title="spark on yarn">
-                <i class="fa fa-chevron-left"></i> spark on yarn
+              <a href="/2016/03/19/scala-note-2/" rel="next" title="scala学习笔记(二)">
+                <i class="fa fa-chevron-left"></i> scala学习笔记(二)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/01/24/spark-convert-text-parquet/" rel="prev" title="将 Spark 中的文本转换为 Parquet 以提升性能">
-                将 Spark 中的文本转换为 Parquet 以提升性能 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -367,10 +416,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/01/24/spark-ha/"
-     data-title="Spark Standalone模式HA环境搭建"
+        <div class="ds-share flat" data-thread-key="2016/04/19/我的简历/"
+     data-title=""
      data-content=""
-     data-url="http://blog.djstudy.net/2016/01/24/spark-ha/">
+     data-url="http://blog.djstudy.net/2016/04/19/我的简历/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -398,8 +447,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/01/24/spark-ha/"
-           data-title="Spark Standalone模式HA环境搭建" data-url="http://blog.djstudy.net/2016/01/24/spark-ha/">
+      <div class="ds-thread" data-thread-key="2016/04/19/我的简历/"
+           data-title="" data-url="http://blog.djstudy.net/2016/04/19/我的简历/">
       </div>
     
   </div>
@@ -530,7 +579,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A"><span class="nav-number">1.</span> <span class="nav-text">配置参数说明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6D4B_u8BD5_u6B65_u9AA4_uFF1A"><span class="nav-number">2.</span> <span class="nav-text">测试步骤：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u4E2A_u4EBA_u4FE1_u606F"><span class="nav-number">1.</span> <span class="nav-text">个人信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u8054_u7CFB_u65B9_u5F0F"><span class="nav-number">2.</span> <span class="nav-text">联系方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5DE5_u4F5C_u7ECF_u5386"><span class="nav-number">3.</span> <span class="nav-text">工作经历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u5317_u4EAC_u91D1_u5C71_u4E91_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2016_u5E744_u6708__7E_2016_u5E744_u6708__uFF09__u9AD8_u7EA7_u5F00_u53D1_u5DE5_u7A0B_u5E08"><span class="nav-number">3.1.</span> <span class="nav-text">北京金山云科技有限公司 （ 2016年4月 ~ 2016年4月 ） 高级开发工程师</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CDN_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u8BA1_u7B97"><span class="nav-number">3.1.1.</span> <span class="nav-text">CDN日志实时分析计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u6C47_u7F51_u5929_u4E0B_u5317_u4EAC_u5206_u516C_u53F8__uFF08_2014_u5E7412_u6708__7E_2016_u5E743_u6708__uFF09__u6280_u672F_u603B_u76D1"><span class="nav-number">3.2.</span> <span class="nav-text">汇网天下北京分公司 （ 2014年12月 ~ 2016年3月 ） 技术总监</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u67D0_u7701_u7535_u4FE1_u5927_u6570_u636E_u9879_u76EE"><span class="nav-number">3.2.1.</span> <span class="nav-text">某省电信大数据项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u516C_u53F8DMP_u5E73_u53F0"><span class="nav-number">3.2.2.</span> <span class="nav-text">公司DMP平台</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5317_u4EAC_u66B4_u98CE_u79D1_u6280_u80A1_u4EFD_u6709_u9650_u516C_u53F8__uFF08_2013_u5E743_u6708__7E_2014_u5E7412_u6708__uFF09Hadoop_u5F00_u53D1_u5DE5_u7A0B_u5E08"><span class="nav-number">3.3.</span> <span class="nav-text">北京暴风科技股份有限公司 （ 2013年3月 ~ 2014年12月 ）Hadoop开发工程师</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PhpHBaseAdmin"><span class="nav-number">3.3.1.</span> <span class="nav-text">PhpHBaseAdmin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u5E73_u53F0"><span class="nav-number">3.3.2.</span> <span class="nav-text">Hadoop日志实时分析平台</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u9AD8_u5FB7_u8F6F_u4EF6__uFF08_2011_u5E744_u6708__7E_2013_u5E7412_u6708__uFF09_u8FD0_u8425_u5F00_u53D1_u5DE5_u7A0B_u5E08"><span class="nav-number">3.4.</span> <span class="nav-text">高德软件 （ 2011年4月 ~ 2013年12月 ）运营开发工程师</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5730_u56FE_u65E5_u5FD7_u7EDF_u8BA1_u5206_u6790_u7CFB_u7EDF"><span class="nav-number">3.4.1.</span> <span class="nav-text">地图日志统计分析系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4EE5_u5CAD_u533B_u836F_u96C6_u56E2__uFF08_2004_u5E748_u6708__7E_2011_u5E744_u6708__uFF09_u5F00_u53D1_u5DE5_u7A0B_u5E08"><span class="nav-number">3.5.</span> <span class="nav-text">以岭医药集团 （ 2004年8月 ~ 2011年4月 ）开发工程师</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5F00_u6E90_u9879_u76EE_u548C_u4F5C_u54C1"><span class="nav-number">4.</span> <span class="nav-text">开源项目和作品</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u5F00_u6E90_u9879_u76EE"><span class="nav-number">4.1.</span> <span class="nav-text">开源项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u51FA_u7248_u4E66_u7C4D"><span class="nav-number">4.2.</span> <span class="nav-text">出版书籍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u6280_u80FD_u6E05_u5355"><span class="nav-number">5.</span> <span class="nav-text">技能清单</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

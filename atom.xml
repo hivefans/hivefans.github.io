@@ -4,7 +4,7 @@
   <subtitle><![CDATA[环境不会改变，解决之道在于改变自己。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.djstudy.net/"/>
-  <updated>2016-03-21T13:05:41.000Z</updated>
+  <updated>2016-04-16T09:54:55.000Z</updated>
   <id>http://blog.djstudy.net/</id>
   
   <author>
@@ -13,6 +13,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://blog.djstudy.net/2016/04/19/%E6%88%91%E7%9A%84%E7%AE%80%E5%8E%86/"/>
+    <id>http://blog.djstudy.net/2016/04/19/我的简历/</id>
+    <published>2016-04-18T23:20:22.000Z</published>
+    <updated>2016-04-16T09:54:55.000Z</updated>
+    <content type="html"><![CDATA[<h1 id="u4E2A_u4EBA_u4FE1_u606F"><a href="#u4E2A_u4EBA_u4FE1_u606F" class="headerlink" title="个人信息"></a>个人信息</h1><hr>
+<ul>
+<li>史东杰/男/1980 </li>
+<li>本科/河北科技师范学院计算机系 </li>
+<li>工作年限：12年</li>
+<li>微博：<a href="/%7Chttp://weibo.com/sdj1225">@hivefans东杰</a> </li>
+<li>技术博客：<a href="http://blog.csdn.net/jiedushi" target="_blank" rel="external">http://blog.csdn.net/jiedushi</a> </li>
+<li>Github： <a href="https://github.com/hivefans" target="_blank" rel="external">https://github.com/hivefans</a></li>
+<li>期望城市：北京</li>
+</ul>
+<hr>
+<h1 id="u8054_u7CFB_u65B9_u5F0F"><a href="#u8054_u7CFB_u65B9_u5F0F" class="headerlink" title="联系方式"></a>联系方式</h1><ul>
+<li>手机：15010879483</li>
+<li>Email：shidongjie@gmail.com</li>
+<li>QQ：85573879</li>
+</ul>
+<hr>
+<h1 id="u5DE5_u4F5C_u7ECF_u5386"><a href="#u5DE5_u4F5C_u7ECF_u5386" class="headerlink" title="工作经历"></a>工作经历</h1><h2 id="u5317_u4EAC_u91D1_u5C71_u4E91_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2016_u5E744_u6708__7E_2016_u5E744_u6708__uFF09__u9AD8_u7EA7_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u5317_u4EAC_u91D1_u5C71_u4E91_u79D1_u6280_u6709_u9650_u516C_u53F8__uFF08_2016_u5E744_u6708__7E_2016_u5E744_u6708__uFF09__u9AD8_u7EA7_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="北京金山云科技有限公司 （ 2016年4月 ~ 2016年4月 ） 高级开发工程师"></a>北京金山云科技有限公司 （ 2016年4月 ~ 2016年4月 ） 高级开发工程师</h2><h3 id="CDN_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u8BA1_u7B97"><a href="#CDN_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u8BA1_u7B97" class="headerlink" title="CDN日志实时分析计算"></a>CDN日志实时分析计算</h3><p>对整个架构进行调整优化，对flume日志收集性能参数进行监控调优，Elasticsearch集群性能调整优化后，QPS提高了40%。</p>
+<hr>
+<h2 id="u6C47_u7F51_u5929_u4E0B_u5317_u4EAC_u5206_u516C_u53F8__uFF08_2014_u5E7412_u6708__7E_2016_u5E743_u6708__uFF09__u6280_u672F_u603B_u76D1"><a href="#u6C47_u7F51_u5929_u4E0B_u5317_u4EAC_u5206_u516C_u53F8__uFF08_2014_u5E7412_u6708__7E_2016_u5E743_u6708__uFF09__u6280_u672F_u603B_u76D1" class="headerlink" title="汇网天下北京分公司 （ 2014年12月 ~ 2016年3月 ） 技术总监"></a>汇网天下北京分公司 （ 2014年12月 ~ 2016年3月 ） 技术总监</h2><h3 id="u67D0_u7701_u7535_u4FE1_u5927_u6570_u636E_u9879_u76EE"><a href="#u67D0_u7701_u7535_u4FE1_u5927_u6570_u636E_u9879_u76EE" class="headerlink" title="某省电信大数据项目"></a>某省电信大数据项目</h3><p>带大数据项目组做某省的大数据离线统计分析以及实时统计9个业务项目。<br>我在此项目负责了整个项目架构设计，对项目中实时统计分析相关组件</p>
+<ul>
+<li>Flume(HDFSsink、Spooldir source、Kafka sink)二次开发优化。 </li>
+<li>利用HBase协处理器开发实时统计日志</li>
+<li>hangout读取Kafka写入Elasticsearch二次开发。</li>
+</ul>
+<h3 id="u516C_u53F8DMP_u5E73_u53F0"><a href="#u516C_u53F8DMP_u5E73_u53F0" class="headerlink" title="公司DMP平台"></a>公司DMP平台</h3><ul>
+<li>设计公司DMP平台架构与部署</li>
+<li>开发分布式配置管理系统</li>
+</ul>
+<hr>
+<h2 id="u5317_u4EAC_u66B4_u98CE_u79D1_u6280_u80A1_u4EFD_u6709_u9650_u516C_u53F8__uFF08_2013_u5E743_u6708__7E_2014_u5E7412_u6708__uFF09Hadoop_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u5317_u4EAC_u66B4_u98CE_u79D1_u6280_u80A1_u4EFD_u6709_u9650_u516C_u53F8__uFF08_2013_u5E743_u6708__7E_2014_u5E7412_u6708__uFF09Hadoop_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="北京暴风科技股份有限公司 （ 2013年3月 ~ 2014年12月 ）Hadoop开发工程师"></a>北京暴风科技股份有限公司 （ 2013年3月 ~ 2014年12月 ）Hadoop开发工程师</h2><h3 id="PhpHBaseAdmin"><a href="#PhpHBaseAdmin" class="headerlink" title="PhpHBaseAdmin"></a>PhpHBaseAdmin</h3><p>个人独立开发此项目，前端（bootstrap+kendoui）和后台程序开发（python+php+HBase thrift）,该Web项目对HBase表操作以及查看表数据以及HBase监控效率有了很大提高。</p>
+<h3 id="Hadoop_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u5E73_u53F0"><a href="#Hadoop_u65E5_u5FD7_u5B9E_u65F6_u5206_u6790_u5E73_u53F0" class="headerlink" title="Hadoop日志实时分析平台"></a>Hadoop日志实时分析平台</h3><p>该项目主要是汇聚Hadoop系统日志，写入Elasticsearch，利用kibana查看系统中错误日志，更快速的查找系统问题以及对hadoop作业统计可视化等。</p>
+<hr>
+<h2 id="u9AD8_u5FB7_u8F6F_u4EF6__uFF08_2011_u5E744_u6708__7E_2013_u5E7412_u6708__uFF09_u8FD0_u8425_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u9AD8_u5FB7_u8F6F_u4EF6__uFF08_2011_u5E744_u6708__7E_2013_u5E7412_u6708__uFF09_u8FD0_u8425_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="高德软件 （ 2011年4月 ~ 2013年12月 ）运营开发工程师"></a>高德软件 （ 2011年4月 ~ 2013年12月 ）运营开发工程师</h2><h3 id="u5730_u56FE_u65E5_u5FD7_u7EDF_u8BA1_u5206_u6790_u7CFB_u7EDF"><a href="#u5730_u56FE_u65E5_u5FD7_u7EDF_u8BA1_u5206_u6790_u7CFB_u7EDF" class="headerlink" title="地图日志统计分析系统"></a>地图日志统计分析系统</h3><p>该项目主要利用Hive离线统计地图访问日志，结果导入mysql，利用highcharts做图表可视化。</p>
+<hr>
+<h2 id="u4EE5_u5CAD_u533B_u836F_u96C6_u56E2__uFF08_2004_u5E748_u6708__7E_2011_u5E744_u6708__uFF09_u5F00_u53D1_u5DE5_u7A0B_u5E08"><a href="#u4EE5_u5CAD_u533B_u836F_u96C6_u56E2__uFF08_2004_u5E748_u6708__7E_2011_u5E744_u6708__uFF09_u5F00_u53D1_u5DE5_u7A0B_u5E08" class="headerlink" title="以岭医药集团 （ 2004年8月 ~ 2011年4月 ）开发工程师"></a>以岭医药集团 （ 2004年8月 ~ 2011年4月 ）开发工程师</h2><p>负责公司CMS系统开发以及网站服务器系统部署维护等。</p>
+<hr>
+<h1 id="u5F00_u6E90_u9879_u76EE_u548C_u4F5C_u54C1"><a href="#u5F00_u6E90_u9879_u76EE_u548C_u4F5C_u54C1" class="headerlink" title="开源项目和作品"></a>开源项目和作品</h1><h2 id="u5F00_u6E90_u9879_u76EE"><a href="#u5F00_u6E90_u9879_u76EE" class="headerlink" title="开源项目"></a>开源项目</h2><p><a href="https://github.com/hivefans/phphbaseadmin" target="_blank" rel="external">phpHBaseAdmin</a><br>利用hbase thrift+codeigniter+python+bootstrap开发的一个查看、修改、删除hbase表记录,批量删除表，创建表，监控zookeeper的一个web ui工具。<br><a href="https://github.com/hivefans/bigdesk" target="_blank" rel="external">bigdesk</a><br>Elasticsearch性能监控工具，原来项目不兼容Elasticsearch 2.X版本，经过二次开发可以兼容现在的2.x版本。</p>
+<h2 id="u51FA_u7248_u4E66_u7C4D"><a href="#u51FA_u7248_u4E66_u7C4D" class="headerlink" title="出版书籍"></a>出版书籍</h2><p><a href="http://item.jd.com/11739810.html" target="_blank" rel="external">《Flume构建高可用、可扩展的海量日志采集系统》</a></p>
+<h1 id="u6280_u80FD_u6E05_u5355"><a href="#u6280_u80FD_u6E05_u5355" class="headerlink" title="技能清单"></a>技能清单</h1><ul>
+<li>熟练掌握Hadoop分布式集群的搭建、编程、内部机制以及性能优化；</li>
+<li>熟悉MapReduce、HDFS、YARN的原理，熟悉分布式计算模型；</li>
+<li>熟悉hadoop相关框架，有kafka、Flume、Hive、HBase、Zookeeper开发经验；       </li>
+<li>熟悉ElasticSearch原理以及开发;</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="u4E2A_u4EBA_u4FE1_u606F"><a href="#u4E2A_u4EBA_u4FE1_u606F" class="headerlink" title="个人信息"></a>个人信息</h1><hr>
+<ul>
+<li>史东杰/男/1980 </]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[scala学习笔记(二)]]></title>
