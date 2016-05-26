@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.djstudy.net/about/index.html</loc>
+    <lastmod>2016-05-26T09:41:18.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.djstudy.net/2016/03/19/scala-note-2/</loc>
     <lastmod>2016-03-21T13:05:41.000Z</lastmod>
   </url>
@@ -9,11 +14,6 @@
   <url>
     <loc>http://blog.djstudy.net/2016/03/16/scala-note-1/</loc>
     <lastmod>2016-03-21T13:02:36.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.djstudy.net/about/index.html</loc>
-    <lastmod>2016-03-11T07:38:03.000Z</lastmod>
   </url>
   
   <url>
