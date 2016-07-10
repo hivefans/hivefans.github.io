@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,ha," />
+  <meta name="keywords" content="scala," />
 
 
 
@@ -59,19 +59,16 @@
 
 
 
-<meta name="description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
+<meta name="description" content="如何使用 scala 的range 函数在 scala 应用中可以看到有不同的方法使用 range Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法1234567891011121314151617181920212223242526272829303132333435scala&amp;gt; 1 to 10res0: scala.collection.immuta">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark Standalone模式HA环境搭建">
-<meta property="og:url" content="http://blog.djstudy.net/2016/01/24/spark-ha/index.html">
+<meta property="og:title" content="scala学习笔记(三)">
+<meta property="og:url" content="http://blog.djstudy.net/2016/07/10/scala-note-3/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
-<meta property="og:updated_time" content="2016-01-24T08:13:04.000Z">
+<meta property="og:description" content="如何使用 scala 的range 函数在 scala 应用中可以看到有不同的方法使用 range Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法1234567891011121314151617181920212223242526272829303132333435scala&amp;gt; 1 to 10res0: scala.collection.immuta">
+<meta property="og:updated_time" content="2016-07-10T13:17:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark Standalone模式HA环境搭建">
-<meta name="twitter:description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
+<meta name="twitter:title" content="scala学习笔记(三)">
+<meta name="twitter:description" content="如何使用 scala 的range 函数在 scala 应用中可以看到有不同的方法使用 range Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法1234567891011121314151617181920212223242526272829303132333435scala&amp;gt; 1 to 10res0: scala.collection.immuta">
 
 
 
@@ -89,7 +86,7 @@
   };
 </script>
 
-  <title> Spark Standalone模式HA环境搭建 | 东杰书屋 </title>
+  <title> scala学习笔记(三) | 东杰书屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +246,7 @@
             
             
               
-                Spark Standalone模式HA环境搭建
+                scala学习笔记(三)
               
             
           </h1>
@@ -261,8 +258,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T16:10:30+08:00" content="2016-01-24">
-              2016-01-24
+            <time itemprop="dateCreated" datetime="2016-07-10T21:08:00+08:00" content="2016-07-10">
+              2016-07-10
             </time>
           </span>
 
@@ -275,8 +272,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
+                  <a href="/categories/scala/" itemprop="url" rel="index">
+                    <span itemprop="name">scala</span>
                   </a>
                 </span>
 
@@ -291,8 +288,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/01/24/spark-ha/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-ha/" itemprop="commentsCount"></span>
+                <a href="/2016/07/10/scala-note-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/scala-note-3/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -318,10 +315,8 @@
       
 
       
-        <p>Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA<br>本篇只介绍基于ZK的HA环境搭建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ SPARK_HOME/conf/spark-env.sh</span><br></pre></td></tr></table></figure></p>
-<p>添加SPARK_DAEMON_JAVA_OPTS的配置信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> SPARK_DAEMON_JAVA_OPTS=<span class="string">"-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop000:2181,hadoop001:2181,hadoop002:2181 -Dspark.deploy.zookeeper.dir=/spark"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A"><a href="#u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A" class="headerlink" title="配置参数说明："></a>配置参数说明：</h3><p>spark.deploy.recoveryMode: 设置恢复模式为zk，默认为NONE<br>spark.deploy.zookeeper.url: 设置ZK集群的url，形如：192.168.1.100:2181,192.168.1.101:2181<br>spark.deploy.zookeeper.dir: 设置zk保存恢复状态的路径，默认为spark<br>实现HA的原理：利用ZK的Leader Election机制，选择一个Active状态的Master，其余的Master均为Standby状态；当Active状态的Master死掉后，通过ZK选举一个Standby状态的Master为Active状态。</p>
-<h3 id="u6D4B_u8BD5_u6B65_u9AA4_uFF1A"><a href="#u6D4B_u8BD5_u6B65_u9AA4_uFF1A" class="headerlink" title="测试步骤："></a>测试步骤：</h3><p>启动standalone集群后，在各个Standby节点上启动start-master.sh，jps观察是否已经正确启动Master进程；<br>将Active状态的Master kill掉，观察8080端口对应的页面，发现已经从Standby状态中选举出一个当作Active状态。<br>采用ZK后由于会有多个Master，在提交任务时不知道哪个为Active状态的Master，可以采用如下的方式提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spark-shell –master spark://hadoop000:7077,hadoop001:7077,hadoop002:7077 –executor-memory 2g –total-executor-cores 1</span><br><span class="line">详细信息参见官方文档：http://spark.apache.org/docs/latest/spark-standalone.html<span class="comment">#standby-masters-with-zookeeper</span></span><br></pre></td></tr></table></figure></p>
+        <h2 id="u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570"><a href="#u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570" class="headerlink" title="如何使用 scala 的range 函数"></a>如何使用 scala 的range 函数</h2><p>在 scala 应用中可以看到有不同的方法使用 range<br> Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="number">1</span> to <span class="number">10</span></span><br><span class="line">res0: scala.collection.immutable.<span class="type">Range</span>.<span class="type">Inclusive</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="number">1</span> until <span class="number">10</span></span><br><span class="line">res1: scala.collection.immutable.<span class="type">Range</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="number">1</span> to <span class="number">10</span> by <span class="number">2</span></span><br><span class="line">res2: scala.collection.immutable.<span class="type">Range</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; 'a' to 'c'</span><br><span class="line">res3: collection.immutable.<span class="type">NumericRange</span>.<span class="type">Inclusive</span>[<span class="type">Char</span>] = <span class="type">NumericRange</span>(a, b, c)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toList</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toArray</span><br><span class="line">x: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toSet</span><br><span class="line">x: scala.collection.immutable.<span class="type">Set</span>[<span class="type">Int</span>] = <span class="type">Set</span>(<span class="number">5</span>, <span class="number">10</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Array</span>.range(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">x: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Vector</span>.range(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">x: collection.immutable.<span class="type">Vector</span>[<span class="type">Int</span>] = <span class="type">Vector</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.range(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.range(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = collection.mutable.<span class="type">ArrayBuffer</span>.range('a', 'd')</span><br><span class="line">x: scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Char</span>] = <span class="type">ArrayBuffer</span>(a, b, c)</span><br></pre></td></tr></table></figure></p>
+<p>也可以用tabulate方法实现填充集合<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.tabulate(<span class="number">5</span>)(_ + <span class="number">1</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.tabulate(<span class="number">5</span>)(_ + <span class="number">2</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Vector</span>.tabulate(<span class="number">5</span>)(_ * <span class="number">2</span>)</span><br><span class="line">x: scala.collection.immutable.<span class="type">Vector</span>[<span class="type">Int</span>] = <span class="type">Vector</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>)</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -331,9 +326,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag">#spark</a>
-          
-            <a href="/tags/ha/" rel="tag">#ha</a>
+            <a href="/tags/scala/" rel="tag">#scala</a>
           
         </div>
       
@@ -342,17 +335,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/24/spark-on-yarn/" rel="next" title="spark on yarn">
-                <i class="fa fa-chevron-left"></i> spark on yarn
+              <a href="/2016/03/19/scala-note-2/" rel="next" title="scala学习笔记(二)">
+                <i class="fa fa-chevron-left"></i> scala学习笔记(二)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/01/24/spark-convert-text-parquet/" rel="prev" title="将 Spark 中的文本转换为 Parquet 以提升性能">
-                将 Spark 中的文本转换为 Parquet 以提升性能 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -367,10 +356,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/01/24/spark-ha/"
-     data-title="Spark Standalone模式HA环境搭建"
+        <div class="ds-share flat" data-thread-key="2016/07/10/scala-note-3/"
+     data-title="scala学习笔记(三)"
      data-content=""
-     data-url="http://blog.djstudy.net/2016/01/24/spark-ha/">
+     data-url="http://blog.djstudy.net/2016/07/10/scala-note-3/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -398,8 +387,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/01/24/spark-ha/"
-           data-title="Spark Standalone模式HA环境搭建" data-url="http://blog.djstudy.net/2016/01/24/spark-ha/">
+      <div class="ds-thread" data-thread-key="2016/07/10/scala-note-3/"
+           data-title="scala学习笔记(三)" data-url="http://blog.djstudy.net/2016/07/10/scala-note-3/">
       </div>
     
   </div>
@@ -530,7 +519,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A"><span class="nav-number">1.</span> <span class="nav-text">配置参数说明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6D4B_u8BD5_u6B65_u9AA4_uFF1A"><span class="nav-number">2.</span> <span class="nav-text">测试步骤：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570"><span class="nav-number">1.</span> <span class="nav-text">如何使用 scala 的range 函数</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
