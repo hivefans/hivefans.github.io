@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="scala," />
+  <meta name="keywords" content="elasticsearch," />
 
 
 
@@ -59,16 +59,18 @@
 
 
 
-<meta name="description" content="基础语法区分大小写 -  Scala是大小写敏感的，这意味着标识Hello 和 hello在Scala中会有不同的含义类名 - 对于所有的类名的第一个字母要大写。如果需要使用几个单词来构成一个类的名称，每个单词的第一个字母要大写。示例：class MyFirstScalaClass方法名称 - 所有的方法名称的第一个字母用小写。如果若干单词被用于构成方法的名称，则每个单词的第一个字母应大写。示例：">
+<meta name="description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
 <meta property="og:type" content="article">
-<meta property="og:title" content="scala学习笔记(一)">
-<meta property="og:url" content="http://blog.djstudy.net/2016/03/16/scala-note-1/index.html">
+<meta property="og:title" content="elasticsearch中的refresh和flush区别">
+<meta property="og:url" content="http://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="基础语法区分大小写 -  Scala是大小写敏感的，这意味着标识Hello 和 hello在Scala中会有不同的含义类名 - 对于所有的类名的第一个字母要大写。如果需要使用几个单词来构成一个类的名称，每个单词的第一个字母要大写。示例：class MyFirstScalaClass方法名称 - 所有的方法名称的第一个字母用小写。如果若干单词被用于构成方法的名称，则每个单词的第一个字母应大写。示例：">
-<meta property="og:updated_time" content="2016-03-21T13:02:36.000Z">
+<meta property="og:description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
+<meta property="og:image" content="http://blog.djstudy.net/images/es-refresh-flush.jpg">
+<meta property="og:updated_time" content="2016-07-26T23:23:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="scala学习笔记(一)">
-<meta name="twitter:description" content="基础语法区分大小写 -  Scala是大小写敏感的，这意味着标识Hello 和 hello在Scala中会有不同的含义类名 - 对于所有的类名的第一个字母要大写。如果需要使用几个单词来构成一个类的名称，每个单词的第一个字母要大写。示例：class MyFirstScalaClass方法名称 - 所有的方法名称的第一个字母用小写。如果若干单词被用于构成方法的名称，则每个单词的第一个字母应大写。示例：">
+<meta name="twitter:title" content="elasticsearch中的refresh和flush区别">
+<meta name="twitter:description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
+<meta name="twitter:image" content="http://blog.djstudy.net/images/es-refresh-flush.jpg">
 
 
 
@@ -86,7 +88,7 @@
   };
 </script>
 
-  <title> scala学习笔记(一) | 东杰书屋 </title>
+  <title> elasticsearch中的refresh和flush区别 | 东杰书屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -246,7 +248,7 @@
             
             
               
-                scala学习笔记(一)
+                elasticsearch中的refresh和flush区别
               
             
           </h1>
@@ -258,8 +260,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-16T16:05:41+08:00" content="2016-03-16">
-              2016-03-16
+            <time itemprop="dateCreated" datetime="2016-07-27T07:18:40+08:00" content="2016-07-27">
+              2016-07-27
             </time>
           </span>
 
@@ -272,8 +274,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/scala/" itemprop="url" rel="index">
-                    <span itemprop="name">scala</span>
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
                   </a>
                 </span>
 
@@ -288,8 +290,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/16/scala-note-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/16/scala-note-1/" itemprop="commentsCount"></span>
+                <a href="/2016/07/27/es-flush-vs-refresh/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/27/es-flush-vs-refresh/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -315,28 +317,13 @@
       
 
       
-        <h2 id="u57FA_u7840_u8BED_u6CD5"><a href="#u57FA_u7840_u8BED_u6CD5" class="headerlink" title="基础语法"></a>基础语法</h2><p>区分大小写 -  Scala是大小写敏感的，这意味着标识Hello 和 hello在Scala中会有不同的含义<br>类名 - 对于所有的类名的第一个字母要大写。<br>如果需要使用几个单词来构成一个类的名称，每个单词的第一个字母要大写。<br>示例：class MyFirstScalaClass<br>方法名称 - 所有的方法名称的第一个字母用小写。<br>如果若干单词被用于构成方法的名称，则每个单词的第一个字母应大写。<br>示例：def myMethodName()<br>程序文件名 - 程序文件的名称应该与对象名称完全匹配。<br>保存文件时，应该保存它使用的对象名称（记住Scala是区分大小写），并追加“.scala”为文件扩展名。 （如果文件名和对象名称不匹配，程序将无法编译）。</p>
-<p>示例: 假设“HelloWorld”是对象的名称。那么该文件应保存为’HelloWorld.scala“<br>def main(args: Array[String]) - Scala程序从main()方法开始处理，这是每一个Scala程序的强制程序入口部分。</p>
-<h2 id="u5B57_u7B26_u4E32"><a href="#u5B57_u7B26_u4E32" class="headerlink" title="字符串"></a>字符串</h2><p>Scala中单引号和双引号包裹是有区别的，单引号用于字符，双引号用于字符串。<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> c1 = 'c'</span><br><span class="line">c1: <span class="type">Char</span> = c</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> 字符<span class="number">2</span> = '杨'</span><br><span class="line">字符<span class="number">2</span>: <span class="type">Char</span> = 杨</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> s1 = <span class="string">"scala基础语法"</span></span><br><span class="line">s1: <span class="type">String</span> = scala基础语法</span><br></pre></td></tr></table></figure></p>
-<h2 id="Scala_u4FEE_u9970_u7B26_3A"><a href="#Scala_u4FEE_u9970_u7B26_3A" class="headerlink" title="Scala修饰符:"></a>Scala修饰符:</h2><p>所有的Scala的组件需要名称。使用对象，类，变量和方法名被称为标识符。关键字不能用作标识符和标识是区分大小写的。Scala支持以下四种类型标识符：</p>
-<h3 id="u6587_u5B57_u6807_u8BC6_u7B26"><a href="#u6587_u5B57_u6807_u8BC6_u7B26" class="headerlink" title="文字标识符"></a>文字标识符</h3><p>字母数字标识符开始以字母或下划线，可以使用字母，数字或下划线。“$”字符在Scala中是保留关键字，标识符不能使用。以下是合法的字母标识符：</p>
-<p>age, salary, _value,  __1_value<br>以下是非法标识符：</p>
-<p>$salary, 123abc, -salary</p>
-<h3 id="u8FD0_u7B97_u7B26_u6807_u8BC6"><a href="#u8FD0_u7B97_u7B26_u6807_u8BC6" class="headerlink" title="运算符标识"></a>运算符标识</h3><p>运算符识别符由一个或多个运算符字符。操作字符是可打印的ASCII字符，如+, :, ?, ~ 或#。以下是合法的运算符标识：</p>
-<ul>
-<li>++ ::: &lt;?&gt; :&gt;<br>Scala编译器将在内部“轧”操作符标识符使它们成为合法的Java标识符，并嵌入$字符。例如，所述标识符:-&gt;将内部表示为$colon$minus$greater。</li>
-</ul>
-<h3 id="u6DF7_u5408_u6807_u8BC6_u7B26"><a href="#u6DF7_u5408_u6807_u8BC6_u7B26" class="headerlink" title="混合标识符"></a>混合标识符</h3><p>混合标识符由一个字母数字识别符，随后是一个下划线和运算符标识。以下是合法的混合标识符：</p>
-<p>unary<em>+,  myvar</em>=<br>在这里，作为一个方法名unary<em>+定义了一个一元+运算符和myvar</em>=用来作为方法名称定义了一个赋值运算符。</p>
-<h3 id="u7ACB_u5373_u6570_u6807_u8BC6_u7B26"><a href="#u7ACB_u5373_u6570_u6807_u8BC6_u7B26" class="headerlink" title="立即数标识符"></a>立即数标识符</h3><p>一个文字标识是包含在反引号(<code>. . .</code>)的任意字符串。以下是合法的文字标识：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="function"><span class="keyword">def</span> <span class="title">g</span></span>(x : <span class="type">Int</span>) = <span class="number">5</span> <span class="keyword">match</span> &#123; <span class="keyword">case</span> `x` =&gt; <span class="string">"yup"</span>; <span class="keyword">case</span> _ =&gt; <span class="string">"nope"</span>&#125;</span><br><span class="line">g: (x: <span class="type">Int</span>)java.lang.<span class="type">String</span></span><br><span class="line"></span><br><span class="line">scala&gt; g(<span class="number">5</span>)</span><br><span class="line">res3: java.lang.<span class="type">String</span> = yup</span><br></pre></td></tr></table></figure></p>
-<h2 id="Scala__u5305"><a href="#Scala__u5305" class="headerlink" title="Scala 包"></a>Scala 包</h2><h3 id="u5B9A_u4E49_u5305"><a href="#u5B9A_u4E49_u5305" class="headerlink" title="定义包"></a>定义包</h3><p>Scala 使用 package 关键字定义包，在Scala将代码定义到某个包中有两种方式：<br>第一种方法和 Java 一样，在文件的头定义包名，这种方法就后续所有代码都放在该报中。 比如：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.runoob</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span></span></span><br></pre></td></tr></table></figure></p>
-<p>第二种方法有些类似 C#，如：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.runoob &#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>第二种方法，可以在一个文件中定义多个包。</p>
-<h3 id="u5F15_u7528"><a href="#u5F15_u7528" class="headerlink" title="引用"></a>引用</h3><p>Scala 使用 import 关键字引用包。<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.awt.<span class="type">Color</span>  <span class="comment">// 引入Color</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.awt._  <span class="comment">// 引入包内所有成员</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handler</span></span>(evt: event.<span class="type">ActionEvent</span>) &#123; <span class="comment">// java.awt.event.ActionEvent</span></span><br><span class="line">  ...  <span class="comment">// 因为引入了java.awt，所以可以省去前面的部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>import语句可以出现在任何地方，而不是只能在文件顶部。import的效果从开始延伸到语句块的结束。这可以大幅减少名称冲突的可能性。<br>如果想要引入包中的几个成员，可以使用selector（选取器）：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.awt.&#123;<span class="type">Color</span>, <span class="type">Font</span>&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 重命名成员</span></span><br><span class="line"><span class="keyword">import</span> java.util.&#123;<span class="type">HashMap</span> =&gt; <span class="type">JavaHashMap</span>&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 隐藏成员</span></span><br><span class="line"><span class="keyword">import</span> java.util.&#123;<span class="type">HashMap</span> =&gt; _, _&#125; <span class="comment">// 引入了util包的所有成员，但是HashMap被隐藏了</span></span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>注意：默认情况下，Scala 总会引入 java.lang.<em> 、 scala.</em> 和 Predef._，这里也能解释，为什么以scala开头的包，在使用时都是省去scala.的。</p>
-</blockquote>
+        <h3 id="elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush"><a href="#elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush" class="headerlink" title="elasticsearch中有两个比较重要的操作：refresh 和 flush"></a>elasticsearch中有两个比较重要的操作：refresh 和 flush</h3><h3 id="refresh_u64CD_u4F5C"><a href="#refresh_u64CD_u4F5C" class="headerlink" title="refresh操作"></a>refresh操作</h3><p>当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（document）解析完成的segment写到filesystem cache之中，这样避免了比较损耗性能io操作，又可以使document可以被搜索。以上从index-buffer中取数据到filesystem cache中的过程叫做refresh。</p>
+<p>refresh操作可以通过API设置：<br>POST /index/_settings<br>{“refresh_interval”: “10s”}<br>当我们进行大规模的创建索引操作的时候，最好将将refresh关闭。<br>POST /index/_settings<br>{“refresh_interval”: “-1″}<br>es默认的refresh间隔时间是1s，这也是为什么ES可以进行近乎实时的搜索。</p>
+<h3 id="flush_u64CD_u4F5C_u4E0Etranslog"><a href="#flush_u64CD_u4F5C_u4E0Etranslog" class="headerlink" title="flush操作与translog"></a>flush操作与translog</h3><p>我们可能已经意识到如果数据在filesystem cache之中是很有可能在意外的故障中丢失。这个时候就需要一种机制，可以将对es的操作记录下来，来确保当出现故障的时候，保留在filesystem的数据不会丢失，并在重启的时候可以从这个记录中将数据恢复过来。elasticsearch提供了translog来记录这些操作。<br>当向elasticsearch发送创建document索引请求的时候，document数据会先进入到index buffer之后，与此同时会将操作记录在translog之中，当发生refresh时（数据从index buffer中进入filesystem cache的过程）translog中的操作记录并不会被清除，而是当数据从filesystem cache中被写入磁盘之后才会将translog中清空。而从filesystem cache写入磁盘的过程就是flush。可能有点晕，我画了一个图帮大家理解这个过程：<br><img src="/images/es-refresh-flush.jpg" alt="elasticsearch"></p>
+<h3 id="u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A"><a href="#u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A" class="headerlink" title="总结一下translog的功能："></a>总结一下translog的功能：</h3><p>1.保证在filesystem cache中的数据不会因为elasticsearch重启或是发生意外故障的时候丢失。<br>2.当系统重启时会从translog中恢复之前记录的操作。<br>3.当对elasticsearch进行CRUD操作的时候，会先到translog之中进行查找，因为tranlog之中保存的是最新的数据。<br>4.translog的清除时间时进行flush操作之后（将数据从filesystem cache刷入disk之中）。<br>再总结一下flush操作的时间点：</p>
+<p>1.es的各个shard会每个30分钟进行一次flush操作。<br>2.当translog的数据达到某个上限的时候会进行一次flush操作。<br>有关于translog和flush的一些配置项：</p>
+<p>index.translog.flush_threshold_ops:当发生多少次操作时进行一次flush。默认是 unlimited。<br>index.translog.flush_threshold_size:当translog的大小达到此值时会进行一次flush操作。默认是512mb。<br>index.translog.flush_threshold_period:在指定的时间间隔内如果没有进行flush操作，会进行一次强制flush操作。默认是30m。<br>index.translog.interval:多少时间间隔内会检查一次translog，来进行一次flush操作。es会随机的在这个值到这个值的2倍大小之间进行一次操作，默认是5s。<br>参考：<a href="http://www.elastic.co/guide/en/elasticsearch/guide/current/near-real-time.html" target="_blank" rel="external">http://www.elastic.co/guide/en/elasticsearch/guide/current/near-real-time.html</a><br>           <a href="http://www.elastic.co/guide/en/elasticsearch/guide/current/translog.html" target="_blank" rel="external">http://www.elastic.co/guide/en/elasticsearch/guide/current/translog.html</a></p>
+<p>转载 <a href="http://www.yubingzhe.com/143.html" target="_blank" rel="external">http://www.yubingzhe.com/143.html</a></p>
 
       
     </div>
@@ -346,7 +333,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/scala/" rel="tag">#scala</a>
+            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
           
         </div>
       
@@ -355,17 +342,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/02/27/how-many-shards-index/" rel="next" title="Optimizing Elasticsearch-How Many Shards per Index">
-                <i class="fa fa-chevron-left"></i> Optimizing Elasticsearch-How Many Shards per Index
+              <a href="/2016/07/10/scala-note-3/" rel="next" title="scala学习笔记(三)">
+                <i class="fa fa-chevron-left"></i> scala学习笔记(三)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/19/scala-note-2/" rel="prev" title="scala学习笔记(二)">
-                scala学习笔记(二) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -380,10 +363,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/03/16/scala-note-1/"
-     data-title="scala学习笔记(一)"
+        <div class="ds-share flat" data-thread-key="2016/07/27/es-flush-vs-refresh/"
+     data-title="elasticsearch中的refresh和flush区别"
      data-content=""
-     data-url="http://blog.djstudy.net/2016/03/16/scala-note-1/">
+     data-url="http://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -411,8 +394,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/16/scala-note-1/"
-           data-title="scala学习笔记(一)" data-url="http://blog.djstudy.net/2016/03/16/scala-note-1/">
+      <div class="ds-thread" data-thread-key="2016/07/27/es-flush-vs-refresh/"
+           data-title="elasticsearch中的refresh和flush区别" data-url="http://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/">
       </div>
     
   </div>
@@ -543,7 +526,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u57FA_u7840_u8BED_u6CD5"><span class="nav-number">1.</span> <span class="nav-text">基础语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5B57_u7B26_u4E32"><span class="nav-number">2.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scala_u4FEE_u9970_u7B26_3A"><span class="nav-number">3.</span> <span class="nav-text">Scala修饰符:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u6587_u5B57_u6807_u8BC6_u7B26"><span class="nav-number">3.1.</span> <span class="nav-text">文字标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8FD0_u7B97_u7B26_u6807_u8BC6"><span class="nav-number">3.2.</span> <span class="nav-text">运算符标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6DF7_u5408_u6807_u8BC6_u7B26"><span class="nav-number">3.3.</span> <span class="nav-text">混合标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u7ACB_u5373_u6570_u6807_u8BC6_u7B26"><span class="nav-number">3.4.</span> <span class="nav-text">立即数标识符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scala__u5305"><span class="nav-number">4.</span> <span class="nav-text">Scala 包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B9A_u4E49_u5305"><span class="nav-number">4.1.</span> <span class="nav-text">定义包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5F15_u7528"><span class="nav-number">4.2.</span> <span class="nav-text">引用</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush"><span class="nav-number">1.</span> <span class="nav-text">elasticsearch中有两个比较重要的操作：refresh 和 flush</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#refresh_u64CD_u4F5C"><span class="nav-number">2.</span> <span class="nav-text">refresh操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flush_u64CD_u4F5C_u4E0Etranslog"><span class="nav-number">3.</span> <span class="nav-text">flush操作与translog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A"><span class="nav-number">4.</span> <span class="nav-text">总结一下translog的功能：</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
