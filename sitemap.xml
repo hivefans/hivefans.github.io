@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/</loc>
+    <lastmod>2016-07-27T00:28:53.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/</loc>
     <lastmod>2016-07-26T23:23:03.000Z</lastmod>
   </url>

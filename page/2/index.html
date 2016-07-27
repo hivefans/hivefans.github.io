@@ -254,6 +254,123 @@
             
               
                 
+                <a class="post-title-link" href="/2016/01/24/spark-convert-text-parquet/" itemprop="url">
+                  将 Spark 中的文本转换为 Parquet 以提升性能
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-01-24T18:46:44+08:00" content="2016-01-24">
+              2016-01-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/spark/" itemprop="url" rel="index">
+                    <span itemprop="name">spark</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/24/spark-convert-text-parquet/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-convert-text-parquet/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          列式存储布局（比如 Parquet）可以加速查询，因为它只检查所有需要的列并对它们的值执行计算，因此只读取一个数据文件或表的小部分数据。Parquet 还支持灵活的压缩选项，因此可以显著减少磁盘上的存储。如果您在 HDFS 上拥有基于文本的数据文件或表，而且正在使用 Spark SQL 对它们执行查询，那么强烈推荐将文本数据文件转换为 Parquet 数据文件，以实现性能和存储收益。当然，转换需要时间，但查询性能的提升在某些情况下可能达到 30 倍或更高，存储的节省可高达 75%！已有文章介绍使用 Parquet 存储为 BigSQL、Hive 和 Impala 带来类似的性能收益，本文将介绍如何编写一个简单的 Scala 应用程序，将现有的基于文本的数据文件或表转换为 Parquet 数据
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/01/24/spark-convert-text-parquet/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+    
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/01/24/spark-ha/" itemprop="url">
                   Spark Standalone模式HA环境搭建
                 </a>
@@ -637,7 +754,7 @@ Spark的Clu
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -651,7 +768,7 @@ Spark的Clu
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">13</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
