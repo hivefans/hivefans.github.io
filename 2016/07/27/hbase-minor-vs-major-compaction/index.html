@@ -67,7 +67,7 @@
 <meta property="og:description" content="HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个">
 <meta property="og:image" content="http://dl.iteye.com/upload/attachment/0083/0362/bd91b9a4-0a75-339e-b254-df98d8f26f8d.jpg">
 <meta property="og:image" content="http://dl.iteye.com/upload/attachment/0083/0398/eef9f643-c928-3029-82bb-e4d615ea2e89.jpg">
-<meta property="og:updated_time" content="2016-07-27T00:30:47.000Z">
+<meta property="og:updated_time" content="2016-07-27T00:32:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hbase 压缩合并中的minor与major区别">
 <meta name="twitter:description" content="HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个">
@@ -324,6 +324,7 @@
 <p>对比Minor compaction，Major compaction操作会把所有的storefile合并成一个单一的storefile文件，在文件合并期间系统会删除标记为”删除”标记的数据和过期失效的数据，同时会block所有客户端对该操作所属的region的请求直到合并完毕，最后删除已合并的storefile文件。 </p>
 <p>到底如何决定触发那种类型的major类型的compaction操作呢？这是在compaction检查执行时被自动决定的。compaction检查可以通过以下三种条件触发：<br>1、每当memstore被刷新到磁盘后触发；<br>2、通过hbase shell命令行调用或API调用触发；<br>3、通过一个叫CompacionChecker的后台线程触发。<br>每一个region都运行着一个这样的后台线程。CompacionChecker会定期的执行compation检查，时间间隔可以通过hbase.server.thread.wakefrequency来配置。<br>可以通过hbase shell命令行调用或majorCompact()API调用，从而强迫major合并操作执行，否则服务器会首先基于hbase.hregion.majorcompaction(24小时)的配置来检查是否要执行major合并操作。<br>由于Major compaction在执行期间会阻塞所有客户端的请求直到合并完毕，因此最好在服务器空闲时通过手工或脚本的方式调用执行，以提高客户体验。 </p>
 <p>以下是两种compaction的区别：<br><img src="http://dl.iteye.com/upload/attachment/0083/0398/eef9f643-c928-3029-82bb-e4d615ea2e89.jpg" alt="minor vs major"></p>
+<p>转载 <a href="http://flyingdutchman.iteye.com/blog/1846031" target="_blank" rel="external">http://flyingdutchman.iteye.com/blog/1846031</a></p>
 
       
     </div>

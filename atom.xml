@@ -4,7 +4,7 @@
   <subtitle><![CDATA[环境不会改变，解决之道在于改变自己。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.djstudy.net/"/>
-  <updated>2016-07-27T00:30:47.000Z</updated>
+  <updated>2016-07-27T00:32:14.000Z</updated>
   <id>http://blog.djstudy.net/</id>
   
   <author>
@@ -19,13 +19,14 @@
     <link href="http://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/"/>
     <id>http://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/</id>
     <published>2016-07-27T00:23:59.000Z</published>
-    <updated>2016-07-27T00:30:47.000Z</updated>
+    <updated>2016-07-27T00:32:14.000Z</updated>
     <content type="html"><![CDATA[<p>HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个大的storefile文件，直到合并的文件大到超过单个文件配置允许的最大值时会触发一次region的自动分割，即region split操作，将一个region平分成2个，具体过程以后再说，这里不再赘述。 </p>
 <p>合并操作有两种类型：轻量级的的minor compaction和重量级的major compaction。<br>Minor compaction主要负责将符合条件的最早生成的几个storefile合并生成一个大的storefile文件，它不会删除被标记为”删除”的数据和以过期的数据，并且执行过一次minor合并操作后还会有多个storefile文件。<br>Minor compaction一次合并的文件数量由hbase.hstore.compaction.min(执行minor compaction的最少文件数)配置参数决定，该参数值的默认配置是3。该参数配置太大则会延迟触发minor合并操作，并且一次合并的文件数太多会占用更多的资源和执行更长的时间，这会带来不好的用户体验——毕竟hbase是要提供实时响应的。<br>在一次minor操作一次最多允许10个文件，通过hbase.hstore.compaction.max参数设置，任何一个大于hbase.hstore.compaction.min.size值的storefile文件将自动成为将要被合并的storefile，hbase.hstore.compaction.min.size属性值与被用来设置将memstore执行flush操作的配置属性hbase.hregion.memstore.flush.size的值(默认为128MB)相同。<br>Minor compaction操作有一个时间轴而的概念，那就是每次合并操作都是按storefile的生成时间有旧到新来合并文件的。如此下图所示： </p>
 <p><img src="http://dl.iteye.com/upload/attachment/0083/0362/bd91b9a4-0a75-339e-b254-df98d8f26f8d.jpg" alt="minor compaction"></p>
 <p>对比Minor compaction，Major compaction操作会把所有的storefile合并成一个单一的storefile文件，在文件合并期间系统会删除标记为”删除”标记的数据和过期失效的数据，同时会block所有客户端对该操作所属的region的请求直到合并完毕，最后删除已合并的storefile文件。 </p>
 <p>到底如何决定触发那种类型的major类型的compaction操作呢？这是在compaction检查执行时被自动决定的。compaction检查可以通过以下三种条件触发：<br>1、每当memstore被刷新到磁盘后触发；<br>2、通过hbase shell命令行调用或API调用触发；<br>3、通过一个叫CompacionChecker的后台线程触发。<br>每一个region都运行着一个这样的后台线程。CompacionChecker会定期的执行compation检查，时间间隔可以通过hbase.server.thread.wakefrequency来配置。<br>可以通过hbase shell命令行调用或majorCompact()API调用，从而强迫major合并操作执行，否则服务器会首先基于hbase.hregion.majorcompaction(24小时)的配置来检查是否要执行major合并操作。<br>由于Major compaction在执行期间会阻塞所有客户端的请求直到合并完毕，因此最好在服务器空闲时通过手工或脚本的方式调用执行，以提高客户体验。 </p>
 <p>以下是两种compaction的区别：<br><img src="http://dl.iteye.com/upload/attachment/0083/0398/eef9f643-c928-3029-82bb-e4d615ea2e89.jpg" alt="minor vs major"></p>
+<p>转载 <a href="http://flyingdutchman.iteye.com/blog/1846031" target="_blank" rel="external">http://flyingdutchman.iteye.com/blog/1846031</a></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时]]>
