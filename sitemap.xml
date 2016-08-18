@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.djstudy.net/about/index.html</loc>
+    <lastmod>2016-08-18T01:49:25.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/</loc>
     <lastmod>2016-07-27T00:33:36.000Z</lastmod>
   </url>
@@ -14,11 +19,6 @@
   <url>
     <loc>http://blog.djstudy.net/2016/07/10/scala-note-3/</loc>
     <lastmod>2016-07-10T13:17:52.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://blog.djstudy.net/about/index.html</loc>
-    <lastmod>2016-05-26T09:41:18.000Z</lastmod>
   </url>
   
   <url>
