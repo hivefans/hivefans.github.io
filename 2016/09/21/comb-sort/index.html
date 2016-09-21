@@ -66,7 +66,7 @@
 <meta property="og:site_name" content="东杰书屋">
 <meta property="og:description" content="Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting dow">
 <meta property="og:image" content="http://blog.djstudy.net/images/comb_sort.png">
-<meta property="og:updated_time" content="2016-09-21T01:12:58.000Z">
+<meta property="og:updated_time" content="2016-09-21T01:17:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="comb sort(梳排序)">
 <meta name="twitter:description" content="Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting dow">
@@ -324,22 +324,17 @@
 <p>Python</p>
 <pre><code class="python"><span class="keyword">import</span> math
 
-<span class="function"><span class="keyword">def</span> <span class="title">comb_sort</span><span class="params">(array)</span>:</span>
-    gap = len(array)
-    swapped = <span class="keyword">True</span>
-    <span class="keyword">while</span> gap &gt; <span class="number">1</span> <span class="keyword">or</span> swapped :
-        gap = math.floor(gap/<span class="number">1.25</span>)
-        <span class="keyword">if</span> gap &lt; <span class="number">1</span> :
-            gap = <span class="number">1</span>
-        i = <span class="number">0</span>
-        swapped = <span class="keyword">False</span>
-        <span class="keyword">while</span> (i+gap)&lt; len(array):
-            <span class="keyword">if</span> array[i] &gt; array[i + gap]:
-                temp = array[i]
-                array[i] = array[i + gap]
-                array[i + gap] = temp
-                swapped = <span class="keyword">True</span>
-            i = i + <span class="number">1</span>
+<span class="function"><span class="keyword">def</span> <span class="title">combsort</span><span class="params">(input)</span>:</span>
+    gap = len(input)
+    swaps = <span class="keyword">True</span>
+    <span class="keyword">while</span> gap &gt; <span class="number">1</span> <span class="keyword">or</span> swaps:
+        gap = max(<span class="number">1</span>, int(gap / <span class="number">1.25</span>))  <span class="comment"># minimum gap is 1</span>
+        swaps = <span class="keyword">False</span>
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(input) - gap):
+            j = i+gap
+            <span class="keyword">if</span> input[i] &gt; input[j]:
+                input[i], input[j] = input[j], input[i]
+                swaps = <span class="keyword">True</span>
 </code></pre>
 
       
