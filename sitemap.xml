@@ -2,92 +2,92 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://blog.djstudy.net/2016/09/21/comb-sort/</loc>
+    <loc>https://blog.djstudy.net/2016/09/21/comb-sort/</loc>
     <lastmod>2016-09-21T01:17:17.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/about/index.html</loc>
+    <loc>https://blog.djstudy.net/about/index.html</loc>
     <lastmod>2016-09-20T10:14:23.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/</loc>
+    <loc>https://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/</loc>
     <lastmod>2016-07-27T00:33:36.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/</loc>
+    <loc>https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/</loc>
     <lastmod>2016-07-26T23:23:03.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/07/10/scala-note-3/</loc>
+    <loc>https://blog.djstudy.net/2016/07/10/scala-note-3/</loc>
     <lastmod>2016-07-10T13:17:52.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/03/19/scala-note-2/</loc>
+    <loc>https://blog.djstudy.net/2016/03/19/scala-note-2/</loc>
     <lastmod>2016-03-21T13:05:41.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/03/16/scala-note-1/</loc>
+    <loc>https://blog.djstudy.net/2016/03/16/scala-note-1/</loc>
     <lastmod>2016-03-21T13:02:36.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/02/27/how-many-shards-index/</loc>
+    <loc>https://blog.djstudy.net/2016/02/27/how-many-shards-index/</loc>
     <lastmod>2016-02-27T02:58:52.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/</loc>
+    <loc>https://blog.djstudy.net/2016/02/19/service-discovery-consul-and-consul-template/</loc>
     <lastmod>2016-02-19T03:37:46.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/02/04/presto-parquet-airpal/</loc>
+    <loc>https://blog.djstudy.net/2016/02/04/presto-parquet-airpal/</loc>
     <lastmod>2016-02-04T11:43:10.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/</loc>
+    <loc>https://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/</loc>
     <lastmod>2016-01-27T12:00:22.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/01/24/scala-rumen-biji/</loc>
+    <loc>https://blog.djstudy.net/2016/01/24/scala-rumen-biji/</loc>
     <lastmod>2016-01-27T10:39:15.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/</loc>
+    <loc>https://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/</loc>
     <lastmod>2016-01-24T11:03:24.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/01/24/spark-ha/</loc>
+    <loc>https://blog.djstudy.net/2016/01/24/spark-ha/</loc>
     <lastmod>2016-01-24T08:13:04.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/01/24/spark-on-yarn/</loc>
+    <loc>https://blog.djstudy.net/2016/01/24/spark-on-yarn/</loc>
     <lastmod>2016-01-24T08:08:20.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/2016/01/24/hdp-spark-shell-error/</loc>
+    <loc>https://blog.djstudy.net/2016/01/24/hdp-spark-shell-error/</loc>
     <lastmod>2016-01-24T08:04:10.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/tags/index.html</loc>
+    <loc>https://blog.djstudy.net/tags/index.html</loc>
     <lastmod>2016-01-24T07:38:39.000Z</lastmod>
   </url>
   
   <url>
-    <loc>http://blog.djstudy.net/categories/index.html</loc>
+    <loc>https://blog.djstudy.net/categories/index.html</loc>
     <lastmod>2016-01-24T07:37:46.000Z</lastmod>
   </url>
   
