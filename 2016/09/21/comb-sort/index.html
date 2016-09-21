@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="elasticsearch,optimizing," />
+  <meta name="keywords" content="sort," />
 
 
 
@@ -59,18 +59,18 @@
 
 
 
-<meta name="description" content="A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of ch">
+<meta name="description" content="Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting dow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Optimizing Elasticsearch-How Many Shards per Index">
-<meta property="og:url" content="http://blog.djstudy.net/2016/02/27/how-many-shards-index/index.html">
+<meta property="og:title" content="comb sort(梳排序)">
+<meta property="og:url" content="http://blog.djstudy.net/2016/09/21/comb-sort/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of ch">
-<meta property="og:image" content="https://qbox.io/img/blog/elasticsearch_cluster.png?t=1439423553643&width=700">
-<meta property="og:updated_time" content="2016-02-27T02:58:52.000Z">
+<meta property="og:description" content="Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting dow">
+<meta property="og:image" content="http://blog.djstudy.net/images/comb_sort.png">
+<meta property="og:updated_time" content="2016-09-21T01:12:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Optimizing Elasticsearch-How Many Shards per Index">
-<meta name="twitter:description" content="A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of ch">
-<meta name="twitter:image" content="https://qbox.io/img/blog/elasticsearch_cluster.png?t=1439423553643&width=700">
+<meta name="twitter:title" content="comb sort(梳排序)">
+<meta name="twitter:description" content="Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting dow">
+<meta name="twitter:image" content="http://blog.djstudy.net/images/comb_sort.png">
 
 
 
@@ -88,7 +88,7 @@
   };
 </script>
 
-  <title> Optimizing Elasticsearch-How Many Shards per Index | 东杰书屋 </title>
+  <title> comb sort(梳排序) | 东杰书屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -248,7 +248,7 @@
             
             
               
-                Optimizing Elasticsearch-How Many Shards per Index
+                comb sort(梳排序)
               
             
           </h1>
@@ -260,8 +260,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T10:58:40+08:00" content="2016-02-27">
-              2016-02-27
+            <time itemprop="dateCreated" datetime="2016-09-21T09:06:53+08:00" content="2016-09-21">
+              2016-09-21
             </time>
           </span>
 
@@ -274,8 +274,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构与算法</span>
                   </a>
                 </span>
 
@@ -290,8 +290,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/02/27/how-many-shards-index/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/27/how-many-shards-index/" itemprop="commentsCount"></span>
+                <a href="/2016/09/21/comb-sort/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/21/comb-sort/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -317,46 +317,30 @@
       
 
       
-        <p>A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of choosing different values for the number of shards. Continue reading if you want to learn how to demystify and optimize your sharding strategy.</p>
-<h3 id="Why_Bother_3F"><a href="#Why_Bother_3F" class="headerlink" title="Why Bother?"></a>Why Bother?</h3><p>This is an important topic, and many users are apprehensive as they approach it – and for good reason. A major mistake in shard allocation could cause scaling problems in a production environment that maintains an ever-growing dataset.</p>
-<p>On the other hand, we know that there is little Elasticsearch documentation on this topic. Most users just want answers – and they want specific answers, not vague number ranges and warnings for arbitrarily large numbers.</p>
-<p>Well, we have some answers. After covering a few definitions and some clarifications, we present several common use cases and provide our recommendations for each.</p>
-<h3 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h3><p>If you’re fairly new to Elasticsearch, it’s important that you understand the basic jargon and grasp the elemental concepts. </p>
-<p>(If you have some expertise with ES, you might want to skip to the next section.)</p>
-<p>Consider this simple diagram of an Elasticsearch cluster:”&gt;”&gt;<br><img src="https://qbox.io/img/blog/elasticsearch_cluster.png?t=1439423553643&amp;width=700" alt="es element"><br>Remember these definitions while refering to this diagram:</p>
-<p>“&gt;</p>
-<p>cluster – An Elasticsearch cluster consists of one or more nodes and is identifiable by its cluster name.</p>
-<p>node – A single Elasticsearch instance. In most environments, each node runs on a separate box or virtual machine.</p>
-<p>index – In Elasticsearch, an index is a collection of documents.</p>
-<p>shard – Because Elasticsearch is a distributed search engine, an index is usually split into elements known as shards that are distributed across multiple nodes. Elasticsearch automatically manages the arrangement of these shards. It also rebalances the shards as necessary, so users need not worry about the details.</p>
-<p>replica – By default, Elasticsearch creates five primary shards and one replica for each index. This means that each index will consist of five primary shards, and each shard will have one copy.</p>
-<p>Allocating multiple shards and replicas is the essence of the design for distributed search capability, providing for high availability and quick access in searches against the documents within an index. The main difference between a primary and a replica shard is that only the primary shard can accept indexing requests. Both replica and primary shards can serve querying requests.</p>
-<p>In the diagram above, we have an Elasticsearch cluster consisting of two nodes in a default shard configuration. Elasticsearch automatically arranges the five primary shards split across the two nodes. There is one replica shard that corresponds to each primary shard, but the arrangement of these replica shards is altogether different from that of the primary shards. Again, think distribution.</p>
-<p>Allow us to clarify: Remember, the number_of_shards value pertains to indexes—not to the cluster as whole. This value specifies the number of shards for <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html" target="_blank" rel="external">each index</a>(not the total primary shards in the cluster).</p>
-<h3 id="A_Word_about_Replicas"><a href="#A_Word_about_Replicas" class="headerlink" title="A Word about Replicas"></a>A Word about Replicas</h3><p>We don’t elaborate in this article on Elasticsearch replicas. That is an entirely separate topic that <a href="http://blog.qbox.io/announcing-replicated-elasticsearch-clusters" target="_blank" rel="external">we cover elsewhere</a>. Replicas are primarily for search performance, and a user can add or remove them at any time. As we explain in <a href="http://blog.qbox.io/announcing-replicated-elasticsearch-clusters" target="_blank" rel="external">that article</a>, additional replicas give you additional capacity, higher throughput, and stronger failover.</p>
-<h3 id="Allocate_Shards_Carefully"><a href="#Allocate_Shards_Carefully" class="headerlink" title="Allocate Shards Carefully"></a>Allocate Shards Carefully</h3><p>After you configure an Elasticsearch cluster, it’s critically important to realize that you cannot modify the shard allocation later. If you later find it necessary to change the number of shards, then you would need to reindex all the source documents. (Although reindexing is a long process, it can be done without downtime).</p>
-<p>The primary shard configuration is quite analogous to a hard disk partition, in which a repartition of raw disk space requires a user to back up, configure a new partition, and rewrite data onto the new partition.</p>
-<h3 id="Small_Static_Dataset_2C_2-3_GB"><a href="#Small_Static_Dataset_2C_2-3_GB" class="headerlink" title="Small Static Dataset, 2-3 GB"></a>Small Static Dataset, 2-3 GB</h3><p>The key consideration as you allocate shards is your expectation for the growth of your dataset. </p>
-<p>We quite often see the tendency to unnecessarily overallocate on shard count. Since share count such a hot topic within the ES community, users may assume that overallocation is a safe bet. (By overallocation, we simply mean specifying more shards per index than is necessary for the current size (document count) for a particular dataset.)</p>
-<p>Elastic was promoting this idea in the early days, but then many users began taking it too far—such as allocating 1,000 shards. Elastic now provides a bit more cautious rationale:</p>
-<p>“A little overallocation is good. A kagillion shards is bad. It is difficult to define what constitutes too many shards, as it depends on their size and how they are being used. A hundred shards that are seldom used may be fine, while two shards experiencing very heavy usage could be too many.”<br>Remember that there is an additional cost for each shard that you allocate:</p>
-<p>“&gt;</p>
-<p>“&gt;</p>
-<p>Since a shard is essentially a Lucene index, it consumes file handles, memory, and CPU resources.<br>Each search request will touch a copy of every shard in the index, which isn’t a problem when the shards are spread across several nodes. Contention arises and performance decreases when the shards are competing for the same hardware resources.<br>Elasticsearch uses <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/relevance-intro.html" target="_blank" rel="external">term frequency statistics to calculate relevance</a>, but these statistics correspond to individual shards. Maintaining only a small amount of data across a many shards will tend to result in poor document relevance.<br>Our customers expect their businesses to grow and their datasets to expand accordingly. There is therefore always a need for contingency planning. Many users convince themselves that they’ll encounter explosive growth (although most never actually see an unmanageable spike). In addition, we all want to minimize downtime and avoid resharding.</p>
-<p>If you worry about rapid data growth, then we suggest a focus on a simple constraint: the <a href="https://www.elastic.co/guide/en/elasticsearch/guide/current/_limiting_memory_usage.html" target="_blank" rel="external">maximum JVM heap size recommendation for Elasticsearch</a> is approximately 30-32GB. This is a solid estimate on the limit of your absolute maximum shard size. For example, if you really think it possible that you could reach 200GB (but not much further without other infrastructure changes), then we recommend an allocation of 7 shards, or 8 shards at most.</p>
-<p>By all means, don’t allocate for an inappropriately high goal of 10 terabytes that you might attain three years from now. It’s likely that you’ll see some performance strain—sooner than you like.</p>
-<p>Although we aren’t explaining replicas in detail here, we do recommend that you plan for a modest number of shards and consider increasing the number of replicas. If you’re configuring a new environment, then perhaps you want to have a look at our <a href="http://blog.qbox.io/announcing-replicated-elasticsearch-clusters" target="_blank" rel="external">replicated clusters</a>. With a replicated cluster, you get a three-node cluster that includes one replica with an option to easily increase the number of replicas as your requirements change.</p>
-<h3 id="Large_and_Growing_Dataset"><a href="#Large_and_Growing_Dataset" class="headerlink" title="Large and Growing Dataset"></a>Large and Growing Dataset</h3><p>We strongly encourage you to rely on over-allocation for large datasets—but only modestly. You can still use the 30GB maximum shard size guideline that we give above.</p>
-<p>We do, however, suggest that you continue to picture the ideal scenario as being one shard per index, per node. A good launch point for capacity planning is to allocate shards with a factor of 1.5 to 3 times the number of nodes in your initial configuration. If you’re starting with 3 nodes, then we recommend that you specify at most 3 x 3 = 9 shards.</p>
-<p>Your shard size may be getting too high if you’re discovering issues through the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-stats.html?q=cluster%20stat" target="_blank" rel="external">cluster stats APIs</a> or encountering minor performance degradations. If this is the case, simply add a node and ES will will rebalance the shards acccordingly.</p>
-<p>Once again, please note that we’re omitting the specification of replicas from our discussion here. The same ideal shard guideline of one shard per index per node also holds true for replica shards. So if you need only one replica, then you’ll need twice as many nodes. Two replicas would require three times the number of nodes. For more details, see our article on <a href="http://blog.qbox.io/announcing-replicated-elasticsearch-clusters" target="_blank" rel="external">Replicated Clusters</a>.</p>
-<p>“&gt;</p>
-<h3 id="Logstash"><a href="#Logstash" class="headerlink" title="Logstash"></a>Logstash</h3><p>Do you accummulate daily indices and yet incur only small search loads? Perhaps these indices number in the hundreds, but each index is 1GB or smaller. For these and similar problem spaces, our simple recommendation is that you choose one shard.</p>
-<p>If you roll with the defaults for Logstash (daily indices) and ES (5 shards), you could generate up to 890 shards in 6 months. Further, your cluster will be hurting—unless you have 15 nodes or more.</p>
-<p>Think about it: most Logstash users are infrequent searchers, performing fewer than one query per minute. Accordingly, we recommend a simple economical setup. Since search performance isn’t a primary requirement for such cases, we don’t need multiple replicas. A single replica is enough for basic redundancy. The data-to-memory ratio can also be quite high.</p>
-<p>If you go with a single shard per index, then you could probably run a Logstash configuration for 6 months on a three-node cluster. Ideally, you’d use at least 4GB, but we’d recommend 8GB because 8GB is where network speed starts to get significantly better on most cloud platforms and much less resource-sharing.</p>
-<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>We reiterate that shards consume resources and require processing overhead.</p>
-<p>To compile results from an index consisting of more than one shard, Elasticsearch must query each shard individually (although in parallel), and then it must perform operations on the aggregated results. Because of this, a machine with more IO headroom (SSDs) and a multi-core processor can definitely benefit from sharding, but you must consider the size, volatility, and future states of your dataset. While there is no one-size-for-all with respect to shard allocation, we hope that you can benefit from this discussion.</p>
+        <p>Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting down tremendously.<br><img src="/images/comb_sort.png" alt="comb sort" title="梳排序"><br>Worst case performance - O(n^2)</p>
+<p>C++<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">comb_sort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> length)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> gap = length;</span><br><span class="line">    <span class="keyword">bool</span> swapped = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">while</span>((gap &gt; <span class="number">1</span>) || (swapped == true))</span><br><span class="line">    &#123;</span><br><span class="line">        gap /= <span class="number">1.25</span>;</span><br><span class="line">        <span class="keyword">if</span> (gap &lt; <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            gap = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        swapped = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">while</span> (i + gap &lt; length)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[i] &gt; <span class="built_in">array</span>[i + gap])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = <span class="built_in">array</span>[i];</span><br><span class="line">                <span class="built_in">array</span>[i] = <span class="built_in">array</span>[i + gap];</span><br><span class="line">                <span class="built_in">array</span>[i + gap] = temp;</span><br><span class="line">                swapped = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="keyword">int</span>[] comb_sort(<span class="keyword">int</span>[] array) &#123;</span><br><span class="line">    <span class="keyword">int</span> gap = array.length;</span><br><span class="line">    <span class="keyword">boolean</span> swapped = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">while</span> ((gap &gt; <span class="number">1</span>) || (swapped == <span class="keyword">true</span>)) &#123;</span><br><span class="line">        gap /= <span class="number">1.25</span>;</span><br><span class="line">        <span class="keyword">if</span> (gap &lt; <span class="number">1</span>) &#123;</span><br><span class="line">            gap = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        swapped = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">while</span> (i + gap &lt; array.length) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[i] &gt; array[i + gap]) &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = array[i];</span><br><span class="line">                array[i] = array[i + gap];</span><br><span class="line">                array[i + gap] = temp;</span><br><span class="line">                swapped = <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Matlab<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">function array = comb_sort(array)</span><br><span class="line">    gap = numel(array);</span><br><span class="line">    swapped = true;</span><br><span class="line">    while (gap &gt; 1) || swapped</span><br><span class="line">        gap = floor(gap/1.25);</span><br><span class="line">        if gap &lt; 1</span><br><span class="line">            gap = 1;</span><br><span class="line">        end</span><br><span class="line">        i = 1;</span><br><span class="line">        swapped = false;</span><br><span class="line">        while (i+gap-1) &lt; numel(array)</span><br><span class="line">            if array(i) &gt; array(i+gap)</span><br><span class="line">                array([i i+gap]) = array([i+gap i]);</span><br><span class="line">                swapped = true;</span><br><span class="line">            end</span><br><span class="line">            i = i + 1;</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br></pre></td></tr></table></figure></p>
+<p>Python</p>
+<pre><code class="python"><span class="keyword">import</span> math
+
+<span class="function"><span class="keyword">def</span> <span class="title">comb_sort</span><span class="params">(array)</span>:</span>
+    gap = len(array)
+    swapped = <span class="keyword">True</span>
+    <span class="keyword">while</span> gap &gt; <span class="number">1</span> <span class="keyword">or</span> swapped :
+        gap = math.floor(gap/<span class="number">1.25</span>)
+        <span class="keyword">if</span> gap &lt; <span class="number">1</span> :
+            gap = <span class="number">1</span>
+        i = <span class="number">0</span>
+        swapped = <span class="keyword">False</span>
+        <span class="keyword">while</span> (i+gap)&lt; len(array):
+            <span class="keyword">if</span> array[i] &gt; array[i + gap]:
+                temp = array[i]
+                array[i] = array[i + gap]
+                array[i + gap] = temp
+                swapped = <span class="keyword">True</span>
+            i = i + <span class="number">1</span>
+</code></pre>
 
       
     </div>
@@ -366,9 +350,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
-          
-            <a href="/tags/optimizing/" rel="tag">#optimizing</a>
+            <a href="/tags/sort/" rel="tag">#sort</a>
           
         </div>
       
@@ -377,17 +359,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/02/19/service-discovery-consul-and-consul-template/" rel="next" title="Service discovery with consul and consul-template">
-                <i class="fa fa-chevron-left"></i> Service discovery with consul and consul-template
+              <a href="/2016/07/27/hbase-minor-vs-major-compaction/" rel="next" title="hbase 压缩合并中的minor与major区别">
+                <i class="fa fa-chevron-left"></i> hbase 压缩合并中的minor与major区别
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/16/scala-note-1/" rel="prev" title="scala学习笔记(一)">
-                scala学习笔记(一) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -402,10 +380,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/02/27/how-many-shards-index/"
-     data-title="Optimizing Elasticsearch-How Many Shards per Index"
+        <div class="ds-share flat" data-thread-key="2016/09/21/comb-sort/"
+     data-title="comb sort(梳排序)"
      data-content=""
-     data-url="http://blog.djstudy.net/2016/02/27/how-many-shards-index/">
+     data-url="http://blog.djstudy.net/2016/09/21/comb-sort/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -433,8 +411,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/02/27/how-many-shards-index/"
-           data-title="Optimizing Elasticsearch-How Many Shards per Index" data-url="http://blog.djstudy.net/2016/02/27/how-many-shards-index/">
+      <div class="ds-thread" data-thread-key="2016/09/21/comb-sort/"
+           data-title="comb sort(梳排序)" data-url="http://blog.djstudy.net/2016/09/21/comb-sort/">
       </div>
     
   </div>
@@ -565,7 +543,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_Bother_3F"><span class="nav-number">1.</span> <span class="nav-text">Why Bother?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Definitions"><span class="nav-number">2.</span> <span class="nav-text">Definitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A_Word_about_Replicas"><span class="nav-number">3.</span> <span class="nav-text">A Word about Replicas</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Allocate_Shards_Carefully"><span class="nav-number">4.</span> <span class="nav-text">Allocate Shards Carefully</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Small_Static_Dataset_2C_2-3_GB"><span class="nav-number">5.</span> <span class="nav-text">Small Static Dataset, 2-3 GB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Large_and_Growing_Dataset"><span class="nav-number">6.</span> <span class="nav-text">Large and Growing Dataset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Logstash"><span class="nav-number">7.</span> <span class="nav-text">Logstash</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusion"><span class="nav-number">8.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+              <p class="post-toc-empty">此文章未包含目录</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
