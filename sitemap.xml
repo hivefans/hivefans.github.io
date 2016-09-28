@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.djstudy.net/2016/09/28/hbase-rit/</loc>
+    <lastmod>2016-09-28T04:01:22.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.djstudy.net/2016/09/21/comb-sort/</loc>
     <lastmod>2016-09-21T01:17:17.000Z</lastmod>
   </url>

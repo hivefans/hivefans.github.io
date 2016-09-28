@@ -1,0 +1,893 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="hbase,rit," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hbase中的RIT的那些事">
+<meta property="og:url" content="https://blog.djstudy.net/2016/09/28/hbase-rit/index.html">
+<meta property="og:site_name" content="东杰书屋">
+<meta property="og:description" content="相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是">
+<meta property="og:image" content="http://hbasefly.com/wp-content/uploads/2016/09/r1.png">
+<meta property="og:image" content="http://hbasefly.com/wp-content/uploads/2016/09/%E8%AE%A9.png">
+<meta property="og:image" content="http://hbasefly.com/wp-content/uploads/2016/09/r3.png">
+<meta property="og:updated_time" content="2016-09-28T04:01:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hbase中的RIT的那些事">
+<meta name="twitter:description" content="相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是">
+<meta name="twitter:image" content="http://hbasefly.com/wp-content/uploads/2016/09/r1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6242999463699285000,
+      author: 'hivefans'
+    }
+  };
+</script>
+
+  <title> hbase中的RIT的那些事 | 东杰书屋 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?05207dc6d0c785fb39a80bb5af7c3d8a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">东杰书屋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">环境不会改变，解决之道在于改变自己。</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                hbase中的RIT的那些事
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-28T11:53:10+08:00" content="2016-09-28">
+              2016-09-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/big-data/" itemprop="url" rel="index">
+                    <span itemprop="name">big data</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/28/hbase-rit/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/28/hbase-rit/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+          
+          <span>&nbsp; | &nbsp;
+          <span id="busuanzi_value_page_pv" ></span>次阅读
+          </span>    
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是肉眼看到的一个结果，为什么会处于RIT状态才是问题探索的根本，也是解决问题的关键。本文就基于hbase 0.98.9版本对RIT的工作机制以及实现原理进行普及性的介绍，同时在此基础上通过真实案例讲解如何正确合理地处理处于RIT状态的Region。一方面希望大家能够更好的了解RIT机制，另一方面希望通过本文的学习之后可以不再’惧怕’RIT，正确认识处于RIT状态的Region。</p>
+<h2 id="Region-In-Trasition_u673A_u5236"><a href="#Region-In-Trasition_u673A_u5236" class="headerlink" title="Region-In-Trasition机制"></a>Region-In-Trasition机制</h2><p>从字面意思来看，Region-In-Transition说的是Region变迁机制，实际上是指在一次特定操作行为中Region状态的变迁，那这里就涉及这么几个问题：Region存在多少种状态？HBase有哪些操作会触发Region状态变迁？一次正常操作过程中Region状态变迁的完整流程是怎么样的？如果Region状态在变迁的过程中出现异常又会怎么样？</p>
+<h2 id="Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F"><a href="#Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F" class="headerlink" title="Region存在多少种状态？有哪些操作会触发状态变迁？"></a>Region存在多少种状态？有哪些操作会触发状态变迁？</h2><p>HBase在RegionState类中定义了Region的主要状态，主要有如下：<br><img src="http://hbasefly.com/wp-content/uploads/2016/09/r1.png" alt="rit state"><br>上图中实际上定义了四种会触发Region状态变迁的操作以及操作对应的Region状态。其中特定操作行为通常包括assign、unassign、split以及merge等，而很多其他操作都可以拆成unassign和assign，比如move操作实际上是先unassign再assign；</p>
+<h2 id="Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F"><a href="#Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F" class="headerlink" title="Region状态迁移是如何发生的？"></a>Region状态迁移是如何发生的？</h2><p>这个过程有点类似于状态机，也是通过事件驱动的。和Region状态一样，HBase还定义了很多事件（具体见EventType类）。此处以unassign过程为例说明事件是如何驱动状态变迁的，见下图：<br><img src="http://hbasefly.com/wp-content/uploads/2016/09/%E8%AE%A9.png" alt="hbase-move"></p>
+<p>上图所示是Region在close时的状态变迁图，其中红字部分就是发生的各种事件。可见，如果发生M_ZK_REGION_CLOSING事件，Region就会从OPEN状态迁移到PENDING_CLOSE状态，而发生RS_ZK_REGION_CLOSING事件，Region会从PENDING_CLOSE状态迁移到CLOSING状态，以此类推，发生RS_ZK_REGION_CLOSED事件，Region就会从CLOSING状态迁移到CLOSED状态。当然，除了这些事件之外，HBase还定义了很多其他事件，在此就不一一列举。截至到此，我们知道Region是一个有限状态机，那这个状态机是如何正常工作的，HMaster、RegionServer、Zookeeper又在状态机工作过程中扮演了什么角色，那就接着往下看～</p>
+<h2 id="u4E00_u6B21_u6B63_u5E38_u64CD_u4F5C_u8FC7_u7A0B_u4E2DRegion_u72B6_u6001_u53D8_u8FC1_u7684_u5B8C_u6574_u6D41_u7A0B_u662F_u600E_u4E48_u6837_u7684_uFF1F"><a href="#u4E00_u6B21_u6B63_u5E38_u64CD_u4F5C_u8FC7_u7A0B_u4E2DRegion_u72B6_u6001_u53D8_u8FC1_u7684_u5B8C_u6574_u6D41_u7A0B_u662F_u600E_u4E48_u6837_u7684_uFF1F" class="headerlink" title="一次正常操作过程中Region状态变迁的完整流程是怎么样的？"></a>一次正常操作过程中Region状态变迁的完整流程是怎么样的？</h2><p>接下来本节以unassign操作为例对这个流程进行解析：</p>
+<p>整个unassign操作是一个比较复杂的过程，涉及HMaster、RegionServer和Zookeeper三个组件：</p>
+<ol>
+<li><p>HMaster负责维护Region在整个操作过程中的状态变化，起到一个枢纽的作用。它有两个重要的HashMap数据结构，分别为regionStates和regionsInTransition，前者用来存储整个集群中所有Region及其当时状态，而后者主要存储在变迁过程中的Region及其状态，后者是前者的一个子集，不包含OPEN状态的Regions；</p>
+</li>
+<li><p>RegionServer负责接收HMaster的指令执行具体unassign操作，实际上就是关闭region操作；</p>
+</li>
+<li><p>Zookeeper负责存储操作过程中的事件，它有一个路径为/hbase/region-in-transition的节点。一旦一个Region发生unssign操作，就会在这个节点下生成一个子节点，子节点的内容是一个“事件”经过序列化的字符串，并且Master会监听在这个子节点上，一旦发生任何事件，Master就会监听到并更新Region的状态。</p>
+</li>
+</ol>
+<p>下图是整个流程示意图：<br><img src="http://hbasefly.com/wp-content/uploads/2016/09/r3.png" alt="hbase-assign"></p>
+<ol>
+<li><p>HMaster先执行事件M_ZK_REGION_CLOSING并更新RegionStates，将该Region的状态改为PENDING_CLOSE，并在regionsInTransition中插入一条记录；</p>
+</li>
+<li><p>发送一条RPC命令给拥有该Region的RegionServer，责令其关闭该Region;</p>
+</li>
+<li><p>RegionServer接收到HMaster发送过来的命令之后，首先生成一个RS_ZK_REGION_CLOSING事件，更新到Zookeeper，Master监听到ZK节点变动之后更新regionStates，将该Region的状态改为CLOSING;</p>
+</li>
+<li><p>RegionServer执行真正的Region关闭操作：如果该Region正在执行flush或者compaction，等待操作完成；否则将该Region下的所有Memstore强制flush;</p>
+</li>
+<li><p>完成之后生成事件RS_ZK_REGION_CLOSED，更新到Zookeeper，Master监听到ZK节点变动之后更新regionStates，将该Region的状态改为CLOSED;</p>
+</li>
+</ol>
+<p>到这里，基本上将unssign操作过程中涉及到的Region状态变迁解释清楚了，当然，其他诸如assign操作基本类似，在此不再赘述。这里其实还有一个问题，即关于HMaster上所有Region状态是否需要持久化的问题，刚开始接触这个问题的时候想想并不需要，这些处于RIT的状态信息完全可以通过Zookeeper上/region-in-transition的子节点信息构建出来。然而，在阅读HBase Book的相关章节时，看到如下信息：</p>
+<p>于是就充满了疑惑，一方面Master更新hbase:meta是一个远程操作，代价相对很大；另一方面Region状态内存更新和远程更新保证一致性比较困难；再者，Zookeeper上已经有相应RIT信息，再持久化一份并没有太大意义。为了对其进行确认，就查阅跟踪了一下源码，发现是否持久化取决于一个参数：hbase.assignment.usezk，默认情况下该参数为true，表示使用zk情况下并不会对Region状态进行持久化（详见RegionStateStore类），可见HBase Book的那段说明存在问题，在此特别说明～</p>
+<p>如果Region状态在变迁的过程中出现异常会怎么样？<br>再回顾unassign的整个过程就会发现一次完整操作涉及太多流程，任何异常都可能会导致Region处于较长时间的RIT状态，好在HBase针对常见的异常做了最基本的容错处理：</p>
+<ol>
+<li>Master宕机重启：Master在宕机之后会丢失所有内存中的信息，也包括RIT信息以及Region状态信息，因此在重启之后会第一时间重建这些信息。重启之后会遍历Zookeeper上/hbase/regions-in-transition节点下的所有子节点，解析所有子节点对应的最后一个‘事件’，解析完成之后一方面借此重建全局的Region状态，另一方面根据状态机转移图对处于RIT状态的Region进行处理。比如如果发现当前Region的状态是PENDING_CLOSE，Master就会再次据此向RegionServer发送’关闭Region’的RPC命令。</li>
+</ol>
+<ol>
+<li>其他异常宕机：HBase会在后台开启一个线程定期检查内存中处于RIT中的Region，一旦这些Region处于RIT状态的时长超过一定的阈值（由参数hbase.master.assignment.timeoutmonitor.timeout定义，默认600000ms）就会重新执行unassign或者assign操作。比如如果当前Region的状态是PENDING_CLOSE，而且处于该状态的时间超过了600000ms，Master就会重新执行unassign操作，向RegionServer再次发送’关闭Region’的RPC命令。</li>
+</ol>
+<p>可见，HBase提供了基本的重试机制，保证在一些短暂异常的情况下能够通过不断重试拉起那些处于RIT状态的Region，进而保证操作的完整性和状态的一致性。然而不幸的是，因为各种各样的原因，很多Region还是会掉入长时间的RIT状态，甚至是永久的RIT状态，必须人为干预才能解决，下面一节内容让我们看看都有哪些常见的场景会导致Region会处于永久RIT状态，以及遇到这类问题应该如何解决。</p>
+<h2 id="u6C38_u4E45RIT_u72B6_u6001_u6848_u4F8B_u5206_u6790"><a href="#u6C38_u4E45RIT_u72B6_u6001_u6848_u4F8B_u5206_u6790" class="headerlink" title="永久RIT状态案例分析"></a>永久RIT状态案例分析</h2><p>通过RIT机制的了解，其实可以发现处于RIT状态Region并不是什么怪物，大部分处于RIT状态的Region都是短暂的，即使在大多数短暂异常的情况下HBase也提供了重试机制保证Region能够很快恢复正常。然而在一些特别极端的场景下还是会发生一些异常导致部分Region掉入永久的RIT状态，进而会引起表读写阻塞甚至整个集群的读写阻塞。下面我们举两个相关的案例进行说明：</p>
+<h3 id="u6848_u4F8B_u4E00_uFF1ACompaction_u6C38_u4E45_u963B_u585E"><a href="#u6848_u4F8B_u4E00_uFF1ACompaction_u6C38_u4E45_u963B_u585E" class="headerlink" title="案例一：Compaction永久阻塞"></a>案例一：Compaction永久阻塞</h3><p>现象：线上一个集群因为未知原因忽然就卡住了，读写完全进不来了；另外还有很多处于PENDING_CLOSE状态的Region。</p>
+<p>分析：集群卡住常见原因无非两个，一是Memstore总消耗内存大小超过了上限进而触发RegionServer级别flush，此时系统会阻塞集群执行长时间flush操作；二是storefile数量过多超过设定的上限阈值（参见：hbase.hstore.blockingStoreFiles），此时系统会阻塞所有flush请求而执行compaction。</p>
+<h3 id="u8BCA_u65AD_uFF1A"><a href="#u8BCA_u65AD_uFF1A" class="headerlink" title="诊断："></a>诊断：</h3><p>（1）首先查看了各个RegionServer上的Memstore使用大小，并没有达到设定的upperLimit。</p>
+<p>（2）再查看了一下所有RegionServer的storefile数量，瞬间石化了，store数为250的RegionServer上storefile数量竟然达到了1.5w+，很多单个store的storefile都超过了设定阈值100</p>
+<p>（3）初步怀疑是因为storefile数量过多引起的，看到这么多storefile的第一反应是手动执行major_compaction，然而所有的compact命令好像都没有起任何作用</p>
+<p>（4）无意中发现所有RegionServer的Compaction任务都是同一张表music_actions的，而且Compaction时间都基本持续了一两天。到此基本可以确认是因为表music_actions的Compaction任务长时间阻塞，占用了所有的Compaction线程资源，导致集群中所有其他表都无法执行Compaction任务，最后导致StoreFile大量堆积</p>
+<p>（5）那为什么会存在PENDING_CLOSE状态的Region呢？经查看，这些处于PENDING_CLOSE状态的Region全部来自于表music_actions，进一步诊断确认是由于在执行graceful_stop过程中unassign时遇到Compaction长时间阻塞导致RegionServer无法执行Region关闭（参考上文unassign过程），因而掉入了永久RIT</p>
+<h3 id="u89E3_u51B3_u65B9_u6848_uFF1A"><a href="#u89E3_u51B3_u65B9_u6848_uFF1A" class="headerlink" title="解决方案："></a>解决方案：</h3><p>（1）这个问题中RIT和集群卡住原因都在于music_actions这张表的Compaction阻塞，因此需要定位Compaction阻塞的具体原因。经过一段时间的定位初步怀疑是因为这张表的编码导致，anyway，具体原因不重要，因为一旦Compaction阻塞，好像是没办法通过正常命令解除这种阻塞的。临时有用的办法是增大集群的Compaction线程，以期望有更多空闲线程可以处理集群中其他Compaction任务，消化大量堆积的StoreFiles</p>
+<p>（2）而永久性消灭这种Compaction阻塞只能先将这张表数据迁移出来，然后将这张表暴力删除。暴力删除就是先将HDFS对应文件删除，再将hbase:meta中该表对应的相关数据清除，最后重启整个集群即可。这张表删除之后使用hbck检查一致性之后，集群Compaction阻塞现象就消失了，集群就完全恢复正常。</p>
+<h3 id="u6848_u4F8B_u4E8C_uFF1AHDFS_u6587_u4EF6_u5F02_u5E38"><a href="#u6848_u4F8B_u4E8C_uFF1AHDFS_u6587_u4EF6_u5F02_u5E38" class="headerlink" title="案例二：HDFS文件异常"></a>案例二：HDFS文件异常</h3><p>现象：线上集群很多RegionServer短时间内频频宕机，有几个Region处于FAILED_OPEN状态</p>
+<p>分析诊断：</p>
+<p>（1）查看系统监控以及RegionServer日志，确认RegionServer频繁宕机是因为大量CLOSE_WAIT状态的短连接导致。监控显示短时间内（4h）CLOSE_WAIT的数量从0增长到6w+。</p>
+<p>（2）再查看RegionServer日志查看到如下日志：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">2016-07-27 09:42:14,932 [RS_OPEN_REGION-inspur250.photo.163.org,60020,1469581282053-0] ERROR org.apache.hadoop.hbase.regionserver.handler.OpenRegionHandler - Failed open of region=news_user_actions,|u:cfcd208495d565ef66e7dff9f98764da</span><br><span class="line">|1462799167|30671473410714402,1469522128310.3b3ae24c65fc5094bc2acfebaa7a56de., starting to roll back the global memstore size.</span><br><span class="line">java.io.IOException: java.io.IOException: java.io.FileNotFoundException: File does not exist: /hbase/news_user_actions/b7b3faab86527b88a92f2a248a54d3dc/meta/0f47cda55fa44cf9aa2599079894aed6</span><br><span class="line">2016-07-27 09:42:14,934 [RS_OPEN_REGION-inspur250.photo.163.org,60020,1469581282053-0] INFO  org.apache.hadoop.hbase.regionserver.handler.OpenRegionHandler - Opening of region &#123;NAME =&gt; &apos;news_user_actions,|u:cfcd208495d565ef66e7dff9f9</span><br><span class="line">8764da|1462799167|30671473410714402,1469522128310.3b3ae24c65fc5094bc2acfebaa7a56de.&apos;, STARTKEY =&gt; &apos;|u:cfcd208495d565ef66e7dff9f98764da|1462799167|30671473410714402&apos;, ENDKEY =&gt; &apos;|u:d0&apos;, ENCODED =&gt; 3b3ae24c65fc5094bc2acfebaa7a56de,&#125; faile</span><br><span class="line">d, marking as FAILED_OPEN in ZK</span><br></pre></td></tr></table></figure>
+<p>日志显示，Region ‘3b3ae24c65fc5094bc2acfebaa7a56de’打开失败，因此状态被设置为FAILED_OPEN，原因初步认为是FileNotFoundException导致，找不到的文件是Region ‘b7b3faab86527b88a92f2a248a54d3dc’ 下的一个文件，这两者之间有什么联系呢？</p>
+<p>（3）使用hbck检查了一把，得到如下错误信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Found lingering reference file hdfs://mycluster/hbase/news_user_actions/3b3ae24c65fc5094bc2acfebaa7a56de/meta/0f47cda55fa44cf9aa2599079894aed6.b7b3faab86527b88a92f2a248a54d3dc</span><br></pre></td></tr></table></figure></p>
+<p>看到这里就一下恍然大悟，从引用文件可以看出来，Region ‘3b3ae24c65fc5094bc2acfebaa7a56de’是‘ b7b3faab86527b88a92f2a248a54d3dc’的子Region，熟悉Split过程的童鞋就会知道，父Region分裂成两个子Region其实并没有涉及到数据文件的分裂，而是会在子Region的HDFS目录下生成一个指向父Region目录的引用文件，直到子Region执行Compaction操作才会将父Region的文件合并过来。</p>
+<p>到这里，就可以理解为什么子Region会长时间处于FAILED_OPEN状态：因为子Region引用了父Region的文件，然而父Region的文件因为未知原因丢失了，所以子Region在打开的时候因为找不到引用文件因而会失败。而这种异常并不能通过简单的重试可以解决，所以会长时间掉入RIT状态。</p>
+<p>（4）现在基本可以通过RegionServer日志和hbck日志确定Region处于FAILED_OPEN的原因是因为子Region所引用的父Region的文件丢失导致。那为什么会出现CLOSE_WAIT数量暴涨的问题呢？经确认是因为Region在打开的时候会读取Region对应HDFS相关文件，但因为引用文件丢失所以读取失败，读取失败之后系统会不断重试，每次重试都会同datanode建立短连接，这些短连接因为hbase的bug一直得不到合理处理就会引起CLOSEE_WAIT数量暴涨。</p>
+<p>解决方案：删掉HDFS上所有检查出来的引用文件即可</p>
+<h2 id="u6848_u4F8B_u5206_u6790"><a href="#u6848_u4F8B_u5206_u6790" class="headerlink" title="案例分析"></a>案例分析</h2><p>经过上面两个案例的讲解其实看出得出这么几点：</p>
+<ol>
+<li><p>永久性掉入RIT状态其实出现的概率并不高，都是在一些极端情况下才会出现。绝大部分RIT状态都是暂时的。</p>
+</li>
+<li><p>一旦掉入永久性RIT状态，说明一定有根本性的问题原因，只有定位出这些问题才能彻底解决问题</p>
+</li>
+<li><p>如果Region长时间处于PENDING_CLOSE或者CLOSING状态，一般是因为RegionServer在关闭Region的时候遇到了长时间Compaction任务或Flush任务，所以如果Region在做类似于Major_Compact的操作时尽量不要执行unassign操作，比如move操作、disable操作等；而如果Region长时间处于FAILED_OPEN状态，一般是因为HDFS文件出现异常所致，可以通过RegionServer日志以及hbck定位出来</p>
+</li>
+</ol>
+<h2 id="u5199_u5728_u6587_u7AE0_u6700_u540E"><a href="#u5199_u5728_u6587_u7AE0_u6700_u540E" class="headerlink" title="写在文章最后"></a>写在文章最后</h2><p>RIT在很多运维HBase的人看来是一个很神秘的东西，这是因为RIT很少出现，而一旦出现就很致命，运维起来往往不知所措。本文就希望能够打破这种神秘感，还原它的真实本性。文章第一部分通过层层递进的方式介绍了Region-In-Transition机制，第二部分通过生产环境的真实案例分析永久性RIT出现的场景以及应对的方案。希望大家能够更多的了解RIT，通过不断的运维实践最后再也不用惧怕它～～</p>
+<p>转载 <a href="http://hbasefly.com/2016/09/08/hbase-rit/" target="_blank" rel="external">http://hbasefly.com/2016/09/08/hbase-rit/</a></p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+    
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hbase/" rel="tag">#hbase</a>
+          
+            <a href="/tags/rit/" rel="tag">#rit</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/21/comb-sort/" rel="next" title="comb sort(梳排序)">
+                <i class="fa fa-chevron-left"></i> comb sort(梳排序)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/09/28/hbase-rit/"
+     data-title="hbase中的RIT的那些事"
+     data-content=""
+     data-url="https://blog.djstudy.net/2016/09/28/hbase-rit/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/28/hbase-rit/"
+           data-title="hbase中的RIT的那些事" data-url="https://blog.djstudy.net/2016/09/28/hbase-rit/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/author.jpg"
+               alt="东杰" />
+          <p class="site-author-name" itemprop="name">东杰</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">分类</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hivefans" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/sdj1225" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">友情链接</p>
+            
+              <span class="links-of-author-item">
+                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://slaytanic.blog.51cto.com/" target="_blank">实践检验</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.adintellig.com/" target="_blank">Manny很忙</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Region-In-Trasition_u673A_u5236"><span class="nav-number">1.</span> <span class="nav-text">Region-In-Trasition机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F"><span class="nav-number">2.</span> <span class="nav-text">Region存在多少种状态？有哪些操作会触发状态变迁？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F"><span class="nav-number">3.</span> <span class="nav-text">Region状态迁移是如何发生的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E00_u6B21_u6B63_u5E38_u64CD_u4F5C_u8FC7_u7A0B_u4E2DRegion_u72B6_u6001_u53D8_u8FC1_u7684_u5B8C_u6574_u6D41_u7A0B_u662F_u600E_u4E48_u6837_u7684_uFF1F"><span class="nav-number">4.</span> <span class="nav-text">一次正常操作过程中Region状态变迁的完整流程是怎么样的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u6C38_u4E45RIT_u72B6_u6001_u6848_u4F8B_u5206_u6790"><span class="nav-number">5.</span> <span class="nav-text">永久RIT状态案例分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u6848_u4F8B_u4E00_uFF1ACompaction_u6C38_u4E45_u963B_u585E"><span class="nav-number">5.1.</span> <span class="nav-text">案例一：Compaction永久阻塞</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8BCA_u65AD_uFF1A"><span class="nav-number">5.2.</span> <span class="nav-text">诊断：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u89E3_u51B3_u65B9_u6848_uFF1A"><span class="nav-number">5.3.</span> <span class="nav-text">解决方案：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6848_u4F8B_u4E8C_uFF1AHDFS_u6587_u4EF6_u5F02_u5E38"><span class="nav-number">5.4.</span> <span class="nav-text">案例二：HDFS文件异常</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u6848_u4F8B_u5206_u6790"><span class="nav-number">6.</span> <span class="nav-text">案例分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5199_u5728_u6587_u7AE0_u6700_u540E"><span class="nav-number">7.</span> <span class="nav-text">写在文章最后</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">东杰</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hivefans"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
+
+
+
+  
+  
+
+  
+  
+
+
+</body>
+</html>
