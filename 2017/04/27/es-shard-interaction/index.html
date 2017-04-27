@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="scala," />
+  <meta name="keywords" content="elasticsearch," />
 
 
 
@@ -59,16 +59,32 @@
 
 
 
-<meta name="description" content="如何使用 scala 的range 函数在 scala 应用中可以看到有不同的方法使用 range Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法1234567891011121314151617181920212223242526272829303132333435scala&amp;gt; 1 to 10res0: scala.collection.immuta">
+<meta name="description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。
+数据存储到分片的过程是一定规则的，并不是随机发生的。
+规则：shard = hash(routing) % number_of_primary_shards
+Routing值可以是一个任意的字">
 <meta property="og:type" content="article">
-<meta property="og:title" content="scala学习笔记(三)">
-<meta property="og:url" content="https://blog.djstudy.net/2016/07/10/scala-note-3/index.html">
+<meta property="og:title" content="Elasticsearch 分片交互过程详解">
+<meta property="og:url" content="https://blog.djstudy.net/2017/04/27/es-shard-interaction/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="如何使用 scala 的range 函数在 scala 应用中可以看到有不同的方法使用 range Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法1234567891011121314151617181920212223242526272829303132333435scala&amp;gt; 1 to 10res0: scala.collection.immuta">
-<meta property="og:updated_time" content="2016-07-10T13:17:52.000Z">
+<meta property="og:description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。
+数据存储到分片的过程是一定规则的，并不是随机发生的。
+规则：shard = hash(routing) % number_of_primary_shards
+Routing值可以是一个任意的字">
+<meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction1.png">
+<meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction2.png">
+<meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction3.png">
+<meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction4.png">
+<meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction5.png">
+<meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction6.png">
+<meta property="og:updated_time" content="2017-04-27T10:17:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="scala学习笔记(三)">
-<meta name="twitter:description" content="如何使用 scala 的range 函数在 scala 应用中可以看到有不同的方法使用 range Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法1234567891011121314151617181920212223242526272829303132333435scala&amp;gt; 1 to 10res0: scala.collection.immuta">
+<meta name="twitter:title" content="Elasticsearch 分片交互过程详解">
+<meta name="twitter:description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。
+数据存储到分片的过程是一定规则的，并不是随机发生的。
+规则：shard = hash(routing) % number_of_primary_shards
+Routing值可以是一个任意的字">
+<meta name="twitter:image" content="https://blog.djstudy.net/images/es-shard-interaction1.png">
 
 
 
@@ -86,7 +102,7 @@
   };
 </script>
 
-  <title> scala学习笔记(三) | 东杰书屋 </title>
+  <title> Elasticsearch 分片交互过程详解 | 东杰书屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -246,7 +262,7 @@
             
             
               
-                scala学习笔记(三)
+                Elasticsearch 分片交互过程详解
               
             
           </h1>
@@ -258,8 +274,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-10T21:08:00+08:00" content="2016-07-10">
-              2016-07-10
+            <time itemprop="dateCreated" datetime="2017-04-27T13:03:47+08:00" content="2017-04-27">
+              2017-04-27
             </time>
           </span>
 
@@ -272,8 +288,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/scala/" itemprop="url" rel="index">
-                    <span itemprop="name">scala</span>
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
                   </a>
                 </span>
 
@@ -288,8 +304,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/07/10/scala-note-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/scala-note-3/" itemprop="commentsCount"></span>
+                <a href="/2017/04/27/es-shard-interaction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/27/es-shard-interaction/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -315,8 +331,35 @@
       
 
       
-        <h2 id="u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570"><a href="#u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570" class="headerlink" title="如何使用 scala 的range 函数"></a>如何使用 scala 的range 函数</h2><p>在 scala 应用中可以看到有不同的方法使用 range<br> Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="number">1</span> to <span class="number">10</span></span><br><span class="line">res0: scala.collection.immutable.<span class="type">Range</span>.<span class="type">Inclusive</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="number">1</span> until <span class="number">10</span></span><br><span class="line">res1: scala.collection.immutable.<span class="type">Range</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="number">1</span> to <span class="number">10</span> by <span class="number">2</span></span><br><span class="line">res2: scala.collection.immutable.<span class="type">Range</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; 'a' to 'c'</span><br><span class="line">res3: collection.immutable.<span class="type">NumericRange</span>.<span class="type">Inclusive</span>[<span class="type">Char</span>] = <span class="type">NumericRange</span>(a, b, c)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toList</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toArray</span><br><span class="line">x: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toSet</span><br><span class="line">x: scala.collection.immutable.<span class="type">Set</span>[<span class="type">Int</span>] = <span class="type">Set</span>(<span class="number">5</span>, <span class="number">10</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Array</span>.range(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">x: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Vector</span>.range(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">x: collection.immutable.<span class="type">Vector</span>[<span class="type">Int</span>] = <span class="type">Vector</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.range(<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.range(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = collection.mutable.<span class="type">ArrayBuffer</span>.range('a', 'd')</span><br><span class="line">x: scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Char</span>] = <span class="type">ArrayBuffer</span>(a, b, c)</span><br></pre></td></tr></table></figure></p>
-<p>也可以用tabulate方法实现填充集合<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.tabulate(<span class="number">5</span>)(_ + <span class="number">1</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.tabulate(<span class="number">5</span>)(_ + <span class="number">2</span>)</span><br><span class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Vector</span>.tabulate(<span class="number">5</span>)(_ * <span class="number">2</span>)</span><br><span class="line">x: scala.collection.immutable.<span class="type">Vector</span>[<span class="type">Int</span>] = <span class="type">Vector</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>)</span><br></pre></td></tr></table></figure></p>
+        <h3 id="u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D"><a href="#u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D" class="headerlink" title="一、Elasticseach如何将数据存储到分片中"></a>一、Elasticseach如何将数据存储到分片中</h3><p>问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。</p>
+<p>数据存储到分片的过程是一定规则的，并不是随机发生的。</p>
+<p>规则：shard = hash(routing) % number_of_primary_shards</p>
+<p>Routing值可以是一个任意的字符串，默认情况下，它的值为存数数据对应文档 _id 值，也可以是用户自定义的值。Routing这个字符串通过一个hash的函数处理，并返回一个数值，然后再除以索引中主分片的数目，所得的余数作为主分片的编号，取值一般在0到number_of_primary_shards - 1的这个范围中。通过这种方法计算出该数据是存储到哪个分片中。</p>
+<p>正是这种路由机制，导致了主分片的个数为什么在索引建立之后不能修改。对已有索引主分片数目的修改直接会导致路由规则出现严重问题，部分数据将无法被检索。</p>
+<h3 id="u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92"><a href="#u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92" class="headerlink" title="二、主分片与复制分片如何交互"></a>二、主分片与复制分片如何交互</h3><p>为了说明这个问题，我用一个例子来说明。<br><img src="/images/es-shard-interaction1.png" alt="elasticsearch"><br>在上面这个例子中，有三个ES的node，其中每一个index中包含两个primary shard，每个primary shard拥有一个replica shard。下面从几种常见的数据操作来说明二者之间的交互情况。</p>
+<p>1、索引与删除一个文档<br><img src="/images/es-shard-interaction2.png" alt="elasticsearch"></p>
+<p>这两种过程均可以分为三个过程来描述：<br>阶段1：客户端发送了一个索引或者删除的请求给node 1。</p>
+<p>阶段2：node 1通过请求中文档的 _id 值判断出该文档应该被存储在shard 0 这个分片中，并且node 1知道shard 0的primary shard位于node 3这个节点上。因此node 1会把这个请求转发到node 3。</p>
+<p>阶段3：node 3在shard 0 的primary shard上执行请求。如果请求执行成功，它node 3将并行地将该请求发给shard 0的其余所有replica shard上，也就是存在于node 1和node 2中的replica shard。如果所有的replica shard都成功地执行了请求，那么将会向node 3回复一个成功确认，当node 3收到了所有replica shard的确认信息后，则最后向用户返回一个Success的消息。</p>
+<p>2、更新一个文档<br><img src="/images/es-shard-interaction3.png" alt="elasticsearch"><br>该过程可以分为四个阶段来描述：<br>阶段1：客户端向node 1发送一个文档更新的请求。</p>
+<p>阶段2：同样的node 1通过请求中文档的 _id 值判断出该文档应该被存储在shard 0 这个分片中，并且node 1知道shard 0的primary shard位于node 3这个节点上。因此node 1会把这个请求转发到node 3。</p>
+<p>阶段3：node 3从文档所在的primary shard中获取到它的JSON文件，并修改其中的_source中的内容，之后再重新索引该文档到其primary shard中。</p>
+<p>阶段4：如果node 3成功地更新了文档，node 3将会把文档新的版本并行地发给其余所有的replica shard所在node中。这些node也同样重新索引新版本的文档，执行后则向node 3确认成功，当node 3接收到所有的成功确认之后，再向客户端发送一个更新成功的信息。</p>
+<p>3、检索文档<br>CRUD这些操作的过程中一般都是结合一些唯一的标记例如：_index，_type，以及routing的值，这就意味在执行操作的时候都是确切的知道文档在集群中的哪个node中，哪个shard中。</p>
+<p>而检索过程往往需要更多的执行模式，因为我们并不清楚所要检索的文档具体位置所在， 它们可能存在于ES集群中个任何位置。因此，一般情况下，检索的执行不得不去询问index中的每一个shard。</p>
+<p>但是，找到所有匹配检索的文档仅仅只是检索过程的一半，在向客户端返回一个结果列表之前，必须将各个shard发回的小片的检索结果，拼接成一个大的已排好序的汇总结果列表。正因为这个原因，检索的过程将分为查询阶段与获取阶段（Query Phase and Fetch Phase）。</p>
+<p>Query Phase<br>在最初的查询过程中，查询请求会广播到index中的每一个primary shard和replica shard中，每一个shard会在本地执行检索，并建立一个优先级队列（priority queue）。这个优先级队列是一个根据文档匹配度这个指标所排序列表，列表的长度由分页参数from和size两个参数所决定。例如：<br><img src="/images/es-shard-interaction4.png" alt="elasticsearch"></p>
+<p>下面从一个例子中说明这个过程：</p>
+<p><img src="/images/es-shard-interaction5.png" alt="elasticsearch"><br>Query Phase阶段可以再细分成3个小的子阶段：</p>
+<p>子阶段1：客户端发送一个检索的请求给node 3，此时node 3会创建一个空的优先级队列并且配置好分页参数from与size。</p>
+<p>子阶段2：node 3将检索请求发送给该index中个每一个shard（这里的每一个意思是无论它是primary还是replica，它们的组合可以构成一个完整的index数据）。每个shard在本地执行检索，并将结果添加到本地优先级队列中。</p>
+<p>子阶段3：每个shard返回本地优先级序列中所记录的_id与sort值，并发送node 3。Node 3将这些值合并到自己的本地的优先级队列中，并做全局的排序。</p>
+<p>Fetch Phase<br>Query Phase主要定位了所要检索数据的具体位置，但是我们还必须取回它们才能完成整个检索过程。而Fetch Phase阶段的任务就是将这些定位好的数据内容取回并返回给客户端。</p>
+<p>同样也用一个例子来说明这个过程：<br><img src="/images/es-shard-interaction6.png" alt="elasticsearch"></p>
+<p>Fetch Phase过程可以分为三个子过程来描述：</p>
+<p>子阶段1：node 3获取了所有待检索数据的定位之后，发送一个mget的请求给与数据相关的shard。</p>
+<p>子阶段2：每个收到node 3的get请求的shard将读取相关文档_source中的内容，并将它们返回给node 3。</p>
+<p>子阶段3：当node 3获取到了所有shard返回的文档后，node 3将它们合并成一条汇总的结果，返回给客户端。</p>
 
       
     </div>
@@ -326,7 +369,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/scala/" rel="tag">#scala</a>
+            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
           
         </div>
       
@@ -335,17 +378,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/03/19/scala-note-2/" rel="next" title="scala学习笔记(二)">
-                <i class="fa fa-chevron-left"></i> scala学习笔记(二)
+              <a href="/2016/09/28/hbase-rit/" rel="next" title="hbase中的RIT的那些事">
+                <i class="fa fa-chevron-left"></i> hbase中的RIT的那些事
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/27/es-flush-vs-refresh/" rel="prev" title="elasticsearch中的refresh和flush区别">
-                elasticsearch中的refresh和flush区别 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -360,10 +399,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/07/10/scala-note-3/"
-     data-title="scala学习笔记(三)"
+        <div class="ds-share flat" data-thread-key="2017/04/27/es-shard-interaction/"
+     data-title="Elasticsearch 分片交互过程详解"
      data-content=""
-     data-url="https://blog.djstudy.net/2016/07/10/scala-note-3/">
+     data-url="https://blog.djstudy.net/2017/04/27/es-shard-interaction/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -391,8 +430,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/07/10/scala-note-3/"
-           data-title="scala学习笔记(三)" data-url="https://blog.djstudy.net/2016/07/10/scala-note-3/">
+      <div class="ds-thread" data-thread-key="2017/04/27/es-shard-interaction/"
+           data-title="Elasticsearch 分片交互过程详解" data-url="https://blog.djstudy.net/2017/04/27/es-shard-interaction/">
       </div>
     
   </div>
@@ -523,7 +562,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570"><span class="nav-number">1.</span> <span class="nav-text">如何使用 scala 的range 函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D"><span class="nav-number">1.</span> <span class="nav-text">一、Elasticseach如何将数据存储到分片中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92"><span class="nav-number">2.</span> <span class="nav-text">二、主分片与复制分片如何交互</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

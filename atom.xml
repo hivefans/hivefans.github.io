@@ -4,7 +4,7 @@
   <subtitle><![CDATA[环境不会改变，解决之道在于改变自己。]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="https://blog.djstudy.net/"/>
-  <updated>2016-09-28T04:01:22.000Z</updated>
+  <updated>2017-04-27T10:17:57.000Z</updated>
   <id>https://blog.djstudy.net/</id>
   
   <author>
@@ -13,6 +13,52 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Elasticsearch 分片交互过程详解]]></title>
+    <link href="https://blog.djstudy.net/2017/04/27/es-shard-interaction/"/>
+    <id>https://blog.djstudy.net/2017/04/27/es-shard-interaction/</id>
+    <published>2017-04-27T05:03:47.000Z</published>
+    <updated>2017-04-27T10:17:57.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D"><a href="#u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D" class="headerlink" title="一、Elasticseach如何将数据存储到分片中"></a>一、Elasticseach如何将数据存储到分片中</h3><p>问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。</p>
+<p>数据存储到分片的过程是一定规则的，并不是随机发生的。</p>
+<p>规则：shard = hash(routing) % number_of_primary_shards</p>
+<p>Routing值可以是一个任意的字符串，默认情况下，它的值为存数数据对应文档 _id 值，也可以是用户自定义的值。Routing这个字符串通过一个hash的函数处理，并返回一个数值，然后再除以索引中主分片的数目，所得的余数作为主分片的编号，取值一般在0到number_of_primary_shards - 1的这个范围中。通过这种方法计算出该数据是存储到哪个分片中。</p>
+<p>正是这种路由机制，导致了主分片的个数为什么在索引建立之后不能修改。对已有索引主分片数目的修改直接会导致路由规则出现严重问题，部分数据将无法被检索。</p>
+<h3 id="u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92"><a href="#u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92" class="headerlink" title="二、主分片与复制分片如何交互"></a>二、主分片与复制分片如何交互</h3><p>为了说明这个问题，我用一个例子来说明。<br><img src="/images/es-shard-interaction1.png" alt="elasticsearch"><br>在上面这个例子中，有三个ES的node，其中每一个index中包含两个primary shard，每个primary shard拥有一个replica shard。下面从几种常见的数据操作来说明二者之间的交互情况。</p>
+<p>1、索引与删除一个文档<br><img src="/images/es-shard-interaction2.png" alt="elasticsearch"></p>
+<p>这两种过程均可以分为三个过程来描述：<br>阶段1：客户端发送了一个索引或者删除的请求给node 1。</p>
+<p>阶段2：node 1通过请求中文档的 _id 值判断出该文档应该被存储在shard 0 这个分片中，并且node 1知道shard 0的primary shard位于node 3这个节点上。因此node 1会把这个请求转发到node 3。</p>
+<p>阶段3：node 3在shard 0 的primary shard上执行请求。如果请求执行成功，它node 3将并行地将该请求发给shard 0的其余所有replica shard上，也就是存在于node 1和node 2中的replica shard。如果所有的replica shard都成功地执行了请求，那么将会向node 3回复一个成功确认，当node 3收到了所有replica shard的确认信息后，则最后向用户返回一个Success的消息。</p>
+<p>2、更新一个文档<br><img src="/images/es-shard-interaction3.png" alt="elasticsearch"><br>该过程可以分为四个阶段来描述：<br>阶段1：客户端向node 1发送一个文档更新的请求。</p>
+<p>阶段2：同样的node 1通过请求中文档的 _id 值判断出该文档应该被存储在shard 0 这个分片中，并且node 1知道shard 0的primary shard位于node 3这个节点上。因此node 1会把这个请求转发到node 3。</p>
+<p>阶段3：node 3从文档所在的primary shard中获取到它的JSON文件，并修改其中的_source中的内容，之后再重新索引该文档到其primary shard中。</p>
+<p>阶段4：如果node 3成功地更新了文档，node 3将会把文档新的版本并行地发给其余所有的replica shard所在node中。这些node也同样重新索引新版本的文档，执行后则向node 3确认成功，当node 3接收到所有的成功确认之后，再向客户端发送一个更新成功的信息。</p>
+<p>3、检索文档<br>CRUD这些操作的过程中一般都是结合一些唯一的标记例如：_index，_type，以及routing的值，这就意味在执行操作的时候都是确切的知道文档在集群中的哪个node中，哪个shard中。</p>
+<p>而检索过程往往需要更多的执行模式，因为我们并不清楚所要检索的文档具体位置所在， 它们可能存在于ES集群中个任何位置。因此，一般情况下，检索的执行不得不去询问index中的每一个shard。</p>
+<p>但是，找到所有匹配检索的文档仅仅只是检索过程的一半，在向客户端返回一个结果列表之前，必须将各个shard发回的小片的检索结果，拼接成一个大的已排好序的汇总结果列表。正因为这个原因，检索的过程将分为查询阶段与获取阶段（Query Phase and Fetch Phase）。</p>
+<p>Query Phase<br>在最初的查询过程中，查询请求会广播到index中的每一个primary shard和replica shard中，每一个shard会在本地执行检索，并建立一个优先级队列（priority queue）。这个优先级队列是一个根据文档匹配度这个指标所排序列表，列表的长度由分页参数from和size两个参数所决定。例如：<br><img src="/images/es-shard-interaction4.png" alt="elasticsearch"></p>
+<p>下面从一个例子中说明这个过程：</p>
+<p><img src="/images/es-shard-interaction5.png" alt="elasticsearch"><br>Query Phase阶段可以再细分成3个小的子阶段：</p>
+<p>子阶段1：客户端发送一个检索的请求给node 3，此时node 3会创建一个空的优先级队列并且配置好分页参数from与size。</p>
+<p>子阶段2：node 3将检索请求发送给该index中个每一个shard（这里的每一个意思是无论它是primary还是replica，它们的组合可以构成一个完整的index数据）。每个shard在本地执行检索，并将结果添加到本地优先级队列中。</p>
+<p>子阶段3：每个shard返回本地优先级序列中所记录的_id与sort值，并发送node 3。Node 3将这些值合并到自己的本地的优先级队列中，并做全局的排序。</p>
+<p>Fetch Phase<br>Query Phase主要定位了所要检索数据的具体位置，但是我们还必须取回它们才能完成整个检索过程。而Fetch Phase阶段的任务就是将这些定位好的数据内容取回并返回给客户端。</p>
+<p>同样也用一个例子来说明这个过程：<br><img src="/images/es-shard-interaction6.png" alt="elasticsearch"></p>
+<p>Fetch Phase过程可以分为三个子过程来描述：</p>
+<p>子阶段1：node 3获取了所有待检索数据的定位之后，发送一个mget的请求给与数据相关的shard。</p>
+<p>子阶段2：每个收到node 3的get请求的shard将读取相关文档_source中的内容，并将它们返回给node 3。</p>
+<p>子阶段3：当node 3获取到了所有shard返回的文档后，node 3将它们合并成一条汇总的结果，返回给客户端。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D"><a href="#u4E00_u3001Elasticseach_u5982_u]]>
+    </summary>
+    
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/tags/elasticsearch/"/>
+    
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/categories/elasticsearch/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[hbase中的RIT的那些事]]></title>
