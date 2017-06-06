@@ -323,7 +323,7 @@
       
         
           
-          openresty配置12345678910111213141516log_format  main  &apos;$remote_addr | [$time_iso8601] | &quot;$request&quot; | &apos; &apos;$status | $body_bytes_sent | &quot;$http_referer&quot;  | &apos; &apos;&quot;$http_user_agent&quot; | &quot;$http_x_forwarded_for&quot; |  &quot;$request_body&quot;&apos;;server &#123;             listen       80;          
+          openresty配置放到包含fastcgi_pass或proxy_pass的Location里面1234567891011121314log_format  main  &apos;$remote_addr | [$time_iso8601] | &quot;$request&quot; | &apos; &apos;$status | $body_bytes_sent | &quot;$http_referer&quot;  | &apos; &apos;&quot;$http_user_agent&quot; | &quot;$http_x_forwarded_for&quot; |  &quot;$request_body&quot;&apos;;server &#123;     
           ...
 
           <div class="post-more-link text-center">
