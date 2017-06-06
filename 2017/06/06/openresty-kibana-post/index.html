@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark,ha," />
+  <meta name="keywords" content="elasticsearch," />
 
 
 
@@ -59,19 +59,16 @@
 
 
 
-<meta name="description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
+<meta name="description" content="openresty配置12345678910111213141516log_format  main  &amp;apos;$remote_addr | [$time_iso8601] | &amp;quot;$request&amp;quot; | &amp;apos; &amp;apos;$status | $body_bytes_sent | &amp;quot;$http_referer&amp;quot;  | &amp;apos; &amp;apos;&amp;q">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark Standalone模式HA环境搭建">
-<meta property="og:url" content="https://blog.djstudy.net/2016/01/24/spark-ha/index.html">
+<meta property="og:title" content="使用openresty获取kibana查询post参数">
+<meta property="og:url" content="https://blog.djstudy.net/2017/06/06/openresty-kibana-post/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
-<meta property="og:updated_time" content="2016-01-24T08:13:04.000Z">
+<meta property="og:description" content="openresty配置12345678910111213141516log_format  main  &amp;apos;$remote_addr | [$time_iso8601] | &amp;quot;$request&amp;quot; | &amp;apos; &amp;apos;$status | $body_bytes_sent | &amp;quot;$http_referer&amp;quot;  | &amp;apos; &amp;apos;&amp;q">
+<meta property="og:updated_time" content="2017-06-06T02:27:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark Standalone模式HA环境搭建">
-<meta name="twitter:description" content="Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS=&quot;-Dspark.deploy.recoveryMode=ZOOKEEPER -Ds">
+<meta name="twitter:title" content="使用openresty获取kibana查询post参数">
+<meta name="twitter:description" content="openresty配置12345678910111213141516log_format  main  &amp;apos;$remote_addr | [$time_iso8601] | &amp;quot;$request&amp;quot; | &amp;apos; &amp;apos;$status | $body_bytes_sent | &amp;quot;$http_referer&amp;quot;  | &amp;apos; &amp;apos;&amp;q">
 
 
 
@@ -89,7 +86,7 @@
   };
 </script>
 
-  <title> Spark Standalone模式HA环境搭建 | 东杰书屋 </title>
+  <title> 使用openresty获取kibana查询post参数 | 东杰书屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +246,7 @@
             
             
               
-                Spark Standalone模式HA环境搭建
+                使用openresty获取kibana查询post参数
               
             
           </h1>
@@ -261,8 +258,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T16:10:30+08:00" content="2016-01-24">
-              2016-01-24
+            <time itemprop="dateCreated" datetime="2017-06-06T10:23:11+08:00" content="2017-06-06">
+              2017-06-06
             </time>
           </span>
 
@@ -275,8 +272,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
                   </a>
                 </span>
 
@@ -291,8 +288,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/01/24/spark-ha/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-ha/" itemprop="commentsCount"></span>
+                <a href="/2017/06/06/openresty-kibana-post/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/06/openresty-kibana-post/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -318,10 +315,7 @@
       
 
       
-        <p>Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA<br>本篇只介绍基于ZK的HA环境搭建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ SPARK_HOME/conf/spark-env.sh</span><br></pre></td></tr></table></figure></p>
-<p>添加SPARK_DAEMON_JAVA_OPTS的配置信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> SPARK_DAEMON_JAVA_OPTS=<span class="string">"-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop000:2181,hadoop001:2181,hadoop002:2181 -Dspark.deploy.zookeeper.dir=/spark"</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A"><a href="#u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A" class="headerlink" title="配置参数说明："></a>配置参数说明：</h3><p>spark.deploy.recoveryMode: 设置恢复模式为zk，默认为NONE<br>spark.deploy.zookeeper.url: 设置ZK集群的url，形如：192.168.1.100:2181,192.168.1.101:2181<br>spark.deploy.zookeeper.dir: 设置zk保存恢复状态的路径，默认为spark<br>实现HA的原理：利用ZK的Leader Election机制，选择一个Active状态的Master，其余的Master均为Standby状态；当Active状态的Master死掉后，通过ZK选举一个Standby状态的Master为Active状态。</p>
-<h3 id="u6D4B_u8BD5_u6B65_u9AA4_uFF1A"><a href="#u6D4B_u8BD5_u6B65_u9AA4_uFF1A" class="headerlink" title="测试步骤："></a>测试步骤：</h3><p>启动standalone集群后，在各个Standby节点上启动start-master.sh，jps观察是否已经正确启动Master进程；<br>将Active状态的Master kill掉，观察8080端口对应的页面，发现已经从Standby状态中选举出一个当作Active状态。<br>采用ZK后由于会有多个Master，在提交任务时不知道哪个为Active状态的Master，可以采用如下的方式提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spark-shell –master spark://hadoop000:7077,hadoop001:7077,hadoop002:7077 –executor-memory 2g –total-executor-cores 1</span><br><span class="line">详细信息参见官方文档：http://spark.apache.org/docs/latest/spark-standalone.html<span class="comment">#standby-masters-with-zookeeper</span></span><br></pre></td></tr></table></figure></p>
+        <h3 id="openresty_u914D_u7F6E"><a href="#openresty_u914D_u7F6E" class="headerlink" title="openresty配置"></a>openresty配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">log_format  main  &apos;$remote_addr | [$time_iso8601] | &quot;$request&quot; | &apos; &apos;$status | $body_bytes_sent | &quot;$http_referer&quot;  | &apos; &apos;&quot;$http_user_agent&quot; | &quot;$http_x_forwarded_for&quot; |  &quot;$request_body&quot;&apos;;</span><br><span class="line">server &#123;</span><br><span class="line">             listen       80;</span><br><span class="line">             server_name  esclient.test.net;</span><br><span class="line">             location / &#123;</span><br><span class="line">                proxy_pass http://192.168.1.47:5601;</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Connection &quot;&quot;;</span><br><span class="line">                proxy_connect_timeout 5s;</span><br><span class="line">                proxy_read_timeout 10s;</span><br><span class="line">                access_log /usr/local/openresty/nginx/logs/kibana.access.log main;</span><br><span class="line">                lua_need_request_body on;</span><br><span class="line">                content_by_lua &apos;local s = ngx.var.request_body&apos;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -331,9 +325,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag">#spark</a>
-          
-            <a href="/tags/ha/" rel="tag">#ha</a>
+            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
           
         </div>
       
@@ -342,17 +334,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/01/24/spark-on-yarn/" rel="next" title="spark on yarn">
-                <i class="fa fa-chevron-left"></i> spark on yarn
+              <a href="/2017/04/27/es-shard-interaction/" rel="next" title="Elasticsearch 分片交互过程详解">
+                <i class="fa fa-chevron-left"></i> Elasticsearch 分片交互过程详解
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/01/24/spark-convert-text-parquet/" rel="prev" title="将 Spark 中的文本转换为 Parquet 以提升性能">
-                将 Spark 中的文本转换为 Parquet 以提升性能 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -367,10 +355,10 @@
 
     <div class="post-spread">
       
-        <div class="ds-share flat" data-thread-key="2016/01/24/spark-ha/"
-     data-title="Spark Standalone模式HA环境搭建"
+        <div class="ds-share flat" data-thread-key="2017/06/06/openresty-kibana-post/"
+     data-title="使用openresty获取kibana查询post参数"
      data-content=""
-     data-url="https://blog.djstudy.net/2016/01/24/spark-ha/">
+     data-url="https://blog.djstudy.net/2017/06/06/openresty-kibana-post/">
   <div class="ds-share-inline">
     <ul  class="ds-share-icons-16">
 
@@ -398,8 +386,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/01/24/spark-ha/"
-           data-title="Spark Standalone模式HA环境搭建" data-url="https://blog.djstudy.net/2016/01/24/spark-ha/">
+      <div class="ds-thread" data-thread-key="2017/06/06/openresty-kibana-post/"
+           data-title="使用openresty获取kibana查询post参数" data-url="https://blog.djstudy.net/2017/06/06/openresty-kibana-post/">
       </div>
     
   </div>
@@ -530,7 +518,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A"><span class="nav-number">1.</span> <span class="nav-text">配置参数说明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6D4B_u8BD5_u6B65_u9AA4_uFF1A"><span class="nav-number">2.</span> <span class="nav-text">测试步骤：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#openresty_u914D_u7F6E"><span class="nav-number">1.</span> <span class="nav-text">openresty配置</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.djstudy.net/2017/06/06/openresty-kibana-post/</loc>
+    <lastmod>2017-06-06T02:27:57.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.djstudy.net/2017/04/27/es-shard-interaction/</loc>
     <lastmod>2017-04-27T10:17:57.000Z</lastmod>
   </url>
