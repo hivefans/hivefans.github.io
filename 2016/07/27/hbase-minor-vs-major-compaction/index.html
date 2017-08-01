@@ -60,11 +60,13 @@
 
 
 <meta name="description" content="HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个">
+<meta name="keywords" content="hbase,compaction">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hbase 压缩合并中的minor与major区别">
 <meta property="og:url" content="https://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/index.html">
 <meta property="og:site_name" content="东杰书屋">
 <meta property="og:description" content="HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dl.iteye.com/upload/attachment/0083/0362/bd91b9a4-0a75-339e-b254-df98d8f26f8d.jpg">
 <meta property="og:image" content="http://dl.iteye.com/upload/attachment/0083/0398/eef9f643-c928-3029-82bb-e4d615ea2e89.jpg">
 <meta property="og:updated_time" content="2016-07-27T00:33:36.000Z">

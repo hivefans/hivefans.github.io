@@ -59,18 +59,14 @@
 
 
 
-<meta name="description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。
-数据存储到分片的过程是一定规则的，并不是随机发生的。
-规则：shard = hash(routing) % number_of_primary_shards
-Routing值可以是一个任意的字">
+<meta name="description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。 数据存储到分片的过程是一定规则的，并不是随机发生的。 规则：shard = hash(routing) % number_of_primary_shards Routing值可以是一个任意的字">
+<meta name="keywords" content="elasticsearch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Elasticsearch 分片交互过程详解">
 <meta property="og:url" content="https://blog.djstudy.net/2017/04/27/es-shard-interaction/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。
-数据存储到分片的过程是一定规则的，并不是随机发生的。
-规则：shard = hash(routing) % number_of_primary_shards
-Routing值可以是一个任意的字">
+<meta property="og:description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。 数据存储到分片的过程是一定规则的，并不是随机发生的。 规则：shard = hash(routing) % number_of_primary_shards Routing值可以是一个任意的字">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction1.png">
 <meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction2.png">
 <meta property="og:image" content="https://blog.djstudy.net/images/es-shard-interaction3.png">
@@ -80,10 +76,7 @@ Routing值可以是一个任意的字">
 <meta property="og:updated_time" content="2017-04-27T10:17:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Elasticsearch 分片交互过程详解">
-<meta name="twitter:description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。
-数据存储到分片的过程是一定规则的，并不是随机发生的。
-规则：shard = hash(routing) % number_of_primary_shards
-Routing值可以是一个任意的字">
+<meta name="twitter:description" content="一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。 数据存储到分片的过程是一定规则的，并不是随机发生的。 规则：shard = hash(routing) % number_of_primary_shards Routing值可以是一个任意的字">
 <meta name="twitter:image" content="https://blog.djstudy.net/images/es-shard-interaction1.png">
 
 

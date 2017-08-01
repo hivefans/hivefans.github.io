@@ -59,19 +59,18 @@
 
 
 
-<meta name="description" content="前言借用和董神的一段对话说下背景：
-shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
+<meta name="description" content="前言借用和董神的一段对话说下背景： shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
+<meta name="keywords" content="spark,shuffle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark Sort Based Shuffle内存分析">
 <meta property="og:url" content="https://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="前言借用和董神的一段对话说下背景：
-shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
+<meta property="og:description" content="前言借用和董神的一段对话说下背景： shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-01-27T12:00:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark Sort Based Shuffle内存分析">
-<meta name="twitter:description" content="前言借用和董神的一段对话说下背景：
-shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
+<meta name="twitter:description" content="前言借用和董神的一段对话说下背景： shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuff">
 
 
 
@@ -335,9 +334,9 @@ shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现�
 </blockquote>
 <p>会产生内存瓶颈的其实就是 org.apache.spark.util.collection.ExternalSorter。我们看看这个复杂的ExternalSorter都有哪些地方在占用内存：</p>
 <p>第一个地：</p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> map = <span class="keyword">new</span> <span class="type">PartitionedAppendOnlyMap</span>[<span class="type">K</span>, <span class="type">C</span>]</span><br></pre></td></tr></table></figure>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">var</span> map = <span class="keyword">new</span> <span class="type">PartitionedAppendOnlyMap</span>[<span class="type">K</span>, <span class="type">C</span>]</div></pre></td></tr></table></figure>
 <p>我们知道，数据都是先写内存，内存不够了，才写磁盘。这里的map就是那个放数据的内存了。</p>
-<p>这个PartitionedAppendOnlyMap内部维持了一个数组，是这样的：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">var</span> data = <span class="keyword">new</span> <span class="type">Array</span>[<span class="type">AnyRef</span>](<span class="number">2</span> * capacity)</span><br></pre></td></tr></table></figure></p>
+<p>这个PartitionedAppendOnlyMap内部维持了一个数组，是这样的：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">var</span> data = <span class="keyword">new</span> <span class="type">Array</span>[<span class="type">AnyRef</span>](<span class="number">2</span> * capacity)</div></pre></td></tr></table></figure></p>
 <p>也就是他消耗的并不是Storage的内存，所谓Storage内存，指的是由blockManager管理起来的内存。</p>
 <p>PartitionedAppendOnlyMap 放不下，要落地，那么不能硬生生的写磁盘，所以需要个buffer,然后把buffer再一次性写入磁盘文件。这个buffer是由参数</p>
 <p>spark.shuffle.file.buffer=32k<br>控制的。数据获取的过程中，序列化反序列化，也是需要空间的，所以Spark 对数量做了限制，通过如下参数控制：</p>

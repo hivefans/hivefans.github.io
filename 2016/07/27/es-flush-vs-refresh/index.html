@@ -60,11 +60,13 @@
 
 
 <meta name="description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
+<meta name="keywords" content="elasticsearch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="elasticsearch中的refresh和flush区别">
 <meta property="og:url" content="https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/index.html">
 <meta property="og:site_name" content="东杰书屋">
 <meta property="og:description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://blog.djstudy.net/images/es-refresh-flush.jpg">
 <meta property="og:updated_time" content="2016-07-26T23:23:03.000Z">
 <meta name="twitter:card" content="summary">

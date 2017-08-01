@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.djstudy.net/about/index.html</loc>
+    <lastmod>2017-08-01T09:25:44.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.djstudy.net/2017/06/06/openresty-kibana-post/</loc>
     <lastmod>2017-06-06T03:04:35.000Z</lastmod>
   </url>
@@ -19,11 +24,6 @@
   <url>
     <loc>https://blog.djstudy.net/2016/09/21/comb-sort/</loc>
     <lastmod>2016-09-21T01:17:17.000Z</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/about/index.html</loc>
-    <lastmod>2016-09-20T10:14:23.000Z</lastmod>
   </url>
   
   <url>
