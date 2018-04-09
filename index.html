@@ -1,1800 +1,1397 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html lang=zh>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
-
-
-
-
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="spark, hadoop" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
-
-
-
-
-
-
-<meta property="og:type" content="website">
+    <meta charset="utf-8">
+    
+    <title>东杰书屋</title>
+    
+    
+        <meta name="keywords" content="东杰书屋" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="website">
 <meta property="og:title" content="东杰书屋">
 <meta property="og:url" content="https://blog.djstudy.net/index.html">
 <meta property="og:site_name" content="东杰书屋">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="东杰书屋">
+    
 
+    
+        <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
+    
 
+    
+        <link rel="icon" href="/favicon.ico" />
+    
 
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 6242999463699285000,
-      author: 'hivefans'
-    }
-  };
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?05207dc6d0c785fb39a80bb5af7c3d8a# enter Baidu Analytics hash key";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 </script>
 
-  <title> spark, hadoop - 东杰书屋 -  </title>
+    
+
+
+    
+        <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">东杰书屋</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
 
-  
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?05207dc6d0c785fb39a80bb5af7c3d8a";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">东杰书屋</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">环境不会改变，解决之道在于改变自己。</p>
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
 </div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Entradas',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
 </div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu ">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404.html" rel="section">
-            
-              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
-            
-            公益404
-          </a>
-        </li>
-      
-
-      
-      
-      
-    </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-  <section id="posts" class="posts-expand">
-
-    
-
-    
-    
-      
-      
-        
-        
-        
-          
-
-  
-  
-
-  
-  
-  
-    
-  
-
-  <article class="post post-type-normal  post-sticky" itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                  <span class="post-sticky-flag" title="置顶">
-                    <i class="fa fa-thumb-tack"></i>
-                  </span>
-                
-                <a class="post-title-link" href="/2016/01/27/spark-sort-shuffle-analyse/" itemprop="url">
-                  Spark Sort Based Shuffle内存分析
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-27T17:51:18+08:00" content="2016-01-27">
-              2016-01-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/27/spark-sort-shuffle-analyse/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/27/spark-sort-shuffle-analyse/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言借用和董神的一段对话说下背景：
-shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuffle已经优化到头了。为了解决hash shuffle性能差的问题，又引入sort shuffle，完全借鉴mapreduce实现，每个map产生一个文件，彻底解决了扩展性问题目前Sort Based Shuffle 是作为默认Shuffle类型的。Shuffle 是一个很复杂的过程，任何一个环节都足
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/27/spark-sort-shuffle-analyse/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
-    <footer class="post-footer">
-    
-      
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-        
-      
-
-      
-    
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="outer">
             
             
-              
-                
-                <a class="post-title-link" href="/2017/06/06/openresty-kibana-post/" itemprop="url">
-                  使用openresty获取kibana查询post参数
-                </a>
-              
-            
-          </h1>
+                <aside id="sidebar">
+   
         
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-06-06T10:23:11+08:00" content="2017-06-06">
-              2017-06-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/06/06/openresty-kibana-post/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/06/openresty-kibana-post/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          openresty配置放到包含fastcgi_pass或proxy_pass的Location里面1234567891011121314log_format  main  &apos;$remote_addr | [$time_iso8601] | &quot;$request&quot; | &apos; &apos;$status | $body_bytes_sent | &quot;$http_referer&quot;  | &apos; &apos;&quot;$http_user_agent&quot; | &quot;$http_x_forwarded_for&quot; |  &quot;$request_body&quot;&apos;;server &#123;     
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/06/06/openresty-kibana-post/#more" rel="contents">
-              阅读全文 &raquo;
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>Categorias</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
             </a>
-          </div>
+        </h3>
         
-      
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            big data
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file"><a href="/2016/02/04/presto-parquet-airpal/">Presto, Parquet & Airpal</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            distribution 
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/02/19/service-discovery-consul-and-consul-template/">Service discovery with consul and consul-template</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            elasticsearch
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/es-flush-vs-refresh/">elasticsearch中的refresh和flush区别</a></li>  <li class="file"><a href="/2017/04/27/es-shard-interaction/">Elasticsearch 分片交互过程详解</a></li>  <li class="file"><a href="/2016/02/27/how-many-shards-index/">Optimizing Elasticsearch-How Many Shards per Index</a></li>  <li class="file"><a href="/2017/06/06/openresty-kibana-post/">使用openresty获取kibana查询post参数</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            hadoop
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            scala
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            spark
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            数据结构与算法
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/09/21/comb-sort/">comb sort(梳排序)</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main">
+        <article id="post-openresty-kibana-post" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/elasticsearch/">elasticsearch</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/04/27/es-shard-interaction/" itemprop="url">
-                  Elasticsearch 分片交互过程详解
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-04-27T13:03:47+08:00" content="2017-04-27">
-              2017-04-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/04/27/es-shard-interaction/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/27/es-shard-interaction/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一、Elasticseach如何将数据存储到分片中问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。
-数据存储到分片的过程是一定规则的，并不是随机发生的。
-规则：shard = hash(routing) % number_of_primary_shards
-Routing值可以是一个任意的字符串，默认情况下，它的值为存数数据对应文档 _id 值，也可以是用户自定义的值。Routing这个字符串通过一个hash的函数处理，并返回一个数值，然后再除以索引中主分片的数目，所得的余数作为主分片的编号，取值一般在0到number_of_primary_shards - 1的这个范围中。通过这种方
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/04/27/es-shard-interaction/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/elasticsearch/">elasticsearch</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/28/hbase-rit/" itemprop="url">
-                  hbase中的RIT的那些事
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-28T11:53:10+08:00" content="2016-09-28">
-              2016-09-28
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/big-data/" itemprop="url" rel="index">
-                    <span itemprop="name">big data</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/28/hbase-rit/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/28/hbase-rit/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是肉眼看到的一个结果，为什么会处于RIT状态才是问题探索的根本，也是解决问题的关键。本文就基于hbase 0.98.9版本对RIT的工作机制以及实现原理进行普及性的介绍，同时在此基础上通过真实案例讲解如何正确合理地处理处于RIT状态的Region。一方面希望大家能够更好的了解RIT机制，另一方面希望通
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/28/hbase-rit/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/06/06/openresty-kibana-post/">
+            <time datetime="2017-06-06T02:23:11.000Z" itemprop="datePublished">2017-06-06</time>
+        </a>
     </div>
 
-    <footer class="post-footer">
-    
-      
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/21/comb-sort/" itemprop="url">
-                  comb sort(梳排序)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-21T09:06:53+08:00" content="2016-09-21">
-              2016-09-21
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/数据结构与算法/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构与算法</span>
-                  </a>
-                </span>
-
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/openresty-kibana-post.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/openresty-kibana-post.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/openresty-kibana-post.md'> History </a>
+                            </div>
+                        
+                    </div>
                 
                 
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/21/comb-sort/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/21/comb-sort/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/06/06/openresty-kibana-post/">使用openresty获取kibana查询post参数</a>
+        </h1>
     
 
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+            </header>
         
-          
-          Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting down tremendously.Worst case performance - O(n^2)
-C++1234567891011121314151617181920212223242526void comb_sort(int array[], int length)&#123;    int gap 
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/09/21/comb-sort/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
         
-      
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h3 id="openresty_u914D_u7F6E_u653E_u5230_u5305_u542Bfastcgi_pass_u6216proxy_pass_u7684Location_u91CC_u9762"><a href="#openresty_u914D_u7F6E_u653E_u5230_u5305_u542Bfastcgi_pass_u6216proxy_pass_u7684Location_u91CC_u9762" class="headerlink" title="openresty配置放到包含fastcgi_pass或proxy_pass的Location里面"></a>openresty配置放到包含fastcgi_pass或proxy_pass的Location里面</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">log_format  main  &apos;$remote_addr | [$time_iso8601] | &quot;$request&quot; | &apos; &apos;$status | $body_bytes_sent | &quot;$http_referer&quot;  | &apos; &apos;&quot;$http_user_agent&quot; | &quot;$http_x_forwarded_for&quot; |  &quot;$request_body&quot;&apos;;</div><div class="line">server &#123;</div><div class="line">             listen       80;</div><div class="line">             server_name  esclient.test.net;</div><div class="line">             location / &#123;</div><div class="line">                proxy_pass http://192.168.1.47:5601;</div><div class="line">                proxy_http_version 1.1;</div><div class="line">                proxy_set_header Connection &quot;&quot;;</div><div class="line">                proxy_connect_timeout 5s;</div><div class="line">                proxy_read_timeout 10s;</div><div class="line">                access_log /usr/local/openresty/nginx/logs/kibana.access.log main;</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<h3 id="u653E_u5230_u4EFB_u610FLocation_u91CC_u9762"><a href="#u653E_u5230_u4EFB_u610FLocation_u91CC_u9762" class="headerlink" title="放到任意Location里面"></a>放到任意Location里面</h3><p>Location里面加上如下语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">lua_need_request_body on;  </div><div class="line">content_by_lua &apos;local s = ngx.var.request_body&apos;;</div></pre></td></tr></table></figure>
+<h3 id="nginx__u76F4_u63A5_u5728_u914D_u7F6E_u6587_u7AE0_u4E2D_u8BBE_u7F6E_u65E5_u5FD7_u5206_u5272"><a href="#nginx__u76F4_u63A5_u5728_u914D_u7F6E_u6587_u7AE0_u4E2D_u8BBE_u7F6E_u65E5_u5FD7_u5206_u5272" class="headerlink" title="nginx 直接在配置文章中设置日志分割"></a>nginx 直接在配置文章中设置日志分割</h3><p>直接在nginx配置文件中，配置日志循环，而不需使用logrotate或配置cron任务。需要使用到$time_iso8601 内嵌变量来获取时间。$time_iso8601格式如下：2015-08-07T18:12:02+02:00。然后使用正则表达式来获取所需时间的数据。<br>按天分割日志</p>
+<p>使用下面的代码块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">if ($time_iso8601 ~ &quot;^(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)&quot;) &#123;</div><div class="line">    set $year $1;</div><div class="line">    set $month $2;</div><div class="line">    set $day $3;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">access_log /data/logs/nginx/www.ttlsa.com-$year-$month-$day-access.log;</div></pre></td></tr></table></figure></p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2017/06/06/openresty-kibana-post/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-es-shard-interaction" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/elasticsearch/">elasticsearch</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/27/hbase-minor-vs-major-compaction/" itemprop="url">
-                  hbase 压缩合并中的minor与major区别
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-27T08:23:59+08:00" content="2016-07-27">
-              2016-07-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/big-data/" itemprop="url" rel="index">
-                    <span itemprop="name">big data</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/27/hbase-minor-vs-major-compaction/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/27/hbase-minor-vs-major-compaction/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个大的storefile文件，直到合并的文件大到超过单个文件配置允许的最大值时会触发一次region的自动分割，即region split操作，将一个region平分成2个，具体过程以后再说，这里不再赘述。 
-合并操作有两种类型：轻量级的的minor compaction和重量级的major comp
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/27/hbase-minor-vs-major-compaction/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/elasticsearch/">elasticsearch</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/27/es-flush-vs-refresh/" itemprop="url">
-                  elasticsearch中的refresh和flush区别
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-27T07:18:40+08:00" content="2016-07-27">
-              2016-07-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/27/es-flush-vs-refresh/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/27/es-flush-vs-refresh/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（document）解析完成的segment写到filesystem cache之中，这样避免了比较损耗性能io操作，又可以使document可以被搜索。以上从index-buffer中取数据到filesystem cache中的过程叫做refresh。
-refresh操作可以通过API设置：POST /ind
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/27/es-flush-vs-refresh/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/04/27/es-shard-interaction/">
+            <time datetime="2017-04-27T05:03:47.000Z" itemprop="datePublished">2017-04-27</time>
+        </a>
     </div>
 
-    <footer class="post-footer">
-    
-      
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/10/scala-note-3/" itemprop="url">
-                  scala学习笔记(三)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-10T21:08:00+08:00" content="2016-07-10">
-              2016-07-10
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/scala/" itemprop="url" rel="index">
-                    <span itemprop="name">scala</span>
-                  </a>
-                </span>
-
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/es-shard-interaction.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/es-shard-interaction.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/es-shard-interaction.md'> History </a>
+                            </div>
+                        
+                    </div>
                 
                 
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/10/scala-note-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/10/scala-note-3/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2017/04/27/es-shard-interaction/">Elasticsearch 分片交互过程详解</a>
+        </h1>
     
 
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+            </header>
         
-          
-          如何使用 scala 的range 函数在 scala 应用中可以看到有不同的方法使用 range Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法1234567891011121314151617181920212223242526272829303132333435scala&gt; 1 to 10res0: scala.collection.immutable.Range.Inclusive = Range(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)scala&gt; 1 until 10res1: scala.collection.immutable.Range = Range(1, 2, 3, 4, 5, 6, 7, 8, 9
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/10/scala-note-3/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
         
-      
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h3 id="u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D"><a href="#u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D" class="headerlink" title="一、Elasticseach如何将数据存储到分片中"></a>一、Elasticseach如何将数据存储到分片中</h3><p>问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。</p>
+<p>数据存储到分片的过程是一定规则的，并不是随机发生的。</p>
+<p>规则：shard = hash(routing) % number_of_primary_shards</p>
+<p>Routing值可以是一个任意的字符串，默认情况下，它的值为存数数据对应文档 _id 值，也可以是用户自定义的值。Routing这个字符串通过一个hash的函数处理，并返回一个数值，然后再除以索引中主分片的数目，所得的余数作为主分片的编号，取值一般在0到number_of_primary_shards - 1的这个范围中。通过这种方法计算出该数据是存储到哪个分片中。</p>
+<p>正是这种路由机制，导致了主分片的个数为什么在索引建立之后不能修改。对已有索引主分片数目的修改直接会导致路由规则出现严重问题，部分数据将无法被检索。</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2017/04/27/es-shard-interaction/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-hbase-rit" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/big-data/">big data</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/19/scala-note-2/" itemprop="url">
-                  scala学习笔记(二)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-19T10:23:48+08:00" content="2016-03-19">
-              2016-03-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/scala/" itemprop="url" rel="index">
-                    <span itemprop="name">scala</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/19/scala-note-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/19/scala-note-2/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          scala访问修饰符包，类或对象的成员可以标记访问修饰符private和protected，如果我们不使用这两种关键字，那么访问将被默认设置为public。这些修饰 限制为成员的代码的某些区域访问。
-私有成员123456789class Outer &#123;   class Inner &#123;      private def f() &#123; println("f") &#125;      class InnerMost &#123;         f() // OK      &#125;   &#125;   (new Inner).f() // Error: f is not accessible&#125;
-
-在Scala中，访问 (new Inner).f() 
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/19/scala-note-2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/hbase/">hbase</a>, <a class="tag-link" href="/tags/rit/">rit</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/03/16/scala-note-1/" itemprop="url">
-                  scala学习笔记(一)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-16T16:05:41+08:00" content="2016-03-16">
-              2016-03-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/scala/" itemprop="url" rel="index">
-                    <span itemprop="name">scala</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/03/16/scala-note-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/16/scala-note-1/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          基础语法区分大小写 -  Scala是大小写敏感的，这意味着标识Hello 和 hello在Scala中会有不同的含义类名 - 对于所有的类名的第一个字母要大写。如果需要使用几个单词来构成一个类的名称，每个单词的第一个字母要大写。示例：class MyFirstScalaClass方法名称 - 所有的方法名称的第一个字母用小写。如果若干单词被用于构成方法的名称，则每个单词的第一个字母应大写。示例：def myMethodName()程序文件名 - 程序文件的名称应该与对象名称完全匹配。保存文件时，应该保存它使用的对象名称（记住Scala是区分大小写），并追加“.scala”为文件扩展名。 （如果文件名和对象名称不匹配，程序将无法编译）。
-示例: 假设“HelloWorld”是对象的名称。那么
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/16/scala-note-1/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/09/28/hbase-rit/">
+            <time datetime="2016-09-28T03:53:10.000Z" itemprop="datePublished">2016-09-28</time>
+        </a>
     </div>
 
-    <footer class="post-footer">
-    
-      
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/27/how-many-shards-index/" itemprop="url">
-                  Optimizing Elasticsearch-How Many Shards per Index
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-27T10:58:40+08:00" content="2016-02-27">
-              2016-02-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
-                  </a>
-                </span>
-
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/hbase-rit.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/hbase-rit.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/hbase-rit.md'> History </a>
+                            </div>
+                        
+                    </div>
                 
                 
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/02/27/how-many-shards-index/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/27/how-many-shards-index/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a>
+        </h1>
     
 
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+            </header>
         
-          
-          A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of choosing different values for the number of shards. Continue reading if you want to learn how to demystify and optimize your sharding strategy.
-Why Both
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/27/how-many-shards-index/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
         
-      
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是肉眼看到的一个结果，为什么会处于RIT状态才是问题探索的根本，也是解决问题的关键。本文就基于hbase 0.98.9版本对RIT的工作机制以及实现原理进行普及性的介绍，同时在此基础上通过真实案例讲解如何正确合理地处理处于RIT状态的Region。一方面希望大家能够更好的了解RIT机制，另一方面希望通过本文的学习之后可以不再’惧怕’RIT，正确认识处于RIT状态的Region。</p>
+<h2 id="Region-In-Trasition_u673A_u5236"><a href="#Region-In-Trasition_u673A_u5236" class="headerlink" title="Region-In-Trasition机制"></a>Region-In-Trasition机制</h2><p>从字面意思来看，Region-In-Transition说的是Region变迁机制，实际上是指在一次特定操作行为中Region状态的变迁，那这里就涉及这么几个问题：Region存在多少种状态？HBase有哪些操作会触发Region状态变迁？一次正常操作过程中Region状态变迁的完整流程是怎么样的？如果Region状态在变迁的过程中出现异常又会怎么样？</p>
+<h2 id="Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F"><a href="#Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F" class="headerlink" title="Region存在多少种状态？有哪些操作会触发状态变迁？"></a>Region存在多少种状态？有哪些操作会触发状态变迁？</h2><p>HBase在RegionState类中定义了Region的主要状态，主要有如下：<br><img src="http://hbasefly.com/wp-content/uploads/2016/09/r1.png" alt="rit state"><br>上图中实际上定义了四种会触发Region状态变迁的操作以及操作对应的Region状态。其中特定操作行为通常包括assign、unassign、split以及merge等，而很多其他操作都可以拆成unassign和assign，比如move操作实际上是先unassign再assign；</p>
+<h2 id="Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F"><a href="#Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F" class="headerlink" title="Region状态迁移是如何发生的？"></a>Region状态迁移是如何发生的？</h2><p>这个过程有点类似于状态机，也是通过事件驱动的。和Region状态一样，HBase还定义了很多事件（具体见EventType类）。此处以unassign过程为例说明事件是如何驱动状态变迁的，见下图：<br><img src="http://hbasefly.com/wp-content/uploads/2016/09/%E8%AE%A9.png" alt="hbase-move"></p>
+<p>上图所示是Region在close时的状态变迁图，其中红字部分就是发生的各种事件。可见，如果发生M_ZK_REGION_CLOSING事件，Region就会从OPEN状态迁移到PENDING_CLOSE状态，而发生RS_ZK_REGION_CLOSING事件，Region会从PENDING_CLOSE状态迁移到CLOSING状态，以此类推，发生RS_ZK_REGION_CLOSED事件，Region就会从CLOSING状态迁移到CLOSED状态。当然，除了这些事件之外，HBase还定义了很多其他事件，在此就不一一列举。截至到此，我们知道Region是一个有限状态机，那这个状态机是如何正常工作的，HMaster、RegionServer、Zookeeper又在状态机工作过程中扮演了什么角色，那就接着往下看～</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/09/28/hbase-rit/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-comb-sort" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/数据结构与算法/">数据结构与算法</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
-
-          </div>
-          
-          
-
-
-          
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/sort/">sort</a>
     </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/09/21/comb-sort/">
+            <time datetime="2016-09-21T01:06:53.000Z" itemprop="datePublished">2016-09-21</time>
+        </a>
+    </div>
 
-      
 
-      
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/comb-sort.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/comb-sort.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/comb-sort.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/09/21/comb-sort/">comb sort(梳排序)</a>
+        </h1>
+    
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/author.jpg"
-               alt="东杰" />
-          <p class="site-author-name" itemprop="name">东杰</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">18</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>Comb sort is a comparison sorting algorithm improves on Bubble sort. The basic idea is to eliminate turtles, or small values near the end of the list, since in a bubble sort these slow the sorting down tremendously.<br><img src="/images/comb_sort.png" alt="comb sort" title="梳排序"><br>Worst case performance - O(n^2)</p>
+<p>C++<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">comb_sort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> length)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">int</span> gap = length;</div><div class="line">    <span class="keyword">bool</span> swapped = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">while</span>((gap &gt; <span class="number">1</span>) || (swapped == <span class="literal">true</span>))</div><div class="line">    &#123;</div><div class="line">        gap /= <span class="number">1.25</span>;</div><div class="line">        <span class="keyword">if</span> (gap &lt; <span class="number">1</span>)</div><div class="line">        &#123;</div><div class="line">            gap = <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">        swapped = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">while</span> (i + gap &lt; length)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[i] &gt; <span class="built_in">array</span>[i + gap])</div><div class="line">            &#123;</div><div class="line">                <span class="keyword">int</span> temp = <span class="built_in">array</span>[i];</div><div class="line">                <span class="built_in">array</span>[i] = <span class="built_in">array</span>[i + gap];</div><div class="line">                <span class="built_in">array</span>[i + gap] = temp;</div><div class="line">                swapped = <span class="literal">true</span>;</div><div class="line">            &#125;</div><div class="line">            i++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">public</span> <span class="keyword">int</span>[] comb_sort(<span class="keyword">int</span>[] array) &#123;</div><div class="line">    <span class="keyword">int</span> gap = array.length;</div><div class="line">    <span class="keyword">boolean</span> swapped = <span class="keyword">true</span>;</div><div class="line">    <span class="keyword">while</span> ((gap &gt; <span class="number">1</span>) || (swapped == <span class="keyword">true</span>)) &#123;</div><div class="line">        gap /= <span class="number">1.25</span>;</div><div class="line">        <span class="keyword">if</span> (gap &lt; <span class="number">1</span>) &#123;</div><div class="line">            gap = <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">        swapped = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">while</span> (i + gap &lt; array.length) &#123;</div><div class="line">            <span class="keyword">if</span> (array[i] &gt; array[i + gap]) &#123;</div><div class="line">                <span class="keyword">int</span> temp = array[i];</div><div class="line">                array[i] = array[i + gap];</div><div class="line">                array[i + gap] = temp;</div><div class="line">                swapped = <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">            i++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> array;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Matlab<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">function array = comb_sort(array)</div><div class="line">    gap = numel(array);</div><div class="line">    swapped = true;</div><div class="line">    while (gap &gt; 1) || swapped</div><div class="line">        gap = floor(gap/1.25);</div><div class="line">        if gap &lt; 1</div><div class="line">            gap = 1;</div><div class="line">        end</div><div class="line">        i = 1;</div><div class="line">        swapped = false;</div><div class="line">        while (i+gap-1) &lt; numel(array)</div><div class="line">            if array(i) &gt; array(i+gap)</div><div class="line">                array([i i+gap]) = array([i+gap i]);</div><div class="line">                swapped = true;</div><div class="line">            end</div><div class="line">            i = i + 1;</div><div class="line">        end</div><div class="line">    end</div><div class="line">end</div></pre></td></tr></table></figure></p>
+<p>Python</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/09/21/comb-sort/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
 
-          <div class="site-state-item site-state-categories">
-            <a href="/categories">
-              <span class="site-state-item-count">7</span>
-              <span class="site-state-item-name">分类</span>
-              </a>
-          </div>
 
-          <div class="site-state-item site-state-tags">
-            <a href="/tags">
-              <span class="site-state-item-count">15</span>
-              <span class="site-state-item-name">标签</span>
-              </a>
-          </div>
 
+
+
+
+    
+        <article id="post-hbase-minor-vs-major-compaction" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/big-data/">big data</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/compaction/">compaction</a>, <a class="tag-link" href="/tags/hbase/">hbase</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/07/27/hbase-minor-vs-major-compaction/">
+            <time datetime="2016-07-27T00:23:59.000Z" itemprop="datePublished">2016-07-27</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/hbase-minor-vs-major-compaction.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/hbase-minor-vs-major-compaction.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/hbase-minor-vs-major-compaction.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个大的storefile文件，直到合并的文件大到超过单个文件配置允许的最大值时会触发一次region的自动分割，即region split操作，将一个region平分成2个，具体过程以后再说，这里不再赘述。 </p>
+<p>合并操作有两种类型：轻量级的的minor compaction和重量级的major compaction。<br>Minor compaction主要负责将符合条件的最早生成的几个storefile合并生成一个大的storefile文件，它不会删除被标记为”删除”的数据和以过期的数据，并且执行过一次minor合并操作后还会有多个storefile文件。<br>Minor compaction一次合并的文件数量由hbase.hstore.compaction.min(执行minor compaction的最少文件数)配置参数决定，该参数值的默认配置是3。该参数配置太大则会延迟触发minor合并操作，并且一次合并的文件数太多会占用更多的资源和执行更长的时间，这会带来不好的用户体验——毕竟hbase是要提供实时响应的。<br>在一次minor操作一次最多允许10个文件，通过hbase.hstore.compaction.max参数设置，任何一个大于hbase.hstore.compaction.min.size值的storefile文件将自动成为将要被合并的storefile，hbase.hstore.compaction.min.size属性值与被用来设置将memstore执行flush操作的配置属性hbase.hregion.memstore.flush.size的值(默认为128MB)相同。<br>Minor compaction操作有一个时间轴而的概念，那就是每次合并操作都是按storefile的生成时间有旧到新来合并文件的。如此下图所示： </p>
+<p><img src="http://dl.iteye.com/upload/attachment/0083/0362/bd91b9a4-0a75-339e-b254-df98d8f26f8d.jpg" alt="minor compaction"></p>
+<p>对比Minor compaction，Major compaction操作会把所有的storefile合并成一个单一的storefile文件，在文件合并期间系统会删除标记为”删除”标记的数据和过期失效的数据，同时会block所有客户端对该操作所属的region的请求直到合并完毕，最后删除已合并的storefile文件。 </p>
+<p>到底如何决定触发那种类型的major类型的compaction操作呢？这是在compaction检查执行时被自动决定的。compaction检查可以通过以下三种条件触发：<br>1、每当memstore被刷新到磁盘后触发；<br>2、通过hbase shell命令行调用或API调用触发；<br>3、通过一个叫CompacionChecker的后台线程触发。<br>每一个region都运行着一个这样的后台线程。CompacionChecker会定期的执行compation检查，时间间隔可以通过hbase.server.thread.wakefrequency来配置。<br>可以通过hbase shell命令行调用或majorCompact()API调用，从而强迫major合并操作执行，否则服务器会首先基于hbase.hregion.majorcompaction(24小时)的配置来检查是否要执行major合并操作。<br>由于Major compaction在执行期间会阻塞所有客户端的请求直到合并完毕，因此最好在服务器空闲时通过手工或脚本的方式调用执行，以提高客户体验。 </p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/07/27/hbase-minor-vs-major-compaction/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-es-flush-vs-refresh" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/elasticsearch/">elasticsearch</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/elasticsearch/">elasticsearch</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/07/27/es-flush-vs-refresh/">
+            <time datetime="2016-07-26T23:18:40.000Z" itemprop="datePublished">2016-07-27</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/es-flush-vs-refresh.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/es-flush-vs-refresh.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/es-flush-vs-refresh.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/07/27/es-flush-vs-refresh/">elasticsearch中的refresh和flush区别</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h3 id="elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush"><a href="#elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush" class="headerlink" title="elasticsearch中有两个比较重要的操作：refresh 和 flush"></a>elasticsearch中有两个比较重要的操作：refresh 和 flush</h3><h3 id="refresh_u64CD_u4F5C"><a href="#refresh_u64CD_u4F5C" class="headerlink" title="refresh操作"></a>refresh操作</h3><p>当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（document）解析完成的segment写到filesystem cache之中，这样避免了比较损耗性能io操作，又可以使document可以被搜索。以上从index-buffer中取数据到filesystem cache中的过程叫做refresh。</p>
+<p>refresh操作可以通过API设置：<br>POST /index/_settings<br>{“refresh_interval”: “10s”}<br>当我们进行大规模的创建索引操作的时候，最好将将refresh关闭。<br>POST /index/_settings<br>{“refresh_interval”: “-1″}<br>es默认的refresh间隔时间是1s，这也是为什么ES可以进行近乎实时的搜索。</p>
+<h3 id="flush_u64CD_u4F5C_u4E0Etranslog"><a href="#flush_u64CD_u4F5C_u4E0Etranslog" class="headerlink" title="flush操作与translog"></a>flush操作与translog</h3><p>我们可能已经意识到如果数据在filesystem cache之中是很有可能在意外的故障中丢失。这个时候就需要一种机制，可以将对es的操作记录下来，来确保当出现故障的时候，保留在filesystem的数据不会丢失，并在重启的时候可以从这个记录中将数据恢复过来。elasticsearch提供了translog来记录这些操作。<br>当向elasticsearch发送创建document索引请求的时候，document数据会先进入到index buffer之后，与此同时会将操作记录在translog之中，当发生refresh时（数据从index buffer中进入filesystem cache的过程）translog中的操作记录并不会被清除，而是当数据从filesystem cache中被写入磁盘之后才会将translog中清空。而从filesystem cache写入磁盘的过程就是flush。可能有点晕，我画了一个图帮大家理解这个过程：<br><img src="/images/es-refresh-flush.jpg" alt="elasticsearch"></p>
+<h3 id="u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A"><a href="#u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A" class="headerlink" title="总结一下translog的功能："></a>总结一下translog的功能：</h3><p>1.保证在filesystem cache中的数据不会因为elasticsearch重启或是发生意外故障的时候丢失。<br>2.当系统重启时会从translog中恢复之前记录的操作。<br>3.当对elasticsearch进行CRUD操作的时候，会先到translog之中进行查找，因为tranlog之中保存的是最新的数据。<br>4.translog的清除时间时进行flush操作之后（将数据从filesystem cache刷入disk之中）。<br>再总结一下flush操作的时间点：</p>
+<p>1.es的各个shard会每个30分钟进行一次flush操作。<br>2.当translog的数据达到某个上限的时候会进行一次flush操作。<br>有关于translog和flush的一些配置项：</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/07/27/es-flush-vs-refresh/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-scala-note-3" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/07/10/scala-note-3/">
+            <time datetime="2016-07-10T13:08:00.000Z" itemprop="datePublished">2016-07-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/scala-note-3.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/scala-note-3.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/scala-note-3.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+            
+        
+        
+            <h2 id="u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570"><a href="#u5982_u4F55_u4F7F_u7528_scala__u7684range__u51FD_u6570" class="headerlink" title="如何使用 scala 的range 函数"></a>如何使用 scala 的range 函数</h2><p>在 scala 应用中可以看到有不同的方法使用 range<br> Range 在常用的数据结构中经常用到，用于循环中的迭代元素，并且提供了几个强大的方法<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">scala&gt; <span class="number">1</span> to <span class="number">10</span></div><div class="line">res0: scala.collection.immutable.<span class="type">Range</span>.<span class="type">Inclusive</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="number">1</span> until <span class="number">10</span></div><div class="line">res1: scala.collection.immutable.<span class="type">Range</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="number">1</span> to <span class="number">10</span> by <span class="number">2</span></div><div class="line">res2: scala.collection.immutable.<span class="type">Range</span> = <span class="type">Range</span>(<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>)</div><div class="line"></div><div class="line">scala&gt; 'a' to 'c'</div><div class="line">res3: collection.immutable.<span class="type">NumericRange</span>.<span class="type">Inclusive</span>[<span class="type">Char</span>] = <span class="type">NumericRange</span>(a, b, c)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toList</div><div class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toArray</div><div class="line">x: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = (<span class="number">1</span> to <span class="number">10</span>).toSet</div><div class="line">x: scala.collection.immutable.<span class="type">Set</span>[<span class="type">Int</span>] = <span class="type">Set</span>(<span class="number">5</span>, <span class="number">10</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">4</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Array</span>.range(<span class="number">1</span>, <span class="number">10</span>)</div><div class="line">x: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Vector</span>.range(<span class="number">1</span>, <span class="number">10</span>)</div><div class="line">x: collection.immutable.<span class="type">Vector</span>[<span class="type">Int</span>] = <span class="type">Vector</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.range(<span class="number">1</span>, <span class="number">10</span>)</div><div class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.range(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>)</div><div class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = collection.mutable.<span class="type">ArrayBuffer</span>.range('a', 'd')</div><div class="line">x: scala.collection.mutable.<span class="type">ArrayBuffer</span>[<span class="type">Char</span>] = <span class="type">ArrayBuffer</span>(a, b, c)</div></pre></td></tr></table></figure></p>
+<p>也可以用tabulate方法实现填充集合<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.tabulate(<span class="number">5</span>)(_ + <span class="number">1</span>)</div><div class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">List</span>.tabulate(<span class="number">5</span>)(_ + <span class="number">2</span>)</div><div class="line">x: <span class="type">List</span>[<span class="type">Int</span>] = <span class="type">List</span>(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> x = <span class="type">Vector</span>.tabulate(<span class="number">5</span>)(_ * <span class="number">2</span>)</div><div class="line">x: scala.collection.immutable.<span class="type">Vector</span>[<span class="type">Int</span>] = <span class="type">Vector</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>)</div></pre></td></tr></table></figure></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-scala-note-2" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/03/19/scala-note-2/">
+            <time datetime="2016-03-19T02:23:48.000Z" itemprop="datePublished">2016-03-19</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/scala-note-2.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/scala-note-2.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/scala-note-2.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="scala_u8BBF_u95EE_u4FEE_u9970_u7B26"><a href="#scala_u8BBF_u95EE_u4FEE_u9970_u7B26" class="headerlink" title="scala访问修饰符"></a>scala访问修饰符</h2><p>包，类或对象的成员可以标记访问修饰符private和protected，如果我们不使用这两种关键字，那么访问将被默认设置为public。这些修饰 限制为成员的代码的某些区域访问。</p>
+<h3 id="u79C1_u6709_u6210_u5458"><a href="#u79C1_u6709_u6210_u5458" class="headerlink" title="私有成员"></a>私有成员</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Outer</span> </span>&#123;</div><div class="line">   <span class="class"><span class="keyword">class</span> <span class="title">Inner</span> </span>&#123;</div><div class="line">      <span class="keyword">private</span> <span class="function"><span class="keyword">def</span> <span class="title">f</span></span>() &#123; println(<span class="string">"f"</span>) &#125;</div><div class="line">      <span class="class"><span class="keyword">class</span> <span class="title">InnerMost</span> </span>&#123;</div><div class="line">         f() <span class="comment">// OK</span></div><div class="line">      &#125;</div><div class="line">   &#125;</div><div class="line">   (<span class="keyword">new</span> <span class="type">Inner</span>).f() <span class="comment">// Error: f is not accessible</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在Scala中，访问 (new Inner).f() 是非法的，因为f被声明为private内部类并且访问不是在内部类内。与此相反，到f第一接入类最内层是确定的，因为该访问包含在类内的主体。 Java将允许这两种访问，因为它可以让其内部类的外部类访问私有成员。</p>
+</blockquote>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/03/19/scala-note-2/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-scala-note-1" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/03/16/scala-note-1/">
+            <time datetime="2016-03-16T08:05:41.000Z" itemprop="datePublished">2016-03-16</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/scala-note-1.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/scala-note-1.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/scala-note-1.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="u57FA_u7840_u8BED_u6CD5"><a href="#u57FA_u7840_u8BED_u6CD5" class="headerlink" title="基础语法"></a>基础语法</h2><p>区分大小写 -  Scala是大小写敏感的，这意味着标识Hello 和 hello在Scala中会有不同的含义<br>类名 - 对于所有的类名的第一个字母要大写。<br>如果需要使用几个单词来构成一个类的名称，每个单词的第一个字母要大写。<br>示例：class MyFirstScalaClass<br>方法名称 - 所有的方法名称的第一个字母用小写。<br>如果若干单词被用于构成方法的名称，则每个单词的第一个字母应大写。<br>示例：def myMethodName()<br>程序文件名 - 程序文件的名称应该与对象名称完全匹配。<br>保存文件时，应该保存它使用的对象名称（记住Scala是区分大小写），并追加“.scala”为文件扩展名。 （如果文件名和对象名称不匹配，程序将无法编译）。</p>
+<p>示例: 假设“HelloWorld”是对象的名称。那么该文件应保存为’HelloWorld.scala“<br>def main(args: Array[String]) - Scala程序从main()方法开始处理，这是每一个Scala程序的强制程序入口部分。</p>
+<h2 id="u5B57_u7B26_u4E32"><a href="#u5B57_u7B26_u4E32" class="headerlink" title="字符串"></a>字符串</h2><p>Scala中单引号和双引号包裹是有区别的，单引号用于字符，双引号用于字符串。<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">scala&gt; <span class="keyword">val</span> c1 = 'c'</div><div class="line">c1: <span class="type">Char</span> = c</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> 字符<span class="number">2</span> = '杨'</div><div class="line">字符<span class="number">2</span>: <span class="type">Char</span> = 杨</div><div class="line"></div><div class="line">scala&gt; <span class="keyword">val</span> s1 = <span class="string">"scala基础语法"</span></div><div class="line">s1: <span class="type">String</span> = scala基础语法</div></pre></td></tr></table></figure></p>
+<h2 id="Scala_u4FEE_u9970_u7B26_3A"><a href="#Scala_u4FEE_u9970_u7B26_3A" class="headerlink" title="Scala修饰符:"></a>Scala修饰符:</h2><p>所有的Scala的组件需要名称。使用对象，类，变量和方法名被称为标识符。关键字不能用作标识符和标识是区分大小写的。Scala支持以下四种类型标识符：</p>
+<h3 id="u6587_u5B57_u6807_u8BC6_u7B26"><a href="#u6587_u5B57_u6807_u8BC6_u7B26" class="headerlink" title="文字标识符"></a>文字标识符</h3><p>字母数字标识符开始以字母或下划线，可以使用字母，数字或下划线。“$”字符在Scala中是保留关键字，标识符不能使用。以下是合法的字母标识符：</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/03/16/scala-note-1/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-how-many-shards-index" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/elasticsearch/">elasticsearch</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/elasticsearch/">elasticsearch</a>, <a class="tag-link" href="/tags/optimizing/">optimizing</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/02/27/how-many-shards-index/">
+            <time datetime="2016-02-27T02:58:40.000Z" itemprop="datePublished">2016-02-27</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/how-many-shards-index.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/how-many-shards-index.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/how-many-shards-index.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/02/27/how-many-shards-index/">Optimizing Elasticsearch-How Many Shards per Index</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of choosing different values for the number of shards. Continue reading if you want to learn how to demystify and optimize your sharding strategy.</p>
+<h3 id="Why_Bother_3F"><a href="#Why_Bother_3F" class="headerlink" title="Why Bother?"></a>Why Bother?</h3><p>This is an important topic, and many users are apprehensive as they approach it – and for good reason. A major mistake in shard allocation could cause scaling problems in a production environment that maintains an ever-growing dataset.</p>
+<p>On the other hand, we know that there is little Elasticsearch documentation on this topic. Most users just want answers – and they want specific answers, not vague number ranges and warnings for arbitrarily large numbers.</p>
+<p>Well, we have some answers. After covering a few definitions and some clarifications, we present several common use cases and provide our recommendations for each.</p>
+<h3 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h3><p>If you’re fairly new to Elasticsearch, it’s important that you understand the basic jargon and grasp the elemental concepts. </p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/02/27/how-many-shards-index/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <nav id="page-nav">
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Siguiente  &raquo;</a>
         </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/hivefans" target="_blank">
-                  
-                    <i class="fa fa-github"></i> GitHub
-                  
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/sdj1225" target="_blank">
-                  
-                    <i class="fa fa-globe"></i> weibo
-                  
-                </a>
-              </span>
-            
-          
+    
+</section>
         </div>
-
-        
-        
-
-        <div class="links-of-author motion-element">
-          
-            <p class="site-author-name">友情链接</p>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            东杰 &copy; 2018 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
             
-              <span class="links-of-author-item">
-                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
-              </span>
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
             
-              <span class="links-of-author-item">
-                <a href="http://slaytanic.blog.51cto.com/" target="_blank">实践检验</a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.adintellig.com/" target="_blank">Manny很忙</a>
-              </span>
-            
-          
         </div>
+    </div>
+</footer>
 
-      </section>
+        
 
-      
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
 
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy;  2016 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">东杰</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
-
-
-      </div>
-    </footer>
-
-    <div class="back-to-top"></div>
-  </div>
-
-  
-
-
-  
-
-
-
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
-
-
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"hivefans"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js"></script>
-      <script src="/js/src/hook-duoshuo.js"></script>
-    
-  
-
-
-
-
-
-  
-  
-
-  
-  
-
-
 </body>
 </html>

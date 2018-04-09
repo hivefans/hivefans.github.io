@@ -1,1323 +1,1182 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion">
+<!DOCTYPE html>
+<html lang=zh>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
-
-
-
-
-  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="spark, hadoop" />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
-
-
-
-
-
-
-<meta property="og:type" content="website">
+    <meta charset="utf-8">
+    
+    <title>东杰书屋</title>
+    
+    
+        <meta name="keywords" content="东杰书屋" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta property="og:type" content="website">
 <meta property="og:title" content="东杰书屋">
 <meta property="og:url" content="https://blog.djstudy.net/page/2/index.html">
 <meta property="og:site_name" content="东杰书屋">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="东杰书屋">
+    
 
+    
+        <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
+    
 
+    
+        <link rel="icon" href="/favicon.ico" />
+    
 
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 6242999463699285000,
-      author: 'hivefans'
-    }
-  };
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?05207dc6d0c785fb39a80bb5af7c3d8a# enter Baidu Analytics hash key";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
 </script>
 
-  <title> spark, hadoop - 东杰书屋 -  </title>
+    
+
+
+    
+        <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">东杰书屋</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
 
-  
-
-
-
-  <script type="text/javascript">
-    var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//hm.baidu.com/hm.js?05207dc6d0c785fb39a80bb5af7c3d8a";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">东杰书屋</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">环境不会改变，解决之道在于改变自己。</p>
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
 </div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Entradas',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
 
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
 </div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu ">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404.html" rel="section">
-            
-              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
-            
-            公益404
-          </a>
-        </li>
-      
-
-      
-      
-      
-    </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-  <section id="posts" class="posts-expand">
-
-    
-
-    
-    
-      
-      
-
-      
-    
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/19/service-discovery-consul-and-consul-template/" itemprop="url">
-                  Service discovery with consul and consul-template
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-19T11:27:26+08:00" content="2016-02-19">
-              2016-02-19
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/distribution/" itemprop="url" rel="index">
-                    <span itemprop="name">distribution </span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/02/19/service-discovery-consul-and-consul-template/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/19/service-discovery-consul-and-consul-template/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          I talked in the past about an “Ops Design Pattern: local haproxy talking to service layer”. I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the layer below it. So each webapp server has a local haproxy that talks to all API nodes it send
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/19/service-discovery-consul-and-consul-template/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
-    <footer class="post-footer">
-    
-      
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/02/04/presto-parquet-airpal/" itemprop="url">
-                  Presto, Parquet & Airpal
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-02-04T18:53:35+08:00" content="2016-02-04">
-              2016-02-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/big-data/" itemprop="url" rel="index">
-                    <span itemprop="name">big data</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/02/04/presto-parquet-airpal/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/04/presto-parquet-airpal/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          I came across a blog post from Brandon Harris recently where he discussed a credit card fraud detection project he’d been working on with a team at the University of Chicago. In the post he described how Presto and Parquet-formatted files had gone a long way to speeding up ad-hoc queries against a ~250GB dataset he’s working with.
-Presto was born a
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/02/04/presto-parquet-airpal/#more" rel="contents">
-              阅读全文 &raquo;
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>Categorias</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
             </a>
-          </div>
+        </h3>
         
-      
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            big data
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file"><a href="/2016/02/04/presto-parquet-airpal/">Presto, Parquet & Airpal</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            distribution 
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/02/19/service-discovery-consul-and-consul-template/">Service discovery with consul and consul-template</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            elasticsearch
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/es-flush-vs-refresh/">elasticsearch中的refresh和flush区别</a></li>  <li class="file"><a href="/2017/04/27/es-shard-interaction/">Elasticsearch 分片交互过程详解</a></li>  <li class="file"><a href="/2016/02/27/how-many-shards-index/">Optimizing Elasticsearch-How Many Shards per Index</a></li>  <li class="file"><a href="/2017/06/06/openresty-kibana-post/">使用openresty获取kibana查询post参数</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            hadoop
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            scala
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            spark
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            数据结构与算法
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/09/21/comb-sort/">comb sort(梳排序)</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main">
+        <article id="post-service-discovery-consul-and-consul-template" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/distribution/">distribution </a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/24/scala-rumen-biji/" itemprop="url">
-                  scala入门笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T19:09:23+08:00" content="2016-01-24">
-              2016-01-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/scala/" itemprop="url" rel="index">
-                    <span itemprop="name">scala</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/24/scala-rumen-biji/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/scala-rumen-biji/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Scala简介Scala 是一门多范式的编程语言, 由Martin Odersky 于2001年基于Funnel的工作开始设计Scala并于2004年正式发布Scala是一种纯面向对象的语言，每个值都是对象Scala是一门多范式编程语言, 支持命令交互式, 函数式, 面向对象编译型高性能语言(静态)与Java无缝兼容, 可以使用任何Java库
-代码风格
-函数和变量以小驼峰命名
-类和特质以大驼峰命名
-常量使用全大写命名
-一般使用两格缩进
-Scala大部分情况可以忽略语句末尾的分号Scala变量Scala中尽量避免使用变量, 函数式编程的一个重要特性是不可变性(不可变变量没有副作用)Scala是静态类型语言, 但是不需要显式的指明变量类型, Scala采用类型推断(Type Inference)
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/24/scala-rumen-biji/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/consul/">consul</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/24/spark-convert-text-parquet/" itemprop="url">
-                  将 Spark 中的文本转换为 Parquet 以提升性能
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T18:46:44+08:00" content="2016-01-24">
-              2016-01-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/24/spark-convert-text-parquet/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-convert-text-parquet/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          列式存储布局（比如 Parquet）可以加速查询，因为它只检查所有需要的列并对它们的值执行计算，因此只读取一个数据文件或表的小部分数据。Parquet 还支持灵活的压缩选项，因此可以显著减少磁盘上的存储。如果您在 HDFS 上拥有基于文本的数据文件或表，而且正在使用 Spark SQL 对它们执行查询，那么强烈推荐将文本数据文件转换为 Parquet 数据文件，以实现性能和存储收益。当然，转换需要时间，但查询性能的提升在某些情况下可能达到 30 倍或更高，存储的节省可高达 75%！已有文章介绍使用 Parquet 存储为 BigSQL、Hive 和 Impala 带来类似的性能收益，本文将介绍如何编写一个简单的 Scala 应用程序，将现有的基于文本的数据文件或表转换为 Parquet 数据
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/24/spark-convert-text-parquet/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/02/19/service-discovery-consul-and-consul-template/">
+            <time datetime="2016-02-19T03:27:26.000Z" itemprop="datePublished">2016-02-19</time>
+        </a>
     </div>
 
-    <footer class="post-footer">
-    
-      
 
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/24/spark-ha/" itemprop="url">
-                  Spark Standalone模式HA环境搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T16:10:30+08:00" content="2016-01-24">
-              2016-01-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/service-discovery-consul-and-consul-template.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/service-discovery-consul-and-consul-template.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/service-discovery-consul-and-consul-template.md'> History </a>
+                            </div>
+                        
+                    </div>
                 
                 
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/24/spark-ha/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-ha/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/02/19/service-discovery-consul-and-consul-template/">Service discovery with consul and consul-template</a>
+        </h1>
     
 
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
+            </header>
         
-          
-          Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA本篇只介绍基于ZK的HA环境搭建：1$ SPARK_HOME/conf/spark-env.sh
-添加SPARK_DAEMON_JAVA_OPTS的配置信息：1export SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop000:2181,hadoop001:2181,hadoop002:2181 -Dspark.deploy.zookeeper.dir=/spark"
-配置参数说明：spark.deploy.recoveryMode: 设置恢复模式为z
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/24/spark-ha/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
         
-      
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>I talked in the past about an <a href="http://agiletesting.blogspot.com/2013/12/ops-design-pattern-local-haproxy.html" target="_blank" rel="external">“Ops Design Pattern: local haproxy talking to service layer”</a>. I described how we used a local haproxy on pretty much all nodes at a given layer of our infrastructure (webapp, API, e-commerce) to talk to services offered by the layer below it. So each webapp server has a local haproxy that talks to all API nodes it sends requests to. Similarly, each API node has a local haproxy that talks to all e-commerce nodes it needs info from.</p>
+<p>This seemed like a good idea at a time, but it turns out it has a couple of annoying drawbacks:<br>each local haproxy runs health checks against N nodes, so if you have M nodes running haproxy, each of the N nodes will receive M health checks; if M and N are large, then you have a health check storm on your hands<br>to take a node out of a cluster at any given layer, we tag it as ‘inactive’ in Chef, then run chef-client on all nodes that run haproxy and talk to the inactive node at layers above it; this gets old pretty fast, especially when you’re doing anything that might conflict with Chef and that the chef-client run might overwrite (I know, I know, you’re not supposed to do anything of that nature, but we are all human :-)<br>For the second point, we are experimenting with haproxyctl so that we don’t have to run chef-client on every node running haproxy. But it still feels like a heavy-handed approach.</p>
+<p>If I were to do this again (which I might), I would still have an haproxy instance in front of our webapp servers, but for communicating from one layer of services to another I would use a proper service discovery tool such as grampa Apache ZooKeeper or the newer kids on the block, etcd from CoreOS and consul from HashiCorp.</p>
+<p>I settled on consul for now, so in this post I am going to show how you can use consul in conjunction with the recently released consul-template to discover services and to automate configuration changes. At the same time, I wanted to experiment a bit with Ansible as a configuration management tool. So the steps I’ll describe were actually automated with Ansible, but I’ll leave that for another blog post.</p>
+<p>The scenario I am going to describe involves 2 haproxy instances, each pointing to 2 Wordpress servers running Apache, PHP and MySQL, with Varnish fronting the Wordpress application. One of the 2 Wordpress servers is considered primary as far as haproxy is concerned, and the other one is a backup server, which will only get requests if the primary server is down. All servers are running Ubuntu 12.04.</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/02/19/service-discovery-consul-and-consul-template/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-presto-parquet-airpal" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/big-data/">big data</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/24/spark-on-yarn/" itemprop="url">
-                  spark on yarn
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T14:43:59+08:00" content="2016-01-24">
-              2016-01-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/spark/" itemprop="url" rel="index">
-                    <span itemprop="name">spark</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/24/spark-on-yarn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/spark-on-yarn/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          为什么要使用YARN?数据共享、资源利用率、更方便的管理集群等。详情参见：http://www.cnblogs.com/luogankun/p/3887019.html
-Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"$ mvn clean package -DskipTests -Phadoop-2.3 -Dhadoop.version=2.3.0-cdh5.0.0 -Dprotobuf.version=2.5.0 -Pyarn -Phive
-详情参见：Spark On YARN
-Spark的Clu
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/24/spark-on-yarn/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/parquet/">parquet</a>, <a class="tag-link" href="/tags/presto/">presto</a>
     </div>
 
-    <footer class="post-footer">
-    
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-     
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/01/24/hdp-spark-shell-error/" itemprop="url">
-                  ambari hdp中部署apache spark运行spark shell遇到的错误解决
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-01-24T13:05:21+08:00" content="2016-01-24">
-              2016-01-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/hadoop/" itemprop="url" rel="index">
-                    <span itemprop="name">hadoop</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/01/24/hdp-spark-shell-error/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/24/hdp-spark-shell-error/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法1$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar
-在运行spark-shell中遇到的Compression codec com.hadoop.compression.lzo.LzoCodec not found 错误可以配置文件spark-defaults.conf
-          ...
-
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/01/24/hdp-spark-shell-error/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/02/04/presto-parquet-airpal/">
+            <time datetime="2016-02-04T10:53:35.000Z" itemprop="datePublished">2016-02-04</time>
+        </a>
     </div>
 
-    <footer class="post-footer">
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/presto-parquet-airpal.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/presto-parquet-airpal.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/presto-parquet-airpal.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
     
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/02/04/presto-parquet-airpal/">Presto, Parquet &amp; Airpal</a>
+        </h1>
     
 
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
-
-
-
-          </div>
-          
-          
-
-
-          
-
-        </div>
+            </header>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>I came across a <a href="http://brandonharris.io/evaluating-big-data-performance-of-prestodb-and-parquet-on-s3-storage/" target="_blank" rel="external">blog post</a> from Brandon Harris recently where he discussed a credit card fraud detection project he’d been working on with a team at the University of Chicago. In the post he described how Presto and Parquet-formatted files had gone a long way to speeding up ad-hoc queries against a ~250GB dataset he’s working with.</p>
+<p>Presto was born at Facebook and was <a href="https://github.com/facebook/presto" target="_blank" rel="external">open sourced</a> within a year of it’s inception. It’s a distributed query engine capable of running interactive queries against big data sources. There’s support for data sources such as Hive, Kafka, PostgreSQL, Redis and Cassandra <a href="https://prestodb.io/docs/current/connector.html" target="_blank" rel="external">among many others</a>. Netflix has blogged about their positive experiences with Presto on a <a href="http://techblog.netflix.com/2014/10/using-presto-in-our-big-data-platform.html" target="_blank" rel="external">10PB Data Warehouse</a> they’ve got that’s happily handling 2,500 ad-hoc queries a day.</p>
+<p>In Brandon’s blog post there is a chart showing a query that’s executed in Hive against data stored in CSV format taking 130 seconds and then the same query run via Presto against data stored in Parquet format taking less than 5 seconds. I trust the measurements of his queries are accurate but what I’m interested in is what is involved in getting an environment up to run these sorts of queries.</p>
+<p>As of this writing Bigtop’s <a href="https://issues.apache.org/jira/browse/BIGTOP-1561" target="_blank" rel="external">Presto support isn’t ready</a> (though <a href="https://github.com/apache/bigtop/pull/32/files" target="_blank" rel="external">pull requests</a> are being worked on) so to get an environment up and running locally I’ll have to perform some of the installation steps manually.</p>
+<h2 id="Launching_a_Hadoop_Cluster_in_Docker_Containers"><a href="#Launching_a_Hadoop_Cluster_in_Docker_Containers" class="headerlink" title="Launching a Hadoop Cluster in Docker Containers"></a>Launching a Hadoop Cluster in Docker Containers</h2><p>This process begins with a fresh Ubuntu 15 installation acting as the host for Docker containers that a Hadoop cluster will live within. I discuss getting Ubuntu 15 ready to run Docker in my <a href="http://tech.marksblogg.com/hadoop-up-and-running.html#bigtop-run-a-dockerized-hadoop-cluster" target="_blank" rel="external">Hadoop Up and Running</a> blog post.</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/02/04/presto-parquet-airpal/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
     </div>
-  </div>
+</article>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
 
-      
 
-      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/author.jpg"
-               alt="东杰" />
-          <p class="site-author-name" itemprop="name">东杰</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">18</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
 
-          <div class="site-state-item site-state-categories">
-            <a href="/categories">
-              <span class="site-state-item-count">7</span>
-              <span class="site-state-item-name">分类</span>
-              </a>
-          </div>
 
-          <div class="site-state-item site-state-tags">
-            <a href="/tags">
-              <span class="site-state-item-count">15</span>
-              <span class="site-state-item-name">标签</span>
-              </a>
-          </div>
+    
+        <article id="post-spark-sort-shuffle-analyse" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/spark/">spark</a>
+    </div>
 
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/shuffle/">shuffle</a>, <a class="tag-link" href="/tags/spark/">spark</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/01/27/spark-sort-shuffle-analyse/">
+            <time datetime="2016-01-27T09:51:18.000Z" itemprop="datePublished">2016-01-27</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/spark-sort-shuffle-analyse.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/spark-sort-shuffle-analyse.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/spark-sort-shuffle-analyse.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>借用和董神的一段对话说下背景：</p>
+<p>shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuffle已经优化到头了。为了解决hash shuffle性能差的问题，又引入sort shuffle，完全借鉴mapreduce实现，每个map产生一个文件，彻底解决了扩展性问题<br>目前Sort Based Shuffle 是作为默认Shuffle类型的。Shuffle 是一个很复杂的过程，任何一个环节都足够写一篇文章。所以这里，我尝试换个方式，从实用的角度出发，让读者有两方面的收获：</p>
+<p>剖析哪些环节，哪些代码可能会让内存产生问题<br>控制相关内存的参数<br>有时候，我们宁可程序慢点，也不要OOM，至少要先跑步起来，希望这篇文章能够让你达成这个目标。</p>
+<p>同时我们会提及一些类名，这些类方便你自己想更深入了解时，可以方便的找到他们，自己去探个究竟。</p>
+<h2 id="Shuffle__u6982_u89C8"><a href="#Shuffle__u6982_u89C8" class="headerlink" title="Shuffle 概览"></a>Shuffle 概览</h2><p>Spark 的Shuffle 分为 Write,Read 两阶段。我们预先建立三个概念：</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/01/27/spark-sort-shuffle-analyse/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-scala-rumen-biji" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/scala/">scala</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/01/24/scala-rumen-biji/">
+            <time datetime="2016-01-24T11:09:23.000Z" itemprop="datePublished">2016-01-24</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/scala-rumen-biji.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/scala-rumen-biji.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/scala-rumen-biji.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h3 id="Scala_u7B80_u4ECB"><a href="#Scala_u7B80_u4ECB" class="headerlink" title="Scala简介"></a>Scala简介</h3><p>Scala 是一门多范式的编程语言, 由Martin Odersky 于2001年基于Funnel的工作开始设计Scala并于2004年正式发布<br>Scala是一种纯面向对象的语言，每个值都是对象<br>Scala是一门多范式编程语言, 支持命令交互式, 函数式, 面向对象<br>编译型高性能语言(静态)<br>与Java无缝兼容, 可以使用任何Java库</p>
+<h3 id="u4EE3_u7801_u98CE_u683C"><a href="#u4EE3_u7801_u98CE_u683C" class="headerlink" title="代码风格"></a>代码风格</h3><ol>
+<li>函数和变量以小驼峰命名</li>
+<li>类和特质以大驼峰命名</li>
+<li>常量使用全大写命名</li>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/01/24/scala-rumen-biji/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-spark-convert-text-parquet" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/spark/">spark</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/parquet/">parquet</a>, <a class="tag-link" href="/tags/spark/">spark</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/01/24/spark-convert-text-parquet/">
+            <time datetime="2016-01-24T10:46:44.000Z" itemprop="datePublished">2016-01-24</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/spark-convert-text-parquet.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/spark-convert-text-parquet.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/spark-convert-text-parquet.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>列式存储布局（比如 Parquet）可以加速查询，因为它只检查所有需要的列并对它们的值执行计算，因此只读取一个数据文件或表的小部分数据。Parquet 还支持灵活的压缩选项，因此可以显著减少磁盘上的存储。<br>如果您在 HDFS 上拥有基于文本的数据文件或表，而且正在使用 Spark SQL 对它们执行查询，那么强烈推荐将文本数据文件转换为 Parquet 数据文件，以实现性能和存储收益。当然，转换需要时间，但查询性能的提升在某些情况下可能达到 30 倍或更高，存储的节省可高达 75%！<br>已有文章介绍使用 Parquet 存储为 BigSQL、Hive 和 Impala 带来类似的性能收益，本文将介绍如何编写一个简单的 Scala 应用程序，将现有的基于文本的数据文件或表转换为 Parquet 数据文件，还将展示给 Spark SQL 带来的实际存储节省和查询性能提升。</p>
+<h3 id="u8BA9_u6211_u4EEC_u8F6C_u6362_u4E3A_Parquet__u5427_uFF01"><a href="#u8BA9_u6211_u4EEC_u8F6C_u6362_u4E3A_Parquet__u5427_uFF01" class="headerlink" title="让我们转换为 Parquet 吧！"></a>让我们转换为 Parquet 吧！</h3><p>Spark SQL 提供了对读取和写入 Parquet 文件的支持，能够自动保留原始数据的模式。Parquet 模式通过 Data Frame API，使数据文件对 Spark SQL 应用程序 “不言自明”。当然，Spark SQL 还支持读取已存储为 Parquet 的现有 Hive 表，但您需要配置 Spark，以便使用 Hive 的元存储来加载所有信息。在我们的示例中，不涉及 Hive 元存储。<br>以下 Scala 代码示例将读取一个基于文本的 CSV 表，并将它写入 Parquet 表：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert</span></span>(sqlContext: <span class="type">SQLContext</span>, filename: <span class="type">String</span>, schema: <span class="type">StructType</span>, tablename: <span class="type">String</span>) &#123;</div><div class="line">     <span class="comment">// import text-based table first into a data frame</span></div><div class="line">     <span class="keyword">val</span> df = sqlContext.read.format(<span class="string">"com.databricks.spark.csv"</span>).</div><div class="line">       schema(schema).option(<span class="string">"delimiter"</span>, <span class="string">"|"</span>).load(filename)</div><div class="line">     <span class="comment">// now simply write to a parquet file</span></div><div class="line">     df.write.parquet(<span class="string">"/user/spark/data/parquet/"</span>+tablename)</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="comment">// usage exampe -- a tpc-ds table called catalog_page</span></div><div class="line"> schema= <span class="type">StructType</span>(<span class="type">Array</span>(</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_page_sk"</span>,        <span class="type">IntegerType</span>,<span class="literal">false</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_page_id"</span>,        <span class="type">StringType</span>,<span class="literal">false</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_start_date_sk"</span>,          <span class="type">IntegerType</span>,<span class="literal">true</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_end_date_sk"</span>,            <span class="type">IntegerType</span>,<span class="literal">true</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_department"</span>,             <span class="type">StringType</span>,<span class="literal">true</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_number"</span>,         <span class="type">LongType</span>,<span class="literal">true</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_catalog_page_number"</span>,    <span class="type">LongType</span>,<span class="literal">true</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_description"</span>,            <span class="type">StringType</span>,<span class="literal">true</span>),</div><div class="line">         <span class="type">StructField</span>(<span class="string">"cp_type"</span>,                   <span class="type">StringType</span>,<span class="literal">true</span>)))</div><div class="line"> convert(sqlContext,</div><div class="line">         hadoopdsPath+<span class="string">"/catalog_page/*"</span>,</div><div class="line">         schema,</div><div class="line">         <span class="string">"catalog_page"</span>)</div></pre></td></tr></table></figure></p>
+<p>上面的代码将会读取 hadoopdsPath+”/catalog_page/* 中基于文本的 CSV 文件，并将转换的 Parquet 文件保存在 /user/spark/data/parquet/ 下。此外，转换的 Parquet 文件会在 gzip 中自动压缩，因为 Spark 变量 spark.sql.parquet.compression.codec 已在默认情况下设置为 gzip。您还可以将压缩编解码器设置为 uncompressed、snappy 或 lzo。</p>
+<h3 id="u8F6C_u6362_1_TB__u6570_u636E_u5C06_u82B1_u8D39_u591A_u957F_u65F6_u95F4_uFF1F"><a href="#u8F6C_u6362_1_TB__u6570_u636E_u5C06_u82B1_u8D39_u591A_u957F_u65F6_u95F4_uFF1F" class="headerlink" title="转换 1 TB 数据将花费多长时间？"></a>转换 1 TB 数据将花费多长时间？</h3><p>50 分钟，在一个 6 数据节点的 Spark v1.5.1 集群上可达到约 20 GB/分的吞吐量。使用的总内存约为 500GB。HDFS 上最终的 Parquet 文件的格式为：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/user/spark/data/parquet/catalog_page/part-r-00000-9ff58e65-0674-440a-883d-256370f33c66.gz.parquet</div><div class="line">/user/spark/data/parquet/catalog_page/part-r-00001-9ff58e65-0674-440a-883d-256370f33c66.gz.parquet</div></pre></td></tr></table></figure></p>
+<h3 id="u5B58_u50A8_u8282_u7701"><a href="#u5B58_u50A8_u8282_u7701" class="headerlink" title="存储节省"></a>存储节省</h3><p>以下 Linux 输出显示了 TEXT 和 PARQUET 在 HDFS 上的大小比较：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ hadoop fs -du -h -s /user/spark/hadoopds1000g</div><div class="line">    897.9 G  /user/spark/hadoopds1000g</div><div class="line">    % hadoop fs -du -h -s /user/spark/data/parquet</div><div class="line">    231.4 G  /user/spark/data/parquet</div></pre></td></tr></table></figure></p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/01/24/spark-convert-text-parquet/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-spark-ha" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/spark/">spark</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ha/">ha</a>, <a class="tag-link" href="/tags/spark/">spark</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/01/24/spark-ha/">
+            <time datetime="2016-01-24T08:10:30.000Z" itemprop="datePublished">2016-01-24</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/spark-ha.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/spark-ha.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/spark-ha.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+            
+        
+        
+            <p>Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA<br>本篇只介绍基于ZK的HA环境搭建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ SPARK_HOME/conf/spark-env.sh</div></pre></td></tr></table></figure></p>
+<p>添加SPARK_DAEMON_JAVA_OPTS的配置信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> SPARK_DAEMON_JAVA_OPTS=<span class="string">"-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop000:2181,hadoop001:2181,hadoop002:2181 -Dspark.deploy.zookeeper.dir=/spark"</span></div></pre></td></tr></table></figure></p>
+<h3 id="u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A"><a href="#u914D_u7F6E_u53C2_u6570_u8BF4_u660E_uFF1A" class="headerlink" title="配置参数说明："></a>配置参数说明：</h3><p>spark.deploy.recoveryMode: 设置恢复模式为zk，默认为NONE<br>spark.deploy.zookeeper.url: 设置ZK集群的url，形如：192.168.1.100:2181,192.168.1.101:2181<br>spark.deploy.zookeeper.dir: 设置zk保存恢复状态的路径，默认为spark<br>实现HA的原理：利用ZK的Leader Election机制，选择一个Active状态的Master，其余的Master均为Standby状态；当Active状态的Master死掉后，通过ZK选举一个Standby状态的Master为Active状态。</p>
+<h3 id="u6D4B_u8BD5_u6B65_u9AA4_uFF1A"><a href="#u6D4B_u8BD5_u6B65_u9AA4_uFF1A" class="headerlink" title="测试步骤："></a>测试步骤：</h3><p>启动standalone集群后，在各个Standby节点上启动start-master.sh，jps观察是否已经正确启动Master进程；<br>将Active状态的Master kill掉，观察8080端口对应的页面，发现已经从Standby状态中选举出一个当作Active状态。<br>采用ZK后由于会有多个Master，在提交任务时不知道哪个为Active状态的Master，可以采用如下的方式提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">spark-shell –master spark://hadoop000:7077,hadoop001:7077,hadoop002:7077 –executor-memory 2g –total-executor-cores 1</div><div class="line">详细信息参见官方文档：http://spark.apache.org/docs/latest/spark-standalone.html<span class="comment">#standby-masters-with-zookeeper</span></div></pre></td></tr></table></figure></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-spark-on-yarn" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/spark/">spark</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/spark/">spark</a>, <a class="tag-link" href="/tags/yarn/">yarn</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/01/24/spark-on-yarn/">
+            <time datetime="2016-01-24T06:43:59.000Z" itemprop="datePublished">2016-01-24</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/spark-on-yarn.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/spark-on-yarn.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/spark-on-yarn.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/01/24/spark-on-yarn/">spark on yarn</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="u4E3A_u4EC0_u4E48_u8981_u4F7F_u7528YARN_3F"><a href="#u4E3A_u4EC0_u4E48_u8981_u4F7F_u7528YARN_3F" class="headerlink" title="为什么要使用YARN?"></a>为什么要使用YARN?</h2><p>数据共享、资源利用率、更方便的管理集群等。<br>详情参见：<a href="http://www.cnblogs.com/luogankun/p/3887019.html" target="_blank" rel="external">http://www.cnblogs.com/luogankun/p/3887019.html</a></p>
+<h2 id="Spark_YARN_u7248_u672C_u7F16_u8BD1"><a href="#Spark_YARN_u7248_u672C_u7F16_u8BD1" class="headerlink" title="Spark YARN版本编译"></a>Spark YARN版本编译</h2><p>编译hadoop对应的支持YARN的Spark版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">export</span> MAVEN_OPTS=<span class="string">"-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize=512m"</span></div><div class="line">$ mvn clean package -DskipTests -Phadoop-2.3 -Dhadoop.version=2.3.0-cdh5.0.0 -Dprotobuf.version=2.5.0 -Pyarn -Phive</div></pre></td></tr></table></figure></p>
+<p>详情参见：<a href="http://www.cnblogs.com/luogankun/p/3798403.html" target="_blank" rel="external">Spark On YARN</a></p>
+<p>Spark的Cluster Manager负责管理启动executor进程，集群可以是Standalone、YARN和Mesos<br>每个SparkContext（换句话说是：Application）对应一个ApplicationMaster（Application启动过程中的第一个容器<br>ApplicationMaster负责和ResourceManager打交道，并请求资源，当获取资源之后通知NodeManager为其启动container； 每个Container中运行一个ExecutorBackend<br>ResourceManager决定哪些Application可以运行、什么时候运行以及在哪些NodeManager上运行； NodeManager的Container上运行executor进程<br>在Standalone模式中有Worker的概念，而在Spark On YARN中没有Worker的概念<br>由于executor是运行在container中，故container内存要大于executor的内存<br>Spark On YARN有两种：</p>
+<h3 id="yarn-client"><a href="#yarn-client" class="headerlink" title="yarn-client"></a>yarn-client</h3><p>Client和Driver运行在一起，ApplicationMaster只负责获取资源<br>　　Client会和请求到的资源container通信来调度他们进行工作，也就是说Client不能退出滴；<br>　　日志信息输出能输出在终端控制台上，适用于交互或者调试，也就是希望快速地看到application的输出，比如SparkStreaming<br><img src="/images/yarn-client.png" alt="yarn-client" title="yarn client"></p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2016/01/24/spark-on-yarn/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-hdp-spark-shell-error" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ambari/">ambari</a>, <a class="tag-link" href="/tags/spark/">spark</a>, <a class="tag-link" href="/tags/yarn/">yarn</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/01/24/hdp-spark-shell-error/">
+            <time datetime="2016-01-24T05:05:21.000Z" itemprop="datePublished">2016-01-24</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/raw/writing/source/_posts/hdp-spark-shell-error.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/edit/writing/source/_posts/hdp-spark-shell-error.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/hivefans/git@github.com:hivefans/hivefans.github.io.git/commits/writing/source/_posts/hdp-spark-shell-error.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+            
+        
+        
+            <p>在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar</div></pre></td></tr></table></figure></p>
+<p>在运行spark-shell中遇到的Compression codec com.hadoop.compression.lzo.LzoCodec not found 错误可以配置文件spark-defaults.conf<br>spark.executor.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>spark.driver.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>保存文件重启spark服务集群即可。<br>再提供一个Unable to load native-hadoop library 和 Snappy native library not loaded的解决方案。这个问题主要是jre目录下缺少了libgplcompression.so , libhadoop.so和libsnappy.so两个文件。具体是，spark-shell依赖的是scala，scala依赖的是JAVA_HOME下的jdk，libhadoop.so和libsnappy.so两个文件应该放到JAVA_HOME/jre/lib/amd64下面。要注意的是要知道真正依赖到的JAVA_HOME是哪一个，把两个.so放对地方。这两个so：libhadoop.so和libsnappy.so。前一个so可以在HADOOP_HOME下找到，比如hadoop\lib\native\Linux-amd64-64。第二个libsnappy.so需要下载一个snappy-1.1.0.tar.gz，然后./configure，make编译出来。snappy是google的一个压缩算法，在hadoop jira下<a href="https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。" target="_blank" rel="external">https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。</a></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <nav id="page-nav">
+        <a class="extend prev" rel="prev" href="/">&laquo; Anterior</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
         </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/hivefans" target="_blank">
-                  
-                    <i class="fa fa-github"></i> GitHub
-                  
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://weibo.com/sdj1225" target="_blank">
-                  
-                    <i class="fa fa-globe"></i> weibo
-                  
-                </a>
-              </span>
-            
-          
+    
+</section>
         </div>
-
-        
-        
-
-        <div class="links-of-author motion-element">
-          
-            <p class="site-author-name">友情链接</p>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            东杰 &copy; 2018 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
             
-              <span class="links-of-author-item">
-                <a href="http://macshuo.com/" target="_blank">MacTalk</a>
-              </span>
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
             
-              <span class="links-of-author-item">
-                <a href="http://slaytanic.blog.51cto.com/" target="_blank">实践检验</a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="http://www.adintellig.com/" target="_blank">Manny很忙</a>
-              </span>
-            
-          
         </div>
+    </div>
+</footer>
 
-      </section>
+        
 
-      
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
 
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy;  2016 - 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="icon-next-heart fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">东杰</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
-您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
-
-
-      </div>
-    </footer>
-
-    <div class="back-to-top"></div>
-  </div>
-
-  
-
-
-  
-
-
-
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
-
-
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"hivefans"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js"></script>
-      <script src="/js/src/hook-duoshuo.js"></script>
-    
-  
-
-
-
-
-
-  
-  
-
-  
-  
-
-
 </body>
 </html>
