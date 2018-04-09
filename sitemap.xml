@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.djstudy.net/about/index.html</loc>
+    
+    <lastmod>2018-04-09T11:01:04.463Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.djstudy.net/tags/index.html</loc>
     
     <lastmod>2018-04-09T09:54:44.433Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>https://blog.djstudy.net/categories/index.html</loc>
     
     <lastmod>2018-04-09T09:54:44.431Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/about/index.html</loc>
-    
-    <lastmod>2018-04-09T09:54:44.429Z</lastmod>
     
   </url>
   
