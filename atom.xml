@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.djstudy.net/"/>
-  <updated>2017-06-06T03:04:35.000Z</updated>
+  <updated>2018-04-11T06:47:21.753Z</updated>
   <id>https://blog.djstudy.net/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>区块链学习笔记（一）</title>
+    <link href="https://blog.djstudy.net/2018/04/11/qukuailian-note1/"/>
+    <id>https://blog.djstudy.net/2018/04/11/qukuailian-note1/</id>
+    <published>2018-04-11T02:23:11.000Z</published>
+    <updated>2018-04-11T06:47:21.753Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="u533A_u5757_u94FE_u672C_u8D28"><a href="#u533A_u5757_u94FE_u672C_u8D28" class="headerlink" title="区块链本质"></a>区块链本质</h2><p>它是一种特殊的分布式数据库。</p><h2 id="u533A_u5757_u94FE_u7279_u5F81"><a href="#u533A_u5757_u94FE_u7279_u5F81" class="headerlink" title="区块链特征"></a>区块链特征</h2><ol><li>分布式去中心化</li><li>无须信任系统</li><li>集体维护</li><li>可靠数据库</li><li>匿名性</li><li>开源</li></ol><h2 id="u533A_u5757_u94FE_u7ED3_u6784"><a href="#u533A_u5757_u94FE_u7ED3_u6784" class="headerlink" title="区块链结构"></a>区块链结构</h2><p>区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。<br>每个区块包含两个部分。</p><p><code>区块头（Head）：记录当前区块的特征值区块体（Body）：实际数据</code></p><p>区块头包含了当前区块的多项特征值</p><p><code>生成时间实际数据（即区块体）的哈希上一个区块的哈希</code><br><img src="/images/15234270837536.png" alt="区块链结构"></p><h2 id="u533A_u5757_u94FE_u7684_u5206_u53C9"><a href="#u533A_u5757_u94FE_u7684_u5206_u53C9" class="headerlink" title="区块链的分叉"></a>区块链的分叉</h2><p>为什么区块链会发生分叉呢？原因就在于去中心化。</p><ol><li><p>网速的延迟</p></li><li><p>双重交易</p></li></ol><p>现在的规则是，新节点总是采用最长的那条区块链。如果区块链有分叉，将看哪个分支在分叉点后面，先达到6个新区块（称为”六次确认”）。按照10分钟一个区块计算，一小时就可以确认。<br><img src="/images/15234283648590.jpg" alt="区块链分叉"></p><h2 id="u5E94_u7528_u573A_u666F"><a href="#u5E94_u7528_u573A_u666F" class="headerlink" title="应用场景"></a>应用场景</h2><p>为了保证数据的可靠性，区块链也有自己的代价。一是效率，数据写入区块链，最少要等待十分钟，所有节点都同步数据，则需要更多的时间；二是能耗，区块的生成需要矿工进行无数无意义的计算，这是非常耗费能源的。</p><p>因此，区块链的适用场景，其实非常有限。</p><p><code>不存在所有成员都信任的管理当局写入的数据不要求实时使用挖矿的收益能够弥补本身的成本</code></p><p>如果无法满足上述的条件，那么传统的数据库是更好的解决方案。目前，区块链最大的应用场景（可能也是唯一的应用场景），就是以比特币为代表的加密货币。</p><h2 id="u53C2_u8003_u94FE_u63A5"><a href="#u53C2_u8003_u94FE_u63A5" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html</a><br><a href="https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ" target="_blank" rel="external">https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;u533A_u5757_u94FE_u672C_u8D28&quot;&gt;&lt;a href=&quot;#u533A_u5757_u94FE_u672C_u8D28&quot; class=&quot;headerlink&quot; title=&quot;区块链本质&quot;&gt;&lt;/a&gt;区块链本质&lt;/h2&gt;&lt;p&gt;它是一种特殊的分布式
+      
+    
+    </summary>
+    
+      <category term="区块链" scheme="https://blog.djstudy.net/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+    
+    
+      <category term="区块链" scheme="https://blog.djstudy.net/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+    
+      <category term="比特币" scheme="https://blog.djstudy.net/tags/%E6%AF%94%E7%89%B9%E5%B8%81/"/>
+    
+  </entry>
   
   <entry>
     <title>使用openresty获取kibana查询post参数</title>
