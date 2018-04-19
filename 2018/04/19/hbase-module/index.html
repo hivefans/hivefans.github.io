@@ -3,27 +3,24 @@
 <head>
     <meta charset="utf-8">
     
-    <title>区块链学习笔记（一） | 东杰书屋</title>
+    <title>hbase中核心组件与作用 | 东杰书屋</title>
     
     
-        <meta name="keywords" content="区块链,比特币" />
+        <meta name="keywords" content="hbase" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="区块链本质它是一种特殊的分布式数据库。 区块链特征 分布式去中心化 无须信任系统 集体维护 可靠数据库 匿名性 开源  区块链结构区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。每个区块包含两个部分。 区块头（Head）：记录当前区块的特征值 区块体（Body）：实际数据 区块头包含了当前区块的多项特征值 生成时间 实际数据（即区块体）的哈希 上一个区块">
-<meta name="keywords" content="区块链,比特币">
+    <meta name="description" content="HBase中的组件包括Client、Zookeeper、HMaster、HRegionServer、HRegion、Store、MemStore、StoreFile、HFile、HLog等。 1.Client的作用  1.1 包含访问HBase的接口，并维护cache来加快对HBase的访问，比如region的位置信息1.2 HBase Client通过RPC方式和HMaster、HRegionS">
+<meta name="keywords" content="hbase">
 <meta property="og:type" content="article">
-<meta property="og:title" content="区块链学习笔记（一）">
-<meta property="og:url" content="https://blog.djstudy.net/2018/04/11/qukuailian-note1/index.html">
+<meta property="og:title" content="hbase中核心组件与作用">
+<meta property="og:url" content="https://blog.djstudy.net/2018/04/19/hbase-module/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="区块链本质它是一种特殊的分布式数据库。 区块链特征 分布式去中心化 无须信任系统 集体维护 可靠数据库 匿名性 开源  区块链结构区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。每个区块包含两个部分。 区块头（Head）：记录当前区块的特征值 区块体（Body）：实际数据 区块头包含了当前区块的多项特征值 生成时间 实际数据（即区块体）的哈希 上一个区块">
+<meta property="og:description" content="HBase中的组件包括Client、Zookeeper、HMaster、HRegionServer、HRegion、Store、MemStore、StoreFile、HFile、HLog等。 1.Client的作用  1.1 包含访问HBase的接口，并维护cache来加快对HBase的访问，比如region的位置信息1.2 HBase Client通过RPC方式和HMaster、HRegionS">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://blog.djstudy.net/images/15234270837536.png">
-<meta property="og:image" content="https://blog.djstudy.net/images/15234283648590.jpg">
-<meta property="og:updated_time" content="2018-04-11T06:47:21.753Z">
+<meta property="og:updated_time" content="2018-04-19T02:35:12.127Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="区块链学习笔记（一）">
-<meta name="twitter:description" content="区块链本质它是一种特殊的分布式数据库。 区块链特征 分布式去中心化 无须信任系统 集体维护 可靠数据库 匿名性 开源  区块链结构区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。每个区块包含两个部分。 区块头（Head）：记录当前区块的特征值 区块体（Body）：实际数据 区块头包含了当前区块的多项特征值 生成时间 实际数据（即区块体）的哈希 上一个区块">
-<meta name="twitter:image" content="https://blog.djstudy.net/images/15234270837536.png">
+<meta name="twitter:title" content="hbase中核心组件与作用">
+<meta name="twitter:description" content="HBase中的组件包括Client、Zookeeper、HMaster、HRegionServer、HRegion、Store、MemStore、StoreFile、HFile、HLog等。 1.Client的作用  1.1 包含访问HBase的接口，并维护cache来加快对HBase的访问，比如region的位置信息1.2 HBase Client通过RPC方式和HMaster、HRegionS">
     
 
     
@@ -188,13 +185,13 @@ var _hmt = _hmt || [];
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/es-flush-vs-refresh/">elasticsearch中的refresh和flush区别</a></li>  <li class="file"><a href="/2017/04/27/es-shard-interaction/">Elasticsearch 分片交互过程详解</a></li>  <li class="file"><a href="/2017/06/06/openresty-kibana-post/">使用openresty获取kibana查询post参数</a></li>  <li class="file"><a href="/2016/02/27/how-many-shards-index/">Optimizing Elasticsearch-How Many Shards per Index</a></li>  </ul> 
                     </li> 
                     
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             hadoop
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -215,13 +212,13 @@ var _hmt = _hmt || [];
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
                     </li> 
                     
-                    <li class="directory open">
+                    <li class="directory">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder-open"></i>
+                            <i class="fa fa-folder"></i>
                             &nbsp;
                             区块链
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2018/04/11/qukuailian-note1/">区块链学习笔记（一）</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2018/04/11/qukuailian-note1/">区块链学习笔记（一）</a></li>  </ul> 
                     </li> 
                      </ul> 
     </div>
@@ -327,7 +324,7 @@ var _hmt = _hmt || [];
     <div id="toTop" class="fa fa-angle-up"></div>
 </aside>
             
-            <section id="main"><article id="post-qukuailian-note1" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-hbase-module" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -337,20 +334,20 @@ var _hmt = _hmt || [];
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/区块链/">区块链</a>
+        <a class="article-category-link" href="/categories/hadoop/">hadoop</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/区块链/">区块链</a>, <a class="tag-link" href="/tags/比特币/">比特币</a>
+        <a class="tag-link" href="/tags/hbase/">hbase</a>
     </div>
 
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/04/11/qukuailian-note1/">
-            <time datetime="2018-04-11T02:23:11.000Z" itemprop="datePublished">2018-04-11</time>
+        <a href="/2018/04/19/hbase-module/">
+            <time datetime="2018-04-19T02:23:05.699Z" itemprop="datePublished">2018-04-19</time>
         </a>
     </div>
 
@@ -361,13 +358,13 @@ var _hmt = _hmt || [];
                         
                         
                             <div class="article-meta-button">
-                                <a href='http://git.djstudy.net/hivefans/blog/raw/master/source/_posts/qukuailian-note1.md'> Source </a>
+                                <a href='http://git.djstudy.net/hivefans/blog/raw/master/source/_posts/hbase-module.md'> Source </a>
                             </div>
                             <div class="article-meta-button">
-                                <a href='http://git.djstudy.net/hivefans/blog/_edit/master/source/_posts/qukuailian-note1.md'> Edit </a>
+                                <a href='http://git.djstudy.net/hivefans/blog/_edit/master/source/_posts/hbase-module.md'> Edit </a>
                             </div>
                             <div class="article-meta-button">
-                                <a href='http://git.djstudy.net/hivefans/blog/commits/master/source/_posts/qukuailian-note1.md'> History </a>
+                                <a href='http://git.djstudy.net/hivefans/blog/commits/master/source/_posts/hbase-module.md'> History </a>
                             </div>
                         
                     </div>
@@ -375,7 +372,7 @@ var _hmt = _hmt || [];
                 
     
         <h1 class="article-title" itemprop="name">
-            区块链学习笔记（一）
+            hbase中核心组件与作用
         </h1>
     
 
@@ -388,37 +385,47 @@ var _hmt = _hmt || [];
             
         
         
-            <h2 id="u533A_u5757_u94FE_u672C_u8D28"><a href="#u533A_u5757_u94FE_u672C_u8D28" class="headerlink" title="区块链本质"></a>区块链本质</h2><p>它是一种特殊的分布式数据库。</p>
-<h2 id="u533A_u5757_u94FE_u7279_u5F81"><a href="#u533A_u5757_u94FE_u7279_u5F81" class="headerlink" title="区块链特征"></a>区块链特征</h2><ol>
-<li>分布式去中心化</li>
-<li>无须信任系统</li>
-<li>集体维护</li>
-<li>可靠数据库</li>
-<li>匿名性</li>
-<li>开源</li>
-</ol>
-<h2 id="u533A_u5757_u94FE_u7ED3_u6784"><a href="#u533A_u5757_u94FE_u7ED3_u6784" class="headerlink" title="区块链结构"></a>区块链结构</h2><p>区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。<br>每个区块包含两个部分。</p>
-<p><code>区块头（Head）：记录当前区块的特征值
-区块体（Body）：实际数据</code></p>
-<p>区块头包含了当前区块的多项特征值</p>
-<p><code>生成时间
-实际数据（即区块体）的哈希
-上一个区块的哈希</code><br><img src="/images/15234270837536.png" alt="区块链结构"></p>
-<h2 id="u533A_u5757_u94FE_u7684_u5206_u53C9"><a href="#u533A_u5757_u94FE_u7684_u5206_u53C9" class="headerlink" title="区块链的分叉"></a>区块链的分叉</h2><p>为什么区块链会发生分叉呢？原因就在于去中心化。</p>
-<ol>
-<li><p>网速的延迟</p>
-</li>
-<li><p>双重交易</p>
-</li>
-</ol>
-<p>现在的规则是，新节点总是采用最长的那条区块链。如果区块链有分叉，将看哪个分支在分叉点后面，先达到6个新区块（称为”六次确认”）。按照10分钟一个区块计算，一小时就可以确认。<br><img src="/images/15234283648590.jpg" alt="区块链分叉"></p>
-<h2 id="u5E94_u7528_u573A_u666F"><a href="#u5E94_u7528_u573A_u666F" class="headerlink" title="应用场景"></a>应用场景</h2><p>为了保证数据的可靠性，区块链也有自己的代价。一是效率，数据写入区块链，最少要等待十分钟，所有节点都同步数据，则需要更多的时间；二是能耗，区块的生成需要矿工进行无数无意义的计算，这是非常耗费能源的。</p>
-<p>因此，区块链的适用场景，其实非常有限。</p>
-<p><code>不存在所有成员都信任的管理当局
-写入的数据不要求实时使用
-挖矿的收益能够弥补本身的成本</code></p>
-<p>如果无法满足上述的条件，那么传统的数据库是更好的解决方案。目前，区块链最大的应用场景（可能也是唯一的应用场景），就是以比特币为代表的加密货币。</p>
-<h2 id="u53C2_u8003_u94FE_u63A5"><a href="#u53C2_u8003_u94FE_u63A5" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html</a><br><a href="https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ" target="_blank" rel="external">https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ</a></p>
+            <p>HBase中的组件包括Client、Zookeeper、HMaster、HRegionServer、HRegion、Store、MemStore、StoreFile、HFile、HLog等。</p>
+<p>1.Client的作用</p>
+<blockquote>
+<p>1.1 包含访问HBase的接口，并维护cache来加快对HBase的访问，比如region的位置信息<br>1.2 HBase Client通过RPC方式和HMaster、HRegionServer通信</p>
+</blockquote>
+<p>2.Zookeeper的作用</p>
+<blockquote>
+<p>2.1 实现HMaster主从节点的failover,集群高可用;<br>2.2 存储所有Region的寻址入口;<br>2.3 实时监控Region server的上线和下线信息。并实时通知给master;<br>2.4 存储HBase的schema和table元数据;<br>2.5 通过选举，保证任何时候，集群中只有一个master，Master与RegionServers 启动时会向ZooKeeper注册。</p>
+</blockquote>
+<p>3.HMaster的作用</p>
+<blockquote>
+<p>3.1 为HRegionServer分配region；<br>3.2 管理HRegionServer实现其负载均衡；<br>3.3 发现失效的Region server并重新分配其上的region；<br>3.4 HDFS上的垃圾文件回收；<br>3.5 实现DDL操作，处理schema更新请求。</p>
+</blockquote>
+<p><code>从Hmaster功能可以看出，如果Hmaster挂掉，并不影响数据的读写，而会导致元数据无法修改，以及region的分配工作。</code></p>
+<p>4.HRegionServer的作用</p>
+<blockquote>
+<p>4.1 存放和管理本地HRegion，并负责切分正在运行过程中变的过大的region；<br>4.2 维护master分配给他的region，处理对这些region的io请求。</p>
+</blockquote>
+<p><code>（ps:client访问hbase上的数据时不需要master的参与，因为数据寻址访问zookeeper和region server，
+而数据读写访问region server。master仅仅维护table和region的元数据信息，而table的元数据信息
+保存在zookeeper上，因此master负载很低。)</code></p>
+<p>5.HRegion的作用</p>
+<blockquote>
+<p>5.1 Region是HBase中分布式存储和负载均衡的最小单元；<br>5.2 不同的region可以分别在不同的Region Server上；<br>5.3 Region按大小分隔，每个表一般是只有一个region，当region的某个列族达到一个阈值（默认256M）<br>时就会分成两个新的region；<br>5.4 Region被分配给哪个Region Server是完全动态透明的。</p>
+</blockquote>
+<p>6.Store的作用</p>
+<blockquote>
+<p>6.1 每一个region由一个或多个store组成，至少是一个store；<br>6.2 hbase会把一起访问的数据放在一个store里面，即为每个 ColumnFamily建一个store，<br>如果有几个ColumnFamily，也就有几个Store；<br>6.3 一个Store由一个memStore和0或者多个StoreFile组成，HBase以store的大小来判断是否需要切分region。</p>
+</blockquote>
+<p>7.MemStore的作用</p>
+<blockquote>
+<p>7.1 memStore 是放在内存里的，其保存修改的数据即keyValues；<br>7.2 当memStore的大小达到一个阀值（默认64MB）时，memStore会被flush到文 件，即生成一个快照。</p>
+</blockquote>
+<p>8.StoreFile的作用</p>
+<blockquote>
+<p>8.1 memStore内存中的数据写到文件后就是StoreFile;<br>8.2 StoreFile底层是以HFile的格式保存,即数据保存在hdfs上。</p>
+</blockquote>
+<p>9.HLog的作用</p>
+<blockquote>
+<p>9.1 HLog(WAL log)：WAL意为write ahead log，用来做灾难恢复使用，HLog记录数据的所有变更，一旦region server 宕机，就可以从log中进行恢复；<br>9.2 HLog文件就是一个普通的Hadoop Sequence File，Sequence File的value是key时HLogKey对象，其中记录了写入数据的归属信息，除了table和region名字外，还同时包括sequence number和timestamp<br>timestamp是写入时间，sequence number的起始值为0，或者是最近一次存入文件系统中的sequence number。<br>Sequence File的value是HBase的KeyValue对象，即对应HFile中的KeyValue。</p>
+</blockquote>
 
             </div>
         
@@ -431,19 +438,10 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
     
-        <a href="/2018/04/19/hbase-module/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Más nuevo</strong>
-            <div class="article-nav-title">
-                
-                    hbase中核心组件与作用
-                
-            </div>
-        </a>
     
-    
-        <a href="/2017/06/06/openresty-kibana-post/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/04/11/qukuailian-note1/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Más viejo</strong>
-            <div class="article-nav-title">使用openresty获取kibana查询post参数</div>
+            <div class="article-nav-title">区块链学习笔记（一）</div>
         </a>
     
 </nav>
@@ -455,7 +453,7 @@ var _hmt = _hmt || [];
     
     
         <section id="comments"> 
-    <div class="ds-thread" data-thread-key="2018/04/11/qukuailian-note1/" data-title="区块链学习笔记（一）" data-url="https://blog.djstudy.net/2018/04/11/qukuailian-note1/"></div>
+    <div class="ds-thread" data-thread-key="2018/04/19/hbase-module/" data-title="hbase中核心组件与作用" data-url="https://blog.djstudy.net/2018/04/19/hbase-module/"></div>
     <style>
         #ds-thread #ds-reset .ds-textarea-wrapper {
             background: none;
