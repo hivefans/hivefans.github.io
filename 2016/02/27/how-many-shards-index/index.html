@@ -93,10 +93,20 @@ var _hmt = _hmt || [];
                 
             </nav>
             
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="https://www.gravatar.com/avatar/cfc786845725f6167ba7862d23bda3ff" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -115,10 +125,10 @@ var _hmt = _hmt || [];
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
+            POSTS: 'Entradas',
             PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -151,7 +161,7 @@ var _hmt = _hmt || [];
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
                 </td>
@@ -162,13 +172,78 @@ var _hmt = _hmt || [];
 
         <div class="outer">
             
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="https://www.gravatar.com/avatar/cfc786845725f6167ba7862d23bda3ff?s=128" />
+            <h2 id="name">hivefans</h2>
+            <h3 id="title">Designer &amp; Programmer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Beijing, China</span>
+            <a id="follow" target="_blank" href="https://github.com/hivefans/">SEGUIR</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                17
+                <span>Entradas</span>
+            </div>
+            <div class="article-info-block">
+                14
+                <span>Etiquetas</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/hivefans" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="dribbble" class=tooltip>
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
             
                 <aside id="sidebar">
    
         
     <div class="widget-wrap" id='categories'>
         <h3 class="widget-title">
-            <span>categories</span>
+            <span>Categorias</span>
             &nbsp;
             <a id='allExpand' href="#">
                 <i class="fa fa-angle-double-down fa-2x"></i>
@@ -184,7 +259,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             elasticsearch
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/es-flush-vs-refresh/">elasticsearch中的refresh和flush区别</a></li>  <li class="file"><a href="/2017/04/27/es-shard-interaction/">Elasticsearch 分片交互过程详解</a></li>  <li class="file"><a href="/2017/06/06/openresty-kibana-post/">使用openresty获取kibana查询post参数</a></li>  <li class="file active"><a href="/2016/02/27/how-many-shards-index/">Optimizing Elasticsearch-How Many Shards per Index</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/es-flush-vs-refresh/">elasticsearch中的refresh和flush区别</a></li>  <li class="file"><a href="/2017/04/27/es-shard-interaction/">Elasticsearch 分片交互过程详解</a></li>  <li class="file active"><a href="/2016/02/27/how-many-shards-index/">Optimizing Elasticsearch-How Many Shards per Index</a></li>  <li class="file"><a href="/2017/06/06/openresty-kibana-post/">使用openresty获取kibana查询post参数</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -193,7 +268,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             hadoop
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -202,7 +277,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             scala
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -211,7 +286,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             spark
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -292,7 +367,7 @@ var _hmt = _hmt || [];
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title"><span>tag cloud</span></h3>
+        <h3 class="widget-title"><span>Nube de etiquetas</span></h3>
         <div class="widget tagcloud">
             <a href="/tags/ambari/" style="font-size: 10px;">ambari</a> <a href="/tags/compaction/" style="font-size: 10px;">compaction</a> <a href="/tags/elasticsearch/" style="font-size: 17.5px;">elasticsearch</a> <a href="/tags/ha/" style="font-size: 10px;">ha</a> <a href="/tags/hbase/" style="font-size: 15px;">hbase</a> <a href="/tags/optimizing/" style="font-size: 10px;">optimizing</a> <a href="/tags/parquet/" style="font-size: 10px;">parquet</a> <a href="/tags/rit/" style="font-size: 10px;">rit</a> <a href="/tags/scala/" style="font-size: 17.5px;">scala</a> <a href="/tags/shuffle/" style="font-size: 10px;">shuffle</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/yarn/" style="font-size: 12.5px;">yarn</a> <a href="/tags/区块链/" style="font-size: 10px;">区块链</a> <a href="/tags/比特币/" style="font-size: 10px;">比特币</a>
         </div>
@@ -301,7 +376,7 @@ var _hmt = _hmt || [];
     
         
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title"><span>links</span></h3>
+        <h3 class="widget-title"><span>Links</span></h3>
         <div class="widget">
             <ul>
                 
@@ -440,7 +515,7 @@ var _hmt = _hmt || [];
 <nav id="article-nav">
     
         <a href="/2016/03/16/scala-note-1/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
+            <strong class="article-nav-caption">Más nuevo</strong>
             <div class="article-nav-title">
                 
                     scala学习笔记(一)
@@ -450,7 +525,7 @@ var _hmt = _hmt || [];
     
     
         <a href="/2016/01/27/spark-sort-shuffle-analyse/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
+            <strong class="article-nav-caption">Más viejo</strong>
             <div class="article-nav-title">Spark Sort Based Shuffle内存分析</div>
         </a>
     
@@ -461,47 +536,6 @@ var _hmt = _hmt || [];
 
 
     
-    
-        <section id="comments"> 
-    <div class="ds-thread" data-thread-key="2016/02/27/how-many-shards-index/" data-title="Optimizing Elasticsearch-How Many Shards per Index" data-url="https://blog.djstudy.net/2016/02/27/how-many-shards-index/"></div>
-    <style>
-        #ds-thread #ds-reset .ds-textarea-wrapper {
-            background: none;
-        }
-        #ds-reset .ds-avatar img {
-            box-shadow: none;
-        }
-        #ds-reset .ds-gradient-bg {
-            background: #f7f7f7;
-        }
-        #ds-thread #ds-reset li.ds-tab a {
-            border-radius: 3px;
-        }
-        #ds-thread #ds-reset .ds-post-button {
-            color: white;
-            border: none;
-            box-shadow: none;
-            background: #d32;
-            text-shadow: none;
-            font-weight: normal;
-            font-family: 'Microsoft Yahei';
-        }
-        #ds-thread #ds-reset .ds-post-button:hover {
-            color: white;
-            background: #DE594C;
-        }
-        #ds-thread #ds-reset .ds-post-button:active {
-            background: #d32;
-        }
-        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
-            color: white;
-            background: #d32;
-            box-shadow: none;
-            text-shadow: none;
-            font-weight: normal;
-        }
-    </style>
- </section>
     
 
 
@@ -530,20 +564,6 @@ var _hmt = _hmt || [];
 </footer>
 
         
-    
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'hivefans'};
-    (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-
-
 
     
         <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
