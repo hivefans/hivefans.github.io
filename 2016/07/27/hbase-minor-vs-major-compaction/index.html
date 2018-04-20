@@ -194,7 +194,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             hadoop
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file active"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file active"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -203,7 +203,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             scala
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -212,7 +212,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             spark
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -394,7 +394,7 @@ var _hmt = _hmt || [];
 <p>对比Minor compaction，Major compaction操作会把所有的storefile合并成一个单一的storefile文件，在文件合并期间系统会删除标记为”删除”标记的数据和过期失效的数据，同时会block所有客户端对该操作所属的region的请求直到合并完毕，最后删除已合并的storefile文件。 </p>
 <p>到底如何决定触发那种类型的major类型的compaction操作呢？这是在compaction检查执行时被自动决定的。compaction检查可以通过以下三种条件触发：<br>1、每当memstore被刷新到磁盘后触发；<br>2、通过hbase shell命令行调用或API调用触发；<br>3、通过一个叫CompacionChecker的后台线程触发。<br>每一个region都运行着一个这样的后台线程。CompacionChecker会定期的执行compation检查，时间间隔可以通过hbase.server.thread.wakefrequency来配置。<br>可以通过hbase shell命令行调用或majorCompact()API调用，从而强迫major合并操作执行，否则服务器会首先基于hbase.hregion.majorcompaction(24小时)的配置来检查是否要执行major合并操作。<br>由于Major compaction在执行期间会阻塞所有客户端的请求直到合并完毕，因此最好在服务器空闲时通过手工或脚本的方式调用执行，以提高客户体验。 </p>
 <p>以下是两种compaction的区别：<br><img src="http://dl.iteye.com/upload/attachment/0083/0398/eef9f643-c928-3029-82bb-e4d615ea2e89.jpg" alt="minor vs major"></p>
-<p>转载 <a href="http://flyingdutchman.iteye.com/blog/1846031" target="_blank" rel="external">http://flyingdutchman.iteye.com/blog/1846031</a></p>
+<p>转载 <a href="http://flyingdutchman.iteye.com/blog/1846031" target="_blank" rel="noopener">http://flyingdutchman.iteye.com/blog/1846031</a></p>
 
             </div>
         

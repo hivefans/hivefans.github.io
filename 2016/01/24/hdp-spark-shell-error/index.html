@@ -191,7 +191,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             hadoop
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file active"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -200,7 +200,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             scala
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -209,7 +209,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             spark
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -385,8 +385,8 @@ var _hmt = _hmt || [];
             
         
         
-            <p>在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar</div></pre></td></tr></table></figure></p>
-<p>在运行spark-shell中遇到的Compression codec com.hadoop.compression.lzo.LzoCodec not found 错误可以配置文件spark-defaults.conf<br>spark.executor.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>spark.driver.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>保存文件重启spark服务集群即可。<br>再提供一个Unable to load native-hadoop library 和 Snappy native library not loaded的解决方案。这个问题主要是jre目录下缺少了libgplcompression.so , libhadoop.so和libsnappy.so两个文件。具体是，spark-shell依赖的是scala，scala依赖的是JAVA_HOME下的jdk，libhadoop.so和libsnappy.so两个文件应该放到JAVA_HOME/jre/lib/amd64下面。要注意的是要知道真正依赖到的JAVA_HOME是哪一个，把两个.so放对地方。这两个so：libhadoop.so和libsnappy.so。前一个so可以在HADOOP_HOME下找到，比如hadoop\lib\native\Linux-amd64-64。第二个libsnappy.so需要下载一个snappy-1.1.0.tar.gz，然后./configure，make编译出来。snappy是google的一个压缩算法，在hadoop jira下<a href="https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。" target="_blank" rel="external">https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。</a></p>
+            <p>在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar</span><br></pre></td></tr></table></figure></p>
+<p>在运行spark-shell中遇到的Compression codec com.hadoop.compression.lzo.LzoCodec not found 错误可以配置文件spark-defaults.conf<br>spark.executor.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>spark.driver.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>保存文件重启spark服务集群即可。<br>再提供一个Unable to load native-hadoop library 和 Snappy native library not loaded的解决方案。这个问题主要是jre目录下缺少了libgplcompression.so , libhadoop.so和libsnappy.so两个文件。具体是，spark-shell依赖的是scala，scala依赖的是JAVA_HOME下的jdk，libhadoop.so和libsnappy.so两个文件应该放到JAVA_HOME/jre/lib/amd64下面。要注意的是要知道真正依赖到的JAVA_HOME是哪一个，把两个.so放对地方。这两个so：libhadoop.so和libsnappy.so。前一个so可以在HADOOP_HOME下找到，比如hadoop\lib\native\Linux-amd64-64。第二个libsnappy.so需要下载一个snappy-1.1.0.tar.gz，然后./configure，make编译出来。snappy是google的一个压缩算法，在hadoop jira下<a href="https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。" target="_blank" rel="noopener">https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。</a></p>
 
             </div>
         
