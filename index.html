@@ -87,7 +87,7 @@ var _hmt = _hmt || [];
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -106,10 +106,10 @@ var _hmt = _hmt || [];
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Entradas',
+            POSTS: 'Posts',
             PAGES: 'Pages',
-            CATEGORIES: 'Categorias',
-            TAGS: 'Etiquetas',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -142,7 +142,7 @@ var _hmt = _hmt || [];
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
     </div>
 
                 </td>
@@ -159,7 +159,7 @@ var _hmt = _hmt || [];
         
     <div class="widget-wrap" id='categories'>
         <h3 class="widget-title">
-            <span>Categorias</span>
+            <span>categories</span>
             &nbsp;
             <a id='allExpand' href="#">
                 <i class="fa fa-angle-double-down fa-2x"></i>
@@ -184,7 +184,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             hadoop
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -202,7 +202,7 @@ var _hmt = _hmt || [];
                             &nbsp;
                             spark
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -283,7 +283,7 @@ var _hmt = _hmt || [];
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title"><span>Nube de etiquetas</span></h3>
+        <h3 class="widget-title"><span>tag cloud</span></h3>
         <div class="widget tagcloud">
             <a href="/tags/ambari/" style="font-size: 10px;">ambari</a> <a href="/tags/compaction/" style="font-size: 10px;">compaction</a> <a href="/tags/elasticsearch/" style="font-size: 17.5px;">elasticsearch</a> <a href="/tags/ha/" style="font-size: 10px;">ha</a> <a href="/tags/hbase/" style="font-size: 15px;">hbase</a> <a href="/tags/optimizing/" style="font-size: 10px;">optimizing</a> <a href="/tags/parquet/" style="font-size: 10px;">parquet</a> <a href="/tags/rit/" style="font-size: 10px;">rit</a> <a href="/tags/scala/" style="font-size: 17.5px;">scala</a> <a href="/tags/shuffle/" style="font-size: 10px;">shuffle</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/yarn/" style="font-size: 12.5px;">yarn</a> <a href="/tags/区块链/" style="font-size: 10px;">区块链</a> <a href="/tags/比特币/" style="font-size: 10px;">比特币</a>
         </div>
@@ -292,7 +292,7 @@ var _hmt = _hmt || [];
     
         
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title"><span>Links</span></h3>
+        <h3 class="widget-title"><span>links</span></h3>
         <div class="widget">
             <ul>
                 
@@ -799,8 +799,8 @@ var _hmt = _hmt || [];
                     
                     <p><p>相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是肉眼看到的一个结果，为什么会处于RIT状态才是问题探索的根本，也是解决问题的关键。本文就基于hbase 0.98.9版本对RIT的工作机制以及实现原理进行普及性的介绍，同时在此基础上通过真实案例讲解如何正确合理地处理处于RIT状态的Region。一方面希望大家能够更好的了解RIT机制，另一方面希望通过本文的学习之后可以不再’惧怕’RIT，正确认识处于RIT状态的Region。</p>
 <h2 id="Region-In-Trasition_u673A_u5236"><a href="#Region-In-Trasition_u673A_u5236" class="headerlink" title="Region-In-Trasition机制"></a>Region-In-Trasition机制</h2><p>从字面意思来看，Region-In-Transition说的是Region变迁机制，实际上是指在一次特定操作行为中Region状态的变迁，那这里就涉及这么几个问题：Region存在多少种状态？HBase有哪些操作会触发Region状态变迁？一次正常操作过程中Region状态变迁的完整流程是怎么样的？如果Region状态在变迁的过程中出现异常又会怎么样？</p>
-<h2 id="Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F"><a href="#Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F" class="headerlink" title="Region存在多少种状态？有哪些操作会触发状态变迁？"></a>Region存在多少种状态？有哪些操作会触发状态变迁？</h2><p>HBase在RegionState类中定义了Region的主要状态，主要有如下：<br><img src="http://hbasefly.com/wp-content/uploads/2016/09/r1.png" alt="rit state"><br>上图中实际上定义了四种会触发Region状态变迁的操作以及操作对应的Region状态。其中特定操作行为通常包括assign、unassign、split以及merge等，而很多其他操作都可以拆成unassign和assign，比如move操作实际上是先unassign再assign；</p>
-<h2 id="Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F"><a href="#Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F" class="headerlink" title="Region状态迁移是如何发生的？"></a>Region状态迁移是如何发生的？</h2><p>这个过程有点类似于状态机，也是通过事件驱动的。和Region状态一样，HBase还定义了很多事件（具体见EventType类）。此处以unassign过程为例说明事件是如何驱动状态变迁的，见下图：<br><img src="http://hbasefly.com/wp-content/uploads/2016/09/%E8%AE%A9.png" alt="hbase-move"></p>
+<h2 id="Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F"><a href="#Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F" class="headerlink" title="Region存在多少种状态？有哪些操作会触发状态变迁？"></a>Region存在多少种状态？有哪些操作会触发状态变迁？</h2><p>HBase在RegionState类中定义了Region的主要状态，主要有如下：<br><img src="/images/15243097741593.jpg" alt="rit state"><br>上图中实际上定义了四种会触发Region状态变迁的操作以及操作对应的Region状态。其中特定操作行为通常包括assign、unassign、split以及merge等，而很多其他操作都可以拆成unassign和assign，比如move操作实际上是先unassign再assign；</p>
+<h2 id="Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F"><a href="#Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F" class="headerlink" title="Region状态迁移是如何发生的？"></a>Region状态迁移是如何发生的？</h2><p>这个过程有点类似于状态机，也是通过事件驱动的。和Region状态一样，HBase还定义了很多事件（具体见EventType类）。此处以unassign过程为例说明事件是如何驱动状态变迁的，见下图：<br><img src="/images/15243098227995.png" alt="hbase-move"></p>
 <p>上图所示是Region在close时的状态变迁图，其中红字部分就是发生的各种事件。可见，如果发生M_ZK_REGION_CLOSING事件，Region就会从OPEN状态迁移到PENDING_CLOSE状态，而发生RS_ZK_REGION_CLOSING事件，Region会从PENDING_CLOSE状态迁移到CLOSING状态，以此类推，发生RS_ZK_REGION_CLOSED事件，Region就会从CLOSING状态迁移到CLOSED状态。当然，除了这些事件之外，HBase还定义了很多其他事件，在此就不一一列举。截至到此，我们知道Region是一个有限状态机，那这个状态机是如何正常工作的，HMaster、RegionServer、Zookeeper又在状态机工作过程中扮演了什么角色，那就接着往下看～</p>
 <p>
                 
@@ -899,10 +899,10 @@ var _hmt = _hmt || [];
                 
                     
                     <p><p>HRegoin Server上的storefile文件是被后台线程监控的，以确保这些文件保持在可控状态。磁盘上的storefile的数量会随着越来越多的memstore被刷新而变等于来越多——每次刷新都会生成一个storefile文件。当storefile数量满足一定条件时（可以通过配置参数类调整），会触发文件合并操作——minor compaction，将多个比较小的storefile合并成一个大的storefile文件，直到合并的文件大到超过单个文件配置允许的最大值时会触发一次region的自动分割，即region split操作，将一个region平分成2个，具体过程以后再说，这里不再赘述。 </p>
-<p>合并操作有两种类型：轻量级的的minor compaction和重量级的major compaction。<br>Minor compaction主要负责将符合条件的最早生成的几个storefile合并生成一个大的storefile文件，它不会删除被标记为”删除”的数据和以过期的数据，并且执行过一次minor合并操作后还会有多个storefile文件。<br>Minor compaction一次合并的文件数量由hbase.hstore.compaction.min(执行minor compaction的最少文件数)配置参数决定，该参数值的默认配置是3。该参数配置太大则会延迟触发minor合并操作，并且一次合并的文件数太多会占用更多的资源和执行更长的时间，这会带来不好的用户体验——毕竟hbase是要提供实时响应的。<br>在一次minor操作一次最多允许10个文件，通过hbase.hstore.compaction.max参数设置，任何一个大于hbase.hstore.compaction.min.size值的storefile文件将自动成为将要被合并的storefile，hbase.hstore.compaction.min.size属性值与被用来设置将memstore执行flush操作的配置属性hbase.hregion.memstore.flush.size的值(默认为128MB)相同。<br>Minor compaction操作有一个时间轴而的概念，那就是每次合并操作都是按storefile的生成时间有旧到新来合并文件的。如此下图所示： </p>
-<p><img src="http://dl.iteye.com/upload/attachment/0083/0362/bd91b9a4-0a75-339e-b254-df98d8f26f8d.jpg" alt="minor compaction"></p>
+<p>合并操作有两种类型：轻量级的的minor compaction和重量级的major compaction。<br>Minor compaction主要负责将符合条件的最早生成的几个storefile合并生成一个大的storefile文件，它不会删除被标记为”删除”的数据和以过期的数据，并且执行过一次minor合并操作后还会有多个storefile文件。<br>Minor compaction一次合并的文件数量由hbase.hstore.compaction.min(执行minor compaction的最少文件数)配置参数决定，该参数值的默认配置是3。该参数配置太大则会延迟触发minor合并操作，并且一次合并的文件数太多会占用更多的资源和执行更长的时间，这会带来不好的用户体验——毕竟hbase是要提供实时响应的。<br>在一次minor操作一次最多允许10个文件，通过hbase.hstore.compaction.max参数设置，任何一个大于hbase.hstore.compaction.min.size值的storefile文件将自动成为将要被合并的storefile，hbase.hstore.compaction.min.size属性值与被用来设置将memstore执行flush操作的配置属性hbase.hregion.memstore.flush.size的值(默认为128MB)相同。<br>Minor compaction操作有一个时间轴而的概念，那就是每次合并操作都是按storefile的生成时间有旧到新来合并文件的。如此下图所示：<br><img src="/images/15243099232075.jpg" alt="minor compaction"></p>
 <p>对比Minor compaction，Major compaction操作会把所有的storefile合并成一个单一的storefile文件，在文件合并期间系统会删除标记为”删除”标记的数据和过期失效的数据，同时会block所有客户端对该操作所属的region的请求直到合并完毕，最后删除已合并的storefile文件。 </p>
 <p>到底如何决定触发那种类型的major类型的compaction操作呢？这是在compaction检查执行时被自动决定的。compaction检查可以通过以下三种条件触发：<br>1、每当memstore被刷新到磁盘后触发；<br>2、通过hbase shell命令行调用或API调用触发；<br>3、通过一个叫CompacionChecker的后台线程触发。<br>每一个region都运行着一个这样的后台线程。CompacionChecker会定期的执行compation检查，时间间隔可以通过hbase.server.thread.wakefrequency来配置。<br>可以通过hbase shell命令行调用或majorCompact()API调用，从而强迫major合并操作执行，否则服务器会首先基于hbase.hregion.majorcompaction(24小时)的配置来检查是否要执行major合并操作。<br>由于Major compaction在执行期间会阻塞所有客户端的请求直到合并完毕，因此最好在服务器空闲时通过手工或脚本的方式调用执行，以提高客户体验。 </p>
+<p>以下是两种compaction的区别：<br><img src="/images/15243099515674.jpg" alt="minor vs major"></p>
 <p>
                 
             
@@ -1812,7 +1812,7 @@ var _hmt = _hmt || [];
 
     
         <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Siguiente  &raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
         </nav>
     
 </section>
