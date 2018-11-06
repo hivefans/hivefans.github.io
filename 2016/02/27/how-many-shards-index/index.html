@@ -90,7 +90,7 @@
 <meta property="og:description" content="A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of ch">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://qbox.io/img/blog/elasticsearch_cluster.png?t=1439423553643&width=700">
-<meta property="og:updated_time" content="2016-02-27T02:58:52.000Z">
+<meta property="og:updated_time" content="2018-11-06T13:24:23.386Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Optimizing Elasticsearch-How Many Shards per Index">
 <meta name="twitter:description" content="A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of ch">
@@ -356,7 +356,7 @@
       
 
       
-        <p>A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of choosing different values for the number of shards. Continue reading if you want to learn how to demystify and optimize your sharding strategy.</p>
+        <p>A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of choosing different values for the number of shards. Continue reading if you want to learn how to demystify and optimize your sharding strategy.<br><a id="more"></a></p>
 <h3 id="Why_Bother_3F"><a href="#Why_Bother_3F" class="headerlink" title="Why Bother?"></a>Why Bother?</h3><p>This is an important topic, and many users are apprehensive as they approach it – and for good reason. A major mistake in shard allocation could cause scaling problems in a production environment that maintains an ever-growing dataset.</p>
 <p>On the other hand, we know that there is little Elasticsearch documentation on this topic. Most users just want answers – and they want specific answers, not vague number ranges and warnings for arbitrarily large numbers.</p>
 <p>Well, we have some answers. After covering a few definitions and some clarifications, we present several common use cases and provide our recommendations for each.</p>

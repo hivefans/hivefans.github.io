@@ -2,23 +2,107 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.djstudy.net/2016/01/24/hdp-spark-shell-error/</loc>
+    
+    <lastmod>2018-11-06T13:25:15.839Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/01/24/spark-on-yarn/</loc>
+    
+    <lastmod>2018-11-06T13:25:03.380Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/01/24/spark-ha/</loc>
+    
+    <lastmod>2018-11-06T13:24:53.297Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/</loc>
+    
+    <lastmod>2018-11-06T13:24:45.882Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/01/24/scala-rumen-biji/</loc>
+    
+    <lastmod>2018-11-06T13:24:38.124Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/</loc>
+    
+    <lastmod>2018-11-06T13:24:29.270Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/02/27/how-many-shards-index/</loc>
+    
+    <lastmod>2018-11-06T13:24:23.386Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/07/10/scala-note-3/</loc>
+    
+    <lastmod>2018-11-06T13:24:11.857Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/</loc>
+    
+    <lastmod>2018-11-06T13:23:59.903Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/</loc>
     
-    <lastmod>2018-04-21T11:26:08.697Z</lastmod>
+    <lastmod>2018-11-06T13:23:53.434Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.djstudy.net/2016/09/28/hbase-rit/</loc>
     
-    <lastmod>2018-04-21T11:24:36.054Z</lastmod>
+    <lastmod>2018-11-06T13:23:46.381Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2017/04/27/es-shard-interaction/</loc>
+    
+    <lastmod>2018-11-06T13:23:40.276Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2017/06/06/openresty-kibana-post/</loc>
+    
+    <lastmod>2018-11-06T13:23:28.524Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.djstudy.net/2018/04/11/qukuailian-note1/</loc>
+    
+    <lastmod>2018-11-06T13:23:15.649Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.djstudy.net/2018/04/19/hbase-module/</loc>
     
-    <lastmod>2018-04-20T09:58:56.392Z</lastmod>
+    <lastmod>2018-11-06T13:22:19.589Z</lastmod>
     
   </url>
   
@@ -37,20 +121,6 @@
   </url>
   
   <url>
-    <loc>https://blog.djstudy.net/2018/04/11/qukuailian-note1/</loc>
-    
-    <lastmod>2018-04-11T06:47:21.754Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/</loc>
-    
-    <lastmod>2018-04-10T08:40:26.800Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.djstudy.net/tags/index.html</loc>
     
     <lastmod>2018-04-09T09:54:44.433Z</lastmod>
@@ -65,34 +135,6 @@
   </url>
   
   <url>
-    <loc>https://blog.djstudy.net/2017/06/06/openresty-kibana-post/</loc>
-    
-    <lastmod>2017-06-06T03:04:35.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2017/04/27/es-shard-interaction/</loc>
-    
-    <lastmod>2017-04-27T10:17:57.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/</loc>
-    
-    <lastmod>2016-07-26T23:23:03.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/07/10/scala-note-3/</loc>
-    
-    <lastmod>2016-07-10T13:17:52.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.djstudy.net/2016/03/19/scala-note-2/</loc>
     
     <lastmod>2016-03-21T13:05:41.000Z</lastmod>
@@ -103,48 +145,6 @@
     <loc>https://blog.djstudy.net/2016/03/16/scala-note-1/</loc>
     
     <lastmod>2016-03-21T13:02:36.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/02/27/how-many-shards-index/</loc>
-    
-    <lastmod>2016-02-27T02:58:52.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/01/24/scala-rumen-biji/</loc>
-    
-    <lastmod>2016-01-27T10:39:15.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/</loc>
-    
-    <lastmod>2016-01-24T11:03:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/01/24/spark-ha/</loc>
-    
-    <lastmod>2016-01-24T08:13:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/01/24/spark-on-yarn/</loc>
-    
-    <lastmod>2016-01-24T08:08:20.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.djstudy.net/2016/01/24/hdp-spark-shell-error/</loc>
-    
-    <lastmod>2016-01-24T08:04:10.000Z</lastmod>
     
   </url>
   

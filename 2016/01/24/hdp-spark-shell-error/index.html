@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="东杰书屋">
 <meta property="og:description" content="在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法1$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/h">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2016-01-24T08:04:10.000Z">
+<meta property="og:updated_time" content="2018-11-06T13:25:15.839Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ambari hdp中部署apache spark运行spark shell遇到的错误解决">
 <meta name="twitter:description" content="在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法1$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/h">
@@ -355,6 +355,7 @@
 
       
         <p>在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
 <p>在运行spark-shell中遇到的Compression codec com.hadoop.compression.lzo.LzoCodec not found 错误可以配置文件spark-defaults.conf<br>spark.executor.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>spark.driver.extraClassPath /usr/hdp/2.2.4.2-2/hadoop/lib/hadoop-lzo-0.6.0.2.2.4.2-2.jar<br>保存文件重启spark服务集群即可。<br>再提供一个Unable to load native-hadoop library 和 Snappy native library not loaded的解决方案。这个问题主要是jre目录下缺少了libgplcompression.so , libhadoop.so和libsnappy.so两个文件。具体是，spark-shell依赖的是scala，scala依赖的是JAVA_HOME下的jdk，libhadoop.so和libsnappy.so两个文件应该放到JAVA_HOME/jre/lib/amd64下面。要注意的是要知道真正依赖到的JAVA_HOME是哪一个，把两个.so放对地方。这两个so：libhadoop.so和libsnappy.so。前一个so可以在HADOOP_HOME下找到，比如hadoop\lib\native\Linux-amd64-64。第二个libsnappy.so需要下载一个snappy-1.1.0.tar.gz，然后./configure，make编译出来。snappy是google的一个压缩算法，在hadoop jira下<a href="https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。" target="_blank" rel="noopener">https://issues.apache.org/jira/browse/HADOOP-7206记录了这次集成。</a></p>
 
       

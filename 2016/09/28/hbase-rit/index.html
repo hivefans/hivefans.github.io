@@ -92,7 +92,7 @@
 <meta property="og:image" content="https://blog.djstudy.net/images/15243097741593.jpg">
 <meta property="og:image" content="https://blog.djstudy.net/images/15243098227995.png">
 <meta property="og:image" content="https://blog.djstudy.net/images/15243098545078.png">
-<meta property="og:updated_time" content="2018-04-21T11:24:36.054Z">
+<meta property="og:updated_time" content="2018-11-06T13:23:46.381Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hbase中的RIT的那些事">
 <meta name="twitter:description" content="相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是">
@@ -358,7 +358,7 @@
       
 
       
-        <p>相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是肉眼看到的一个结果，为什么会处于RIT状态才是问题探索的根本，也是解决问题的关键。本文就基于hbase 0.98.9版本对RIT的工作机制以及实现原理进行普及性的介绍，同时在此基础上通过真实案例讲解如何正确合理地处理处于RIT状态的Region。一方面希望大家能够更好的了解RIT机制，另一方面希望通过本文的学习之后可以不再’惧怕’RIT，正确认识处于RIT状态的Region。</p>
+        <p>相信长时间运维HBase集群的童鞋肯定都会对RIT（Region-In-Transition，很多参考资料误解为Region-In-Transaction，需要注意）有一种咬牙切齿的痛恨感，一旦Region处于长时间的RIT就会有些不知所措，至少以前的我就是这样过来的。正所谓“恐惧来源于未知”，不知所措意味着我们对RIT知之甚少，然而“凡事都有因果，万事皆有源头”，处于RIT状态的Region只是肉眼看到的一个结果，为什么会处于RIT状态才是问题探索的根本，也是解决问题的关键。本文就基于hbase 0.98.9版本对RIT的工作机制以及实现原理进行普及性的介绍，同时在此基础上通过真实案例讲解如何正确合理地处理处于RIT状态的Region。一方面希望大家能够更好的了解RIT机制，另一方面希望通过本文的学习之后可以不再’惧怕’RIT，正确认识处于RIT状态的Region。<br><a id="more"></a></p>
 <h2 id="Region-In-Trasition_u673A_u5236"><a href="#Region-In-Trasition_u673A_u5236" class="headerlink" title="Region-In-Trasition机制"></a>Region-In-Trasition机制</h2><p>从字面意思来看，Region-In-Transition说的是Region变迁机制，实际上是指在一次特定操作行为中Region状态的变迁，那这里就涉及这么几个问题：Region存在多少种状态？HBase有哪些操作会触发Region状态变迁？一次正常操作过程中Region状态变迁的完整流程是怎么样的？如果Region状态在变迁的过程中出现异常又会怎么样？</p>
 <h2 id="Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F"><a href="#Region_u5B58_u5728_u591A_u5C11_u79CD_u72B6_u6001_uFF1F_u6709_u54EA_u4E9B_u64CD_u4F5C_u4F1A_u89E6_u53D1_u72B6_u6001_u53D8_u8FC1_uFF1F" class="headerlink" title="Region存在多少种状态？有哪些操作会触发状态变迁？"></a>Region存在多少种状态？有哪些操作会触发状态变迁？</h2><p>HBase在RegionState类中定义了Region的主要状态，主要有如下：<br><img src="/images/15243097741593.jpg" alt="rit state"><br>上图中实际上定义了四种会触发Region状态变迁的操作以及操作对应的Region状态。其中特定操作行为通常包括assign、unassign、split以及merge等，而很多其他操作都可以拆成unassign和assign，比如move操作实际上是先unassign再assign；</p>
 <h2 id="Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F"><a href="#Region_u72B6_u6001_u8FC1_u79FB_u662F_u5982_u4F55_u53D1_u751F_u7684_uFF1F" class="headerlink" title="Region状态迁移是如何发生的？"></a>Region状态迁移是如何发生的？</h2><p>这个过程有点类似于状态机，也是通过事件驱动的。和Region状态一样，HBase还定义了很多事件（具体见EventType类）。此处以unassign过程为例说明事件是如何驱动状态变迁的，见下图：<br><img src="/images/15243098227995.png" alt="hbase-move"></p>
