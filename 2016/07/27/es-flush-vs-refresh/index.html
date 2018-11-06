@@ -1,15 +1,87 @@
 <!DOCTYPE html>
-<html lang=zh>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-    <meta charset="utf-8">
-    
-    <title>elasticsearch中的refresh和flush区别 | 东杰书屋</title>
-    
-    
-        <meta name="keywords" content="elasticsearch" />
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="elasticsearch," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="东杰书屋" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
 <meta name="keywords" content="elasticsearch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="elasticsearch中的refresh和flush区别">
@@ -23,366 +95,268 @@
 <meta name="twitter:title" content="elasticsearch中的refresh和flush区别">
 <meta name="twitter:description" content="elasticsearch中有两个比较重要的操作：refresh 和 flushrefresh操作当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（docum">
 <meta name="twitter:image" content="https://blog.djstudy.net/images/es-refresh-flush.jpg">
-    
 
-    
-        <link rel="alternate" href="/" title="东杰书屋" type="application/atom+xml" />
-    
 
-    
-        <link rel="icon" href="/favicon.ico" />
-    
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/open-sans/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
-
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
-    
-    
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
-    
-    
-        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
-    
-    
-    
-    
-        <script>
-var _hmt = _hmt || [];
-(function() {
-    var hm = document.createElement("script");
-    hm.src = "//hm.baidu.com/hm.js?05207dc6d0c785fb39a80bb5af7c3d8a";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
 </script>
 
-    
 
 
-    
+  <link rel="canonical" href="https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/"/>
+
+
+
+
+
+  <title>elasticsearch中的refresh和flush区别 | 东杰书屋</title>
+  
+
+
+
+
+
+
+
+
 </head>
 
-<body>
-    <div id="container">
-        <header id="header">
-    <div id="header-main" class="header-inner">
-        <div class="outer">
-            <a href="/" id="logo">
-                <i class="logo"></i>
-                <span class="site-title">东杰书屋</span>
-            </a>
-            <nav id="main-nav">
-                
-                    <a class="main-nav-link" href="/">首页</a>
-                
-                    <a class="main-nav-link" href="/archives">归档</a>
-                
-                    <a class="main-nav-link" href="/categories">分类</a>
-                
-                    <a class="main-nav-link" href="/tags">标签</a>
-                
-                    <a class="main-nav-link" href="/about">关于</a>
-                
-                    <a class="main-nav-link" href="/arch">架构</a>
-                
-            </nav>
-            
-            <div id="search-form-wrap">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">东杰书屋</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
+      
+        <p class="site-subtitle">环境不会改变，解决之道在于改变自己。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="/js/insight.js"></script>
 
-</div>
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tech">
+          <a href="/tech/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            tech
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="东杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="东杰书屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">elasticsearch中的refresh和flush区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-27T07:18:40+08:00">
+                2016-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
         </div>
-    </div>
-    <div id="main-nav-mobile" class="header-sub header-inner">
-        <table class="menu outer">
-            <tr>
-                
-                    <td><a class="main-nav-link" href="/">首页</a></td>
-                
-                    <td><a class="main-nav-link" href="/archives">归档</a></td>
-                
-                    <td><a class="main-nav-link" href="/categories">分类</a></td>
-                
-                    <td><a class="main-nav-link" href="/tags">标签</a></td>
-                
-                    <td><a class="main-nav-link" href="/about">关于</a></td>
-                
-                    <td><a class="main-nav-link" href="/arch">架构</a></td>
-                
-                <td>
-                    
-    <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
-    </div>
-
-                </td>
-            </tr>
-        </table>
-    </div>
-</header>
-
-        <div class="outer">
-            
-            
-                <aside id="sidebar">
-   
-        
-    <div class="widget-wrap" id='categories'>
-        <h3 class="widget-title">
-            <span>categories</span>
-            &nbsp;
-            <a id='allExpand' href="#">
-                <i class="fa fa-angle-double-down fa-2x"></i>
-            </a>
-        </h3>
-        
-        
-        
-         <ul class="unstyled" id="tree" > 
-                    <li class="directory open">
-                        <a href="#" data-role="directory">
-                            <i class="fa fa-folder-open"></i>
-                            &nbsp;
-                            elasticsearch
-                        </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2017/04/27/es-shard-interaction/">Elasticsearch 分片交互过程详解</a></li>  <li class="file"><a href="/2017/06/06/openresty-kibana-post/">使用openresty获取kibana查询post参数</a></li>  <li class="file active"><a href="/2016/07/27/es-flush-vs-refresh/">elasticsearch中的refresh和flush区别</a></li>  <li class="file"><a href="/2016/02/27/how-many-shards-index/">Optimizing Elasticsearch-How Many Shards per Index</a></li>  </ul> 
-                    </li> 
-                    
-                    <li class="directory">
-                        <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
-                            &nbsp;
-                            hadoop
-                        </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/07/27/hbase-minor-vs-major-compaction/">hbase 压缩合并中的minor与major区别</a></li>  <li class="file"><a href="/2018/04/19/hbase-module/">hbase中核心组件与作用</a></li>  <li class="file"><a href="/2016/01/24/hdp-spark-shell-error/">ambari hdp中部署apache spark运行spark shell遇到的错误解决</a></li>  <li class="file"><a href="/2016/09/28/hbase-rit/">hbase中的RIT的那些事</a></li>  </ul> 
-                    </li> 
-                    
-                    <li class="directory">
-                        <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
-                            &nbsp;
-                            scala
-                        </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/scala-rumen-biji/">scala入门笔记</a></li>  <li class="file"><a href="/2016/03/16/scala-note-1/">scala学习笔记(一)</a></li>  <li class="file"><a href="/2016/03/19/scala-note-2/">scala学习笔记(二)</a></li>  <li class="file"><a href="/2016/07/10/scala-note-3/">scala学习笔记(三)</a></li>  </ul> 
-                    </li> 
-                    
-                    <li class="directory">
-                        <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
-                            &nbsp;
-                            spark
-                        </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2016/01/24/spark-ha/">Spark Standalone模式HA环境搭建</a></li>  <li class="file"><a href="/2016/01/24/spark-convert-text-parquet/">将 Spark 中的文本转换为 Parquet 以提升性能</a></li>  <li class="file"><a href="/2016/01/24/spark-on-yarn/">spark on yarn</a></li>  <li class="file"><a href="/2016/01/27/spark-sort-shuffle-analyse/">Spark Sort Based Shuffle内存分析</a></li>  </ul> 
-                    </li> 
-                    
-                    <li class="directory">
-                        <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
-                            &nbsp;
-                            区块链
-                        </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2018/04/11/qukuailian-note1/">区块链学习笔记（一）</a></li>  </ul> 
-                    </li> 
-                     </ul> 
-    </div>
-    <script>
-        $(document).ready(function() {
-            var iconFolderOpenClass  = 'fa-folder-open';
-            var iconFolderCloseClass = 'fa-folder';
-            var iconAllExpandClass = 'fa-angle-double-down';
-            var iconAllPackClass = 'fa-angle-double-up';
-            // Handle directory-tree expansion:
-            // 左键单独展开目录
-            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
-                event.preventDefault();
-
-                var icon = $(this).children('.fa');
-                var expanded = icon.hasClass(iconFolderOpenClass);
-                var subtree = $(this).siblings('ul');
-                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
-                if (expanded) {
-                    if (typeof subtree != 'undefined') {
-                        subtree.slideUp({ duration: 100 });
-                    }
-                    icon.addClass(iconFolderCloseClass);
-                } else {
-                    if (typeof subtree != 'undefined') {
-                        subtree.slideDown({ duration: 100 });
-                    }
-                    icon.addClass(iconFolderOpenClass);
-                }
-            });
-            // 右键展开下属所有目录
-            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
-                event.preventDefault();
-                
-                var icon = $(this).children('.fa');
-                var expanded = icon.hasClass(iconFolderOpenClass);
-                var listNode = $(this).siblings('ul');
-                var subtrees = $.merge(listNode.find('li ul'), listNode);
-                var icons = $.merge(listNode.find('.fa'), icon);
-                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
-                if(expanded) {
-                    subtrees.slideUp({ duration: 100 });
-                    icons.addClass(iconFolderCloseClass);
-                } else {
-                    subtrees.slideDown({ duration: 100 });
-                    icons.addClass(iconFolderOpenClass);
-                }
-            })
-            // 展开关闭所有目录按钮
-            $(document).on('click', '#allExpand', function (event) {
-                event.preventDefault();
-                
-                var icon = $(this).children('.fa');
-                var expanded = icon.hasClass(iconAllExpandClass);
-                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
-                if(expanded) {
-                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
-                    $('#categories li ul').slideDown({ duration: 100 });
-                    icon.addClass(iconAllPackClass);
-                } else {
-                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
-                    $('#categories li ul').slideUp({ duration: 100 });
-                    icon.addClass(iconAllExpandClass);
-                }
-            });  
-        });
-    </script>
-
-    
-        
-    <div class="widget-wrap">
-        <h3 class="widget-title"><span>tag cloud</span></h3>
-        <div class="widget tagcloud">
-            <a href="/tags/ambari/" style="font-size: 10px;">ambari</a> <a href="/tags/compaction/" style="font-size: 10px;">compaction</a> <a href="/tags/elasticsearch/" style="font-size: 17.5px;">elasticsearch</a> <a href="/tags/ha/" style="font-size: 10px;">ha</a> <a href="/tags/hbase/" style="font-size: 15px;">hbase</a> <a href="/tags/optimizing/" style="font-size: 10px;">optimizing</a> <a href="/tags/parquet/" style="font-size: 10px;">parquet</a> <a href="/tags/rit/" style="font-size: 10px;">rit</a> <a href="/tags/scala/" style="font-size: 17.5px;">scala</a> <a href="/tags/shuffle/" style="font-size: 10px;">shuffle</a> <a href="/tags/spark/" style="font-size: 20px;">spark</a> <a href="/tags/yarn/" style="font-size: 12.5px;">yarn</a> <a href="/tags/区块链/" style="font-size: 10px;">区块链</a> <a href="/tags/比特币/" style="font-size: 10px;">比特币</a>
-        </div>
-    </div>
-
-    
-        
-    <div class="widget-wrap widget-list">
-        <h3 class="widget-title"><span>links</span></h3>
-        <div class="widget">
-            <ul>
-                
-                    <li>
-                        <a href="http://macshuo.com/">MacTalk</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://slaytanic.blog.51cto.com/">实践检验</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://oserror.com/">Charles的技术博客</a>
-                    </li>
-                
-            </ul>
-        </div>
-    </div>
-
-
-    
-    <div id="toTop" class="fa fa-angle-up"></div>
-</aside>
-            
-            <section id="main"><article id="post-es-flush-vs-refresh" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-                    <div class="article-meta">
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/elasticsearch/">elasticsearch</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/elasticsearch/">elasticsearch</a>
-    </div>
-
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2016/07/27/es-flush-vs-refresh/">
-            <time datetime="2016-07-26T23:18:40.000Z" itemprop="datePublished">2016-07-27</time>
-        </a>
-    </div>
-
-
-                        
-                        
-                            <div class="article-meta-button">
-                                <a href='http://git.djstudy.net/hivefans/blog/raw/master/source/_posts/es-flush-vs-refresh.md'> Source </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a href='http://git.djstudy.net/hivefans/blog/_edit/master/source/_posts/es-flush-vs-refresh.md'> Edit </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a href='http://git.djstudy.net/hivefans/blog/commits/master/source/_posts/es-flush-vs-refresh.md'> History </a>
-                            </div>
-                        
-                    </div>
-                
-                
-    
-        <h1 class="article-title" itemprop="name">
-            elasticsearch中的refresh和flush区别
-        </h1>
+      </header>
     
 
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-        
-            
-        
-        
-            <h3 id="elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush"><a href="#elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush" class="headerlink" title="elasticsearch中有两个比较重要的操作：refresh 和 flush"></a>elasticsearch中有两个比较重要的操作：refresh 和 flush</h3><h3 id="refresh_u64CD_u4F5C"><a href="#refresh_u64CD_u4F5C" class="headerlink" title="refresh操作"></a>refresh操作</h3><p>当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（document）解析完成的segment写到filesystem cache之中，这样避免了比较损耗性能io操作，又可以使document可以被搜索。以上从index-buffer中取数据到filesystem cache中的过程叫做refresh。</p>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush"><a href="#elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush" class="headerlink" title="elasticsearch中有两个比较重要的操作：refresh 和 flush"></a>elasticsearch中有两个比较重要的操作：refresh 和 flush</h3><h3 id="refresh_u64CD_u4F5C"><a href="#refresh_u64CD_u4F5C" class="headerlink" title="refresh操作"></a>refresh操作</h3><p>当我们向ES发送请求的时候，我们发现es貌似可以在我们发请求的同时进行搜索。而这个实时建索引并可以被搜索的过程实际上是一次es 索引提交（commit）的过程，如果这个提交的过程直接将数据写入磁盘（fsync）必然会影响性能，所以es中设计了一种机制，即：先将index-buffer中文档（document）解析完成的segment写到filesystem cache之中，这样避免了比较损耗性能io操作，又可以使document可以被搜索。以上从index-buffer中取数据到filesystem cache中的过程叫做refresh。</p>
 <p>refresh操作可以通过API设置：<br>POST /index/_settings<br>{“refresh_interval”: “10s”}<br>当我们进行大规模的创建索引操作的时候，最好将将refresh关闭。<br>POST /index/_settings<br>{“refresh_interval”: “-1″}<br>es默认的refresh间隔时间是1s，这也是为什么ES可以进行近乎实时的搜索。</p>
 <h3 id="flush_u64CD_u4F5C_u4E0Etranslog"><a href="#flush_u64CD_u4F5C_u4E0Etranslog" class="headerlink" title="flush操作与translog"></a>flush操作与translog</h3><p>我们可能已经意识到如果数据在filesystem cache之中是很有可能在意外的故障中丢失。这个时候就需要一种机制，可以将对es的操作记录下来，来确保当出现故障的时候，保留在filesystem的数据不会丢失，并在重启的时候可以从这个记录中将数据恢复过来。elasticsearch提供了translog来记录这些操作。<br>当向elasticsearch发送创建document索引请求的时候，document数据会先进入到index buffer之后，与此同时会将操作记录在translog之中，当发生refresh时（数据从index buffer中进入filesystem cache的过程）translog中的操作记录并不会被清除，而是当数据从filesystem cache中被写入磁盘之后才会将translog中清空。而从filesystem cache写入磁盘的过程就是flush。可能有点晕，我画了一个图帮大家理解这个过程：<br><img src="/images/es-refresh-flush.jpg" alt="elasticsearch"></p>
 <h3 id="u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A"><a href="#u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A" class="headerlink" title="总结一下translog的功能："></a>总结一下translog的功能：</h3><p>1.保证在filesystem cache中的数据不会因为elasticsearch重启或是发生意外故障的时候丢失。<br>2.当系统重启时会从translog中恢复之前记录的操作。<br>3.当对elasticsearch进行CRUD操作的时候，会先到translog之中进行查找，因为tranlog之中保存的是最新的数据。<br>4.translog的清除时间时进行flush操作之后（将数据从filesystem cache刷入disk之中）。<br>再总结一下flush操作的时间点：</p>
@@ -390,105 +364,414 @@ var _hmt = _hmt || [];
 <p>index.translog.flush_threshold_ops:当发生多少次操作时进行一次flush。默认是 unlimited。<br>index.translog.flush_threshold_size:当translog的大小达到此值时会进行一次flush操作。默认是512mb。<br>index.translog.flush_threshold_period:在指定的时间间隔内如果没有进行flush操作，会进行一次强制flush操作。默认是30m。<br>index.translog.interval:多少时间间隔内会检查一次translog，来进行一次flush操作。es会随机的在这个值到这个值的2倍大小之间进行一次操作，默认是5s。<br>参考：<a href="http://www.elastic.co/guide/en/elasticsearch/guide/current/near-real-time.html" target="_blank" rel="noopener">http://www.elastic.co/guide/en/elasticsearch/guide/current/near-real-time.html</a><br>           <a href="http://www.elastic.co/guide/en/elasticsearch/guide/current/translog.html" target="_blank" rel="noopener">http://www.elastic.co/guide/en/elasticsearch/guide/current/translog.html</a></p>
 <p>转载 <a href="http://www.yubingzhe.com/143.html" target="_blank" rel="noopener">http://www.yubingzhe.com/143.html</a></p>
 
-            </div>
-        
-        <footer class="article-footer">
-        </footer>
+      
     </div>
-</article>
-
-
     
-<nav id="article-nav">
-    
-        <a href="/2016/07/27/hbase-minor-vs-major-compaction/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    hbase 压缩合并中的minor与major区别
-                
-            </div>
-        </a>
-    
-    
-        <a href="/2016/07/10/scala-note-3/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">scala学习笔记(三)</div>
-        </a>
-    
-</nav>
-
-
-
-
-
     
     
 
+    
 
+    
 
+    
 
-<!-- baidu url auto push script -->
-<script type="text/javascript">
-    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
-</script>     
-</section>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/elasticsearch/" rel="tag"># elasticsearch</a>
+          
         </div>
-        <footer id="footer">
-    <div class="outer">
-        <div id="footer-info" class="inner">
-            东杰 &copy; 2018 
-            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
-            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/07/10/scala-note-3/" rel="next" title="scala学习笔记(三)">
+                <i class="fa fa-chevron-left"></i> scala学习笔记(三)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/27/hbase-minor-vs-major-compaction/" rel="prev" title="hbase 压缩合并中的minor与major区别">
+                hbase 压缩合并中的minor与major区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
         </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
     </div>
-</footer>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">东杰</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/hivefans" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://example.com/" title="Title" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#elasticsearch_u4E2D_u6709_u4E24_u4E2A_u6BD4_u8F83_u91CD_u8981_u7684_u64CD_u4F5C_uFF1Arefresh__u548C_flush"><span class="nav-number">1.</span> <span class="nav-text">elasticsearch中有两个比较重要的操作：refresh 和 flush</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#refresh_u64CD_u4F5C"><span class="nav-number">2.</span> <span class="nav-text">refresh操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flush_u64CD_u4F5C_u4E0Etranslog"><span class="nav-number">3.</span> <span class="nav-text">flush操作与translog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u603B_u7ED3_u4E00_u4E0Btranslog_u7684_u529F_u80FD_uFF1A"><span class="nav-number">4.</span> <span class="nav-text">总结一下translog的功能：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">东杰</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
 
         
 
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
     
+
     
-        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
-    
-    
-        <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true,
-            TeX: {
-                equationNumbers: {
-                  autoNumber: 'AMS'
-                }
-            }
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
 
 
 
-<!-- Custom Scripts -->
-<script src="/js/main.js"></script>
 
-    </div>
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
 </body>
 </html>
