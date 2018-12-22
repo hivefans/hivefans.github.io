@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -87,7 +87,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Pisces',
     version: '6.6.0',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -524,11 +524,11 @@
       
 
       
-        <h3 id="u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D"><a href="#u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D" class="headerlink" title="一、Elasticseach如何将数据存储到分片中"></a>一、Elasticseach如何将数据存储到分片中</h3><p>问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。</p>
+        <h3 id="一、Elasticseach如何将数据存储到分片中"><a href="#一、Elasticseach如何将数据存储到分片中" class="headerlink" title="一、Elasticseach如何将数据存储到分片中"></a>一、Elasticseach如何将数据存储到分片中</h3><p>问题：当我们要在ES中存储数据的时候，数据应该存储在主分片和复制分片中的哪一个中去；当我们在ES中检索数据的时候，又是怎么判断要查询的数据是属于哪一个分片。</p>
 <p>数据存储到分片的过程是一定规则的，并不是随机发生的。<br><a id="more"></a><br>规则：shard = hash(routing) % number_of_primary_shards</p>
 <p>Routing值可以是一个任意的字符串，默认情况下，它的值为存数数据对应文档 _id 值，也可以是用户自定义的值。Routing这个字符串通过一个hash的函数处理，并返回一个数值，然后再除以索引中主分片的数目，所得的余数作为主分片的编号，取值一般在0到number_of_primary_shards - 1的这个范围中。通过这种方法计算出该数据是存储到哪个分片中。</p>
 <p>正是这种路由机制，导致了主分片的个数为什么在索引建立之后不能修改。对已有索引主分片数目的修改直接会导致路由规则出现严重问题，部分数据将无法被检索。</p>
-<h3 id="u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92"><a href="#u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92" class="headerlink" title="二、主分片与复制分片如何交互"></a>二、主分片与复制分片如何交互</h3><p>为了说明这个问题，我用一个例子来说明。<br><img src="/images/es-shard-interaction1.png" alt="elasticsearch"><br>在上面这个例子中，有三个ES的node，其中每一个index中包含两个primary shard，每个primary shard拥有一个replica shard。下面从几种常见的数据操作来说明二者之间的交互情况。</p>
+<h3 id="二、主分片与复制分片如何交互"><a href="#二、主分片与复制分片如何交互" class="headerlink" title="二、主分片与复制分片如何交互"></a>二、主分片与复制分片如何交互</h3><p>为了说明这个问题，我用一个例子来说明。<br><img src="/images/es-shard-interaction1.png" alt="elasticsearch"><br>在上面这个例子中，有三个ES的node，其中每一个index中包含两个primary shard，每个primary shard拥有一个replica shard。下面从几种常见的数据操作来说明二者之间的交互情况。</p>
 <p>1、索引与删除一个文档<br><img src="/images/es-shard-interaction2.png" alt="elasticsearch"></p>
 <p>这两种过程均可以分为三个过程来描述：<br>阶段1：客户端发送了一个索引或者删除的请求给node 1。</p>
 <p>阶段2：node 1通过请求中文档的 _id 值判断出该文档应该被存储在shard 0 这个分片中，并且node 1知道shard 0的primary shard位于node 3这个节点上。因此node 1会把这个请求转发到node 3。</p>
@@ -791,7 +791,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E00_u3001Elasticseach_u5982_u4F55_u5C06_u6570_u636E_u5B58_u50A8_u5230_u5206_u7247_u4E2D"><span class="nav-number">1.</span> <span class="nav-text">一、Elasticseach如何将数据存储到分片中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E8C_u3001_u4E3B_u5206_u7247_u4E0E_u590D_u5236_u5206_u7247_u5982_u4F55_u4EA4_u4E92"><span class="nav-number">2.</span> <span class="nav-text">二、主分片与复制分片如何交互</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Elasticseach如何将数据存储到分片中"><span class="nav-number">1.</span> <span class="nav-text">一、Elasticseach如何将数据存储到分片中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、主分片与复制分片如何交互"><span class="nav-number">2.</span> <span class="nav-text">二、主分片与复制分片如何交互</span></a></li></ol></div>
             
 
           </div>
@@ -845,7 +845,7 @@
 
 
 
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.6.0</div>
 
 
 

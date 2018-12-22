@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -87,7 +87,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Pisces',
     version: '6.6.0',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -519,15 +519,15 @@
       
 
       
-        <h2 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h2><p>借用和董神的一段对话说下背景：</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>借用和董神的一段对话说下背景：</p>
 <p>shuffle共有三种，别人讨论的是hash shuffle，这是最原始的实现，曾经有两个版本，第一版是每个map产生r个文件，一共产生mr个文件，由于产生的中间文件太大影响扩展性，社区提出了第二个优化版本，让一个core上map共用文件，减少文件数目，这样共产生corer个文件，好多了，但中间文件数目仍随任务数线性增加，仍难以应对大作业，但hash shuffle已经优化到头了。为了解决hash shuffle性能差的问题，又引入sort shuffle，完全借鉴mapreduce实现，每个map产生一个文件，彻底解决了扩展性问题<br>目前Sort Based Shuffle 是作为默认Shuffle类型的。Shuffle 是一个很复杂的过程，任何一个环节都足够写一篇文章。所以这里，我尝试换个方式，从实用的角度出发，让读者有两方面的收获：<br><a id="more"></a><br>剖析哪些环节，哪些代码可能会让内存产生问题<br>控制相关内存的参数<br>有时候，我们宁可程序慢点，也不要OOM，至少要先跑步起来，希望这篇文章能够让你达成这个目标。</p>
 <p>同时我们会提及一些类名，这些类方便你自己想更深入了解时，可以方便的找到他们，自己去探个究竟。</p>
-<h2 id="Shuffle__u6982_u89C8"><a href="#Shuffle__u6982_u89C8" class="headerlink" title="Shuffle 概览"></a>Shuffle 概览</h2><p>Spark 的Shuffle 分为 Write,Read 两阶段。我们预先建立三个概念：</p>
+<h2 id="Shuffle-概览"><a href="#Shuffle-概览" class="headerlink" title="Shuffle 概览"></a>Shuffle 概览</h2><p>Spark 的Shuffle 分为 Write,Read 两阶段。我们预先建立三个概念：</p>
 <p>Write 对应的是ShuffleMapTask,具体的写操作ExternalSorter来负责</p>
 <p>Read 阶段由ShuffleRDD里的HashShuffleReader来完成。如果拉来的数据如果过大，需要落地，则也由ExternalSorter来完成的</p>
 <p>所有Write 写完后，才会执行Read。 他们被分成了两个不同的Stage阶段。</p>
 <p>也就是说，Shuffle Write ,Shuffle Read 两阶段都可能需要落磁盘，并且通过Disk Merge 来完成最后的Sort归并排序。</p>
-<h2 id="Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790"><a href="#Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790" class="headerlink" title="Shuffle Write 内存消耗分析"></a>Shuffle Write 内存消耗分析</h2><p>Shuffle Write 的入口链路为：</p>
+<h2 id="Shuffle-Write-内存消耗分析"><a href="#Shuffle-Write-内存消耗分析" class="headerlink" title="Shuffle Write 内存消耗分析"></a>Shuffle Write 内存消耗分析</h2><p>Shuffle Write 的入口链路为：</p>
 <blockquote>
 <p>org.apache.spark.scheduler.ShuffleMapTask<br> —&gt; org.apache.spark.shuffle.sort.SortShuffleWriter<br>  —&gt; org.apache.spark.util.collection.ExternalSorter</p>
 </blockquote>
@@ -822,7 +822,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u524D_u8A00"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shuffle__u6982_u89C8"><span class="nav-number">2.</span> <span class="nav-text">Shuffle 概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shuffle_Write__u5185_u5B58_u6D88_u8017_u5206_u6790"><span class="nav-number">3.</span> <span class="nav-text">Shuffle Write 内存消耗分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shuffle-概览"><span class="nav-number">2.</span> <span class="nav-text">Shuffle 概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shuffle-Write-内存消耗分析"><span class="nav-number">3.</span> <span class="nav-text">Shuffle Write 内存消耗分析</span></a></li></ol></div>
             
 
           </div>
@@ -876,7 +876,7 @@
 
 
 
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.6.0</div>
 
 
 

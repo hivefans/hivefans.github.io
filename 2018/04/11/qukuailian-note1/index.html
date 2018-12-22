@@ -14,7 +14,7 @@
   
 
 
-<html class="theme-next gemini use-motion" lang="zh-CN">
+<html class="theme-next pisces use-motion" lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -87,7 +87,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Gemini',
+    scheme: 'Pisces',
     version: '6.6.0',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
@@ -520,15 +520,15 @@
       
 
       
-        <h2 id="u533A_u5757_u94FE_u672C_u8D28"><a href="#u533A_u5757_u94FE_u672C_u8D28" class="headerlink" title="区块链本质"></a>区块链本质</h2><p>它是一种特殊的分布式数据库。</p>
-<h2 id="u533A_u5757_u94FE_u7279_u5F81"><a href="#u533A_u5757_u94FE_u7279_u5F81" class="headerlink" title="区块链特征"></a>区块链特征</h2><ol>
+        <h2 id="区块链本质"><a href="#区块链本质" class="headerlink" title="区块链本质"></a>区块链本质</h2><p>它是一种特殊的分布式数据库。</p>
+<h2 id="区块链特征"><a href="#区块链特征" class="headerlink" title="区块链特征"></a>区块链特征</h2><ol>
 <li>分布式去中心化</li>
 <li>无须信任系统</li>
 <li>集体维护</li>
 <li>可靠数据库</li>
 <li>匿名性</li>
 <li>开源<a id="more"></a>
-<h2 id="u533A_u5757_u94FE_u7ED3_u6784"><a href="#u533A_u5757_u94FE_u7ED3_u6784" class="headerlink" title="区块链结构"></a>区块链结构</h2>区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。<br>每个区块包含两个部分。</li>
+<h2 id="区块链结构"><a href="#区块链结构" class="headerlink" title="区块链结构"></a>区块链结构</h2>区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。<br>每个区块包含两个部分。</li>
 </ol>
 <p><code>区块头（Head）：记录当前区块的特征值
 区块体（Body）：实际数据</code></p>
@@ -536,7 +536,7 @@
 <p><code>生成时间
 实际数据（即区块体）的哈希
 上一个区块的哈希</code><br><img src="/images/15234270837536.png" alt="区块链结构"></p>
-<h2 id="u533A_u5757_u94FE_u7684_u5206_u53C9"><a href="#u533A_u5757_u94FE_u7684_u5206_u53C9" class="headerlink" title="区块链的分叉"></a>区块链的分叉</h2><p>为什么区块链会发生分叉呢？原因就在于去中心化。</p>
+<h2 id="区块链的分叉"><a href="#区块链的分叉" class="headerlink" title="区块链的分叉"></a>区块链的分叉</h2><p>为什么区块链会发生分叉呢？原因就在于去中心化。</p>
 <ol>
 <li><p>网速的延迟</p>
 </li>
@@ -544,13 +544,13 @@
 </li>
 </ol>
 <p>现在的规则是，新节点总是采用最长的那条区块链。如果区块链有分叉，将看哪个分支在分叉点后面，先达到6个新区块（称为”六次确认”）。按照10分钟一个区块计算，一小时就可以确认。<br><img src="/images/15234283648590.jpg" alt="区块链分叉"></p>
-<h2 id="u5E94_u7528_u573A_u666F"><a href="#u5E94_u7528_u573A_u666F" class="headerlink" title="应用场景"></a>应用场景</h2><p>为了保证数据的可靠性，区块链也有自己的代价。一是效率，数据写入区块链，最少要等待十分钟，所有节点都同步数据，则需要更多的时间；二是能耗，区块的生成需要矿工进行无数无意义的计算，这是非常耗费能源的。</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>为了保证数据的可靠性，区块链也有自己的代价。一是效率，数据写入区块链，最少要等待十分钟，所有节点都同步数据，则需要更多的时间；二是能耗，区块的生成需要矿工进行无数无意义的计算，这是非常耗费能源的。</p>
 <p>因此，区块链的适用场景，其实非常有限。</p>
 <p><code>不存在所有成员都信任的管理当局
 写入的数据不要求实时使用
 挖矿的收益能够弥补本身的成本</code></p>
 <p>如果无法满足上述的条件，那么传统的数据库是更好的解决方案。目前，区块链最大的应用场景（可能也是唯一的应用场景），就是以比特币为代表的加密货币。</p>
-<h2 id="u53C2_u8003_u94FE_u63A5"><a href="#u53C2_u8003_u94FE_u63A5" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html</a><br><a href="https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ</a></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html</a><br><a href="https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ</a></p>
 
       
     </div>
@@ -792,7 +792,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u533A_u5757_u94FE_u672C_u8D28"><span class="nav-number">1.</span> <span class="nav-text">区块链本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u533A_u5757_u94FE_u7279_u5F81"><span class="nav-number">2.</span> <span class="nav-text">区块链特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u533A_u5757_u94FE_u7ED3_u6784"><span class="nav-number">3.</span> <span class="nav-text">区块链结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u533A_u5757_u94FE_u7684_u5206_u53C9"><span class="nav-number">4.</span> <span class="nav-text">区块链的分叉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5E94_u7528_u573A_u666F"><span class="nav-number">5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u53C2_u8003_u94FE_u63A5"><span class="nav-number">6.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链本质"><span class="nav-number">1.</span> <span class="nav-text">区块链本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链特征"><span class="nav-number">2.</span> <span class="nav-text">区块链特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链结构"><span class="nav-number">3.</span> <span class="nav-text">区块链结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链的分叉"><span class="nav-number">4.</span> <span class="nav-text">区块链的分叉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景"><span class="nav-number">5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">6.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
             
 
           </div>
@@ -846,7 +846,7 @@
 
 
 
-  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v6.6.0</div>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.6.0</div>
 
 
 
