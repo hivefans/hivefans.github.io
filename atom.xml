@@ -5,9 +5,9 @@
   <subtitle>环境不会改变，解决之道在于改变自己。</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://blog.sdj.es/"/>
+  <link href="https://blog.djstudy.net/"/>
   <updated>2018-11-06T13:22:19.589Z</updated>
-  <id>https://blog.sdj.es/</id>
+  <id>https://blog.djstudy.net/</id>
   
   <author>
     <name>东杰</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>hbase中核心组件与作用</title>
-    <link href="https://blog.sdj.es/2018/04/19/hbase-module/"/>
-    <id>https://blog.sdj.es/2018/04/19/hbase-module/</id>
+    <link href="https://blog.djstudy.net/2018/04/19/hbase-module/"/>
+    <id>https://blog.djstudy.net/2018/04/19/hbase-module/</id>
     <published>2018-04-19T02:23:05.700Z</published>
     <updated>2018-11-06T13:22:19.589Z</updated>
     
@@ -31,17 +31,17 @@
     
     </summary>
     
-      <category term="hadoop" scheme="https://blog.sdj.es/categories/hadoop/"/>
+      <category term="hadoop" scheme="https://blog.djstudy.net/categories/hadoop/"/>
     
     
-      <category term="hbase" scheme="https://blog.sdj.es/tags/hbase/"/>
+      <category term="hbase" scheme="https://blog.djstudy.net/tags/hbase/"/>
     
   </entry>
   
   <entry>
     <title>区块链学习笔记（一）</title>
-    <link href="https://blog.sdj.es/2018/04/11/qukuailian-note1/"/>
-    <id>https://blog.sdj.es/2018/04/11/qukuailian-note1/</id>
+    <link href="https://blog.djstudy.net/2018/04/11/qukuailian-note1/"/>
+    <id>https://blog.djstudy.net/2018/04/11/qukuailian-note1/</id>
     <published>2018-04-11T02:23:11.000Z</published>
     <updated>2018-11-06T13:23:15.649Z</updated>
     
@@ -60,19 +60,19 @@
     
     </summary>
     
-      <category term="区块链" scheme="https://blog.sdj.es/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+      <category term="区块链" scheme="https://blog.djstudy.net/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
     
     
-      <category term="区块链" scheme="https://blog.sdj.es/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
+      <category term="区块链" scheme="https://blog.djstudy.net/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
     
-      <category term="比特币" scheme="https://blog.sdj.es/tags/%E6%AF%94%E7%89%B9%E5%B8%81/"/>
+      <category term="比特币" scheme="https://blog.djstudy.net/tags/%E6%AF%94%E7%89%B9%E5%B8%81/"/>
     
   </entry>
   
   <entry>
     <title>使用openresty获取kibana查询post参数</title>
-    <link href="https://blog.sdj.es/2017/06/06/openresty-kibana-post/"/>
-    <id>https://blog.sdj.es/2017/06/06/openresty-kibana-post/</id>
+    <link href="https://blog.djstudy.net/2017/06/06/openresty-kibana-post/"/>
+    <id>https://blog.djstudy.net/2017/06/06/openresty-kibana-post/</id>
     <published>2017-06-06T02:23:11.000Z</published>
     <updated>2018-11-06T13:23:28.524Z</updated>
     
@@ -84,17 +84,17 @@
     
     </summary>
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/categories/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/categories/elasticsearch/"/>
     
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/tags/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/tags/elasticsearch/"/>
     
   </entry>
   
   <entry>
     <title>Elasticsearch 分片交互过程详解</title>
-    <link href="https://blog.sdj.es/2017/04/27/es-shard-interaction/"/>
-    <id>https://blog.sdj.es/2017/04/27/es-shard-interaction/</id>
+    <link href="https://blog.djstudy.net/2017/04/27/es-shard-interaction/"/>
+    <id>https://blog.djstudy.net/2017/04/27/es-shard-interaction/</id>
     <published>2017-04-27T05:03:47.000Z</published>
     <updated>2018-11-06T13:23:40.276Z</updated>
     
@@ -107,17 +107,17 @@
     
     </summary>
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/categories/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/categories/elasticsearch/"/>
     
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/tags/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/tags/elasticsearch/"/>
     
   </entry>
   
   <entry>
     <title>hbase中的RIT的那些事</title>
-    <link href="https://blog.sdj.es/2016/09/28/hbase-rit/"/>
-    <id>https://blog.sdj.es/2016/09/28/hbase-rit/</id>
+    <link href="https://blog.djstudy.net/2016/09/28/hbase-rit/"/>
+    <id>https://blog.djstudy.net/2016/09/28/hbase-rit/</id>
     <published>2016-09-28T03:53:10.000Z</published>
     <updated>2018-11-06T13:23:46.381Z</updated>
     
@@ -129,19 +129,19 @@
     
     </summary>
     
-      <category term="hadoop" scheme="https://blog.sdj.es/categories/hadoop/"/>
+      <category term="hadoop" scheme="https://blog.djstudy.net/categories/hadoop/"/>
     
     
-      <category term="hbase" scheme="https://blog.sdj.es/tags/hbase/"/>
+      <category term="hbase" scheme="https://blog.djstudy.net/tags/hbase/"/>
     
-      <category term="rit" scheme="https://blog.sdj.es/tags/rit/"/>
+      <category term="rit" scheme="https://blog.djstudy.net/tags/rit/"/>
     
   </entry>
   
   <entry>
     <title>hbase 压缩合并中的minor与major区别</title>
-    <link href="https://blog.sdj.es/2016/07/27/hbase-minor-vs-major-compaction/"/>
-    <id>https://blog.sdj.es/2016/07/27/hbase-minor-vs-major-compaction/</id>
+    <link href="https://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/"/>
+    <id>https://blog.djstudy.net/2016/07/27/hbase-minor-vs-major-compaction/</id>
     <published>2016-07-27T00:23:59.000Z</published>
     <updated>2018-11-06T13:23:53.434Z</updated>
     
@@ -153,19 +153,19 @@
     
     </summary>
     
-      <category term="hadoop" scheme="https://blog.sdj.es/categories/hadoop/"/>
+      <category term="hadoop" scheme="https://blog.djstudy.net/categories/hadoop/"/>
     
     
-      <category term="hbase" scheme="https://blog.sdj.es/tags/hbase/"/>
+      <category term="hbase" scheme="https://blog.djstudy.net/tags/hbase/"/>
     
-      <category term="compaction" scheme="https://blog.sdj.es/tags/compaction/"/>
+      <category term="compaction" scheme="https://blog.djstudy.net/tags/compaction/"/>
     
   </entry>
   
   <entry>
     <title>elasticsearch中的refresh和flush区别</title>
-    <link href="https://blog.sdj.es/2016/07/27/es-flush-vs-refresh/"/>
-    <id>https://blog.sdj.es/2016/07/27/es-flush-vs-refresh/</id>
+    <link href="https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/"/>
+    <id>https://blog.djstudy.net/2016/07/27/es-flush-vs-refresh/</id>
     <published>2016-07-26T23:18:40.000Z</published>
     <updated>2018-11-06T13:23:59.903Z</updated>
     
@@ -177,17 +177,17 @@
     
     </summary>
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/categories/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/categories/elasticsearch/"/>
     
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/tags/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/tags/elasticsearch/"/>
     
   </entry>
   
   <entry>
     <title>scala学习笔记(三)</title>
-    <link href="https://blog.sdj.es/2016/07/10/scala-note-3/"/>
-    <id>https://blog.sdj.es/2016/07/10/scala-note-3/</id>
+    <link href="https://blog.djstudy.net/2016/07/10/scala-note-3/"/>
+    <id>https://blog.djstudy.net/2016/07/10/scala-note-3/</id>
     <published>2016-07-10T13:08:00.000Z</published>
     <updated>2018-11-06T13:24:11.857Z</updated>
     
@@ -199,17 +199,17 @@
     
     </summary>
     
-      <category term="scala" scheme="https://blog.sdj.es/categories/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/categories/scala/"/>
     
     
-      <category term="scala" scheme="https://blog.sdj.es/tags/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/tags/scala/"/>
     
   </entry>
   
   <entry>
     <title>scala学习笔记(二)</title>
-    <link href="https://blog.sdj.es/2016/03/19/scala-note-2/"/>
-    <id>https://blog.sdj.es/2016/03/19/scala-note-2/</id>
+    <link href="https://blog.djstudy.net/2016/03/19/scala-note-2/"/>
+    <id>https://blog.djstudy.net/2016/03/19/scala-note-2/</id>
     <published>2016-03-19T02:23:48.000Z</published>
     <updated>2016-03-21T13:05:41.000Z</updated>
     
@@ -224,17 +224,17 @@
     
     </summary>
     
-      <category term="scala" scheme="https://blog.sdj.es/categories/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/categories/scala/"/>
     
     
-      <category term="scala" scheme="https://blog.sdj.es/tags/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/tags/scala/"/>
     
   </entry>
   
   <entry>
     <title>scala学习笔记(一)</title>
-    <link href="https://blog.sdj.es/2016/03/16/scala-note-1/"/>
-    <id>https://blog.sdj.es/2016/03/16/scala-note-1/</id>
+    <link href="https://blog.djstudy.net/2016/03/16/scala-note-1/"/>
+    <id>https://blog.djstudy.net/2016/03/16/scala-note-1/</id>
     <published>2016-03-16T08:05:41.000Z</published>
     <updated>2016-03-21T13:02:36.000Z</updated>
     
@@ -249,17 +249,17 @@
     
     </summary>
     
-      <category term="scala" scheme="https://blog.sdj.es/categories/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/categories/scala/"/>
     
     
-      <category term="scala" scheme="https://blog.sdj.es/tags/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/tags/scala/"/>
     
   </entry>
   
   <entry>
     <title>Optimizing Elasticsearch-How Many Shards per Index</title>
-    <link href="https://blog.sdj.es/2016/02/27/how-many-shards-index/"/>
-    <id>https://blog.sdj.es/2016/02/27/how-many-shards-index/</id>
+    <link href="https://blog.djstudy.net/2016/02/27/how-many-shards-index/"/>
+    <id>https://blog.djstudy.net/2016/02/27/how-many-shards-index/</id>
     <published>2016-02-27T02:58:40.000Z</published>
     <updated>2018-11-06T13:24:23.386Z</updated>
     
@@ -271,19 +271,19 @@
     
     </summary>
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/categories/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/categories/elasticsearch/"/>
     
     
-      <category term="elasticsearch" scheme="https://blog.sdj.es/tags/elasticsearch/"/>
+      <category term="elasticsearch" scheme="https://blog.djstudy.net/tags/elasticsearch/"/>
     
-      <category term="optimizing" scheme="https://blog.sdj.es/tags/optimizing/"/>
+      <category term="optimizing" scheme="https://blog.djstudy.net/tags/optimizing/"/>
     
   </entry>
   
   <entry>
     <title>Spark Sort Based Shuffle内存分析</title>
-    <link href="https://blog.sdj.es/2016/01/27/spark-sort-shuffle-analyse/"/>
-    <id>https://blog.sdj.es/2016/01/27/spark-sort-shuffle-analyse/</id>
+    <link href="https://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/"/>
+    <id>https://blog.djstudy.net/2016/01/27/spark-sort-shuffle-analyse/</id>
     <published>2016-01-27T09:51:18.000Z</published>
     <updated>2018-11-06T13:24:29.270Z</updated>
     
@@ -296,19 +296,19 @@
     
     </summary>
     
-      <category term="spark" scheme="https://blog.sdj.es/categories/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/categories/spark/"/>
     
     
-      <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/tags/spark/"/>
     
-      <category term="shuffle" scheme="https://blog.sdj.es/tags/shuffle/"/>
+      <category term="shuffle" scheme="https://blog.djstudy.net/tags/shuffle/"/>
     
   </entry>
   
   <entry>
     <title>scala入门笔记</title>
-    <link href="https://blog.sdj.es/2016/01/24/scala-rumen-biji/"/>
-    <id>https://blog.sdj.es/2016/01/24/scala-rumen-biji/</id>
+    <link href="https://blog.djstudy.net/2016/01/24/scala-rumen-biji/"/>
+    <id>https://blog.djstudy.net/2016/01/24/scala-rumen-biji/</id>
     <published>2016-01-24T11:09:23.000Z</published>
     <updated>2018-11-06T13:24:38.124Z</updated>
     
@@ -320,17 +320,17 @@
     
     </summary>
     
-      <category term="scala" scheme="https://blog.sdj.es/categories/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/categories/scala/"/>
     
     
-      <category term="scala" scheme="https://blog.sdj.es/tags/scala/"/>
+      <category term="scala" scheme="https://blog.djstudy.net/tags/scala/"/>
     
   </entry>
   
   <entry>
     <title>将 Spark 中的文本转换为 Parquet 以提升性能</title>
-    <link href="https://blog.sdj.es/2016/01/24/spark-convert-text-parquet/"/>
-    <id>https://blog.sdj.es/2016/01/24/spark-convert-text-parquet/</id>
+    <link href="https://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/"/>
+    <id>https://blog.djstudy.net/2016/01/24/spark-convert-text-parquet/</id>
     <published>2016-01-24T10:46:44.000Z</published>
     <updated>2018-11-06T13:24:45.882Z</updated>
     
@@ -342,19 +342,19 @@
     
     </summary>
     
-      <category term="spark" scheme="https://blog.sdj.es/categories/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/categories/spark/"/>
     
     
-      <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/tags/spark/"/>
     
-      <category term="parquet" scheme="https://blog.sdj.es/tags/parquet/"/>
+      <category term="parquet" scheme="https://blog.djstudy.net/tags/parquet/"/>
     
   </entry>
   
   <entry>
     <title>Spark Standalone模式HA环境搭建</title>
-    <link href="https://blog.sdj.es/2016/01/24/spark-ha/"/>
-    <id>https://blog.sdj.es/2016/01/24/spark-ha/</id>
+    <link href="https://blog.djstudy.net/2016/01/24/spark-ha/"/>
+    <id>https://blog.djstudy.net/2016/01/24/spark-ha/</id>
     <published>2016-01-24T08:10:30.000Z</published>
     <updated>2018-11-06T13:24:53.297Z</updated>
     
@@ -369,19 +369,19 @@
     
     </summary>
     
-      <category term="spark" scheme="https://blog.sdj.es/categories/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/categories/spark/"/>
     
     
-      <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/tags/spark/"/>
     
-      <category term="ha" scheme="https://blog.sdj.es/tags/ha/"/>
+      <category term="ha" scheme="https://blog.djstudy.net/tags/ha/"/>
     
   </entry>
   
   <entry>
     <title>spark on yarn</title>
-    <link href="https://blog.sdj.es/2016/01/24/spark-on-yarn/"/>
-    <id>https://blog.sdj.es/2016/01/24/spark-on-yarn/</id>
+    <link href="https://blog.djstudy.net/2016/01/24/spark-on-yarn/"/>
+    <id>https://blog.djstudy.net/2016/01/24/spark-on-yarn/</id>
     <published>2016-01-24T06:43:59.000Z</published>
     <updated>2018-11-06T13:25:03.380Z</updated>
     
@@ -394,19 +394,19 @@
     
     </summary>
     
-      <category term="spark" scheme="https://blog.sdj.es/categories/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/categories/spark/"/>
     
     
-      <category term="yarn" scheme="https://blog.sdj.es/tags/yarn/"/>
+      <category term="yarn" scheme="https://blog.djstudy.net/tags/yarn/"/>
     
-      <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/tags/spark/"/>
     
   </entry>
   
   <entry>
     <title>ambari hdp中部署apache spark运行spark shell遇到的错误解决</title>
-    <link href="https://blog.sdj.es/2016/01/24/hdp-spark-shell-error/"/>
-    <id>https://blog.sdj.es/2016/01/24/hdp-spark-shell-error/</id>
+    <link href="https://blog.djstudy.net/2016/01/24/hdp-spark-shell-error/"/>
+    <id>https://blog.djstudy.net/2016/01/24/hdp-spark-shell-error/</id>
     <published>2016-01-24T05:05:21.000Z</published>
     <updated>2018-11-06T13:25:15.839Z</updated>
     
@@ -418,14 +418,14 @@
     
     </summary>
     
-      <category term="hadoop" scheme="https://blog.sdj.es/categories/hadoop/"/>
+      <category term="hadoop" scheme="https://blog.djstudy.net/categories/hadoop/"/>
     
     
-      <category term="yarn" scheme="https://blog.sdj.es/tags/yarn/"/>
+      <category term="yarn" scheme="https://blog.djstudy.net/tags/yarn/"/>
     
-      <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
+      <category term="spark" scheme="https://blog.djstudy.net/tags/spark/"/>
     
-      <category term="ambari" scheme="https://blog.sdj.es/tags/ambari/"/>
+      <category term="ambari" scheme="https://blog.djstudy.net/tags/ambari/"/>
     
   </entry>
   
