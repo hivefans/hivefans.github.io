@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.sdj.es/arch/index.html</loc>
+    
+    <lastmod>2018-12-22T17:00:25.370Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.sdj.es/about/index.html</loc>
     
     <lastmod>2018-12-22T15:00:57.948Z</lastmod>
@@ -131,13 +138,6 @@
     <loc>https://blog.sdj.es/2018/04/19/hbase-module/</loc>
     
     <lastmod>2018-11-06T13:22:19.589Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.sdj.es/arch/index.html</loc>
-    
-    <lastmod>2018-04-18T02:44:21.229Z</lastmod>
     
   </url>
   
