@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.sdj.es/"/>
-  <updated>2018-12-23T00:57:07.316Z</updated>
+  <updated>2018-12-23T10:11:23.801Z</updated>
   <id>https://blog.sdj.es/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://blog.sdj.es/2018/04/19/hbase-module/"/>
     <id>https://blog.sdj.es/2018/04/19/hbase-module/</id>
     <published>2018-04-19T02:23:05.700Z</published>
-    <updated>2018-12-23T00:57:07.316Z</updated>
+    <updated>2018-12-23T10:11:23.801Z</updated>
     
     <content type="html"><![CDATA[<p>HBase中的组件包括Client、Zookeeper、HMaster、HRegionServer、HRegion、Store、MemStore、StoreFile、HFile、HLog等。<br><a id="more"></a></p><h3 id="Client的作用"><a href="#Client的作用" class="headerlink" title="Client的作用"></a>Client的作用</h3><blockquote><p>1.1 包含访问HBase的接口，并维护cache来加快对HBase的访问，比如region的位置信息<br>1.2 HBase Client通过RPC方式和HMaster、HRegionServer通信</p></blockquote><h3 id="Zookeeper的作用"><a href="#Zookeeper的作用" class="headerlink" title="Zookeeper的作用"></a>Zookeeper的作用</h3><blockquote><p>2.1 实现HMaster主从节点的failover,集群高可用;<br>2.2 存储所有Region的寻址入口;<br>2.3 实时监控Region server的上线和下线信息。并实时通知给master;<br>2.4 存储HBase的schema和table元数据;<br>2.5 通过选举，保证任何时候，集群中只有一个master，Master与RegionServers 启动时会向ZooKeeper注册。</p></blockquote><h3 id="HMaster的作用"><a href="#HMaster的作用" class="headerlink" title="HMaster的作用"></a>HMaster的作用</h3><blockquote><p>3.1 为HRegionServer分配region；<br>3.2 管理HRegionServer实现其负载均衡；<br>3.3 发现失效的Region server并重新分配其上的region；<br>3.4 HDFS上的垃圾文件回收；<br>3.5 实现DDL操作，处理schema更新请求。</p></blockquote><p><code>从Hmaster功能可以看出，如果Hmaster挂掉，并不影响数据的读写，而会导致元数据无法修改，以及region的分配工作。</code></p><h3 id="HRegionServer的作用"><a href="#HRegionServer的作用" class="headerlink" title="HRegionServer的作用"></a>HRegionServer的作用</h3><blockquote><p>4.1 存放和管理本地HRegion，并负责切分正在运行过程中变的过大的region；<br>4.2 维护master分配给他的region，处理对这些region的io请求。</p></blockquote><p><code>（ps:client访问hbase上的数据时不需要master的参与，因为数据寻址访问zookeeper和region server，而数据读写访问region server。master仅仅维护table和region的元数据信息，而table的元数据信息保存在zookeeper上，因此master负载很低。)</code></p><h3 id="HRegion的作用"><a href="#HRegion的作用" class="headerlink" title="HRegion的作用"></a>HRegion的作用</h3><blockquote><p>5.1 Region是HBase中分布式存储和负载均衡的最小单元；<br>5.2 不同的region可以分别在不同的Region Server上；<br>5.3 Region按大小分隔，每个表一般是只有一个region，当region的某个列族达到一个阈值（默认256M）<br>时就会分成两个新的region；<br>5.4 Region被分配给哪个Region Server是完全动态透明的。</p></blockquote><h3 id="Store的作用"><a href="#Store的作用" class="headerlink" title="Store的作用"></a>Store的作用</h3><blockquote><p>6.1 每一个region由一个或多个store组成，至少是一个store；<br>6.2 hbase会把一起访问的数据放在一个store里面，即为每个 ColumnFamily建一个store，<br>如果有几个ColumnFamily，也就有几个Store；<br>6.3 一个Store由一个memStore和0或者多个StoreFile组成，HBase以store的大小来判断是否需要切分region。</p></blockquote><h3 id="MemStore的作用"><a href="#MemStore的作用" class="headerlink" title="MemStore的作用"></a>MemStore的作用</h3><blockquote><p>7.1 memStore 是放在内存里的，其保存修改的数据即keyValues；<br>7.2 当memStore的大小达到一个阀值（默认64MB）时，memStore会被flush到文 件，即生成一个快照。</p></blockquote><h3 id="StoreFile的作用"><a href="#StoreFile的作用" class="headerlink" title="StoreFile的作用"></a>StoreFile的作用</h3><blockquote><p>8.1 memStore内存中的数据写到文件后就是StoreFile;<br>8.2 StoreFile底层是以HFile的格式保存,即数据保存在hdfs上。</p></blockquote><h3 id="HLog的作用"><a href="#HLog的作用" class="headerlink" title="HLog的作用"></a>HLog的作用</h3><blockquote><p>9.1 HLog(WAL log)：WAL意为write ahead log，用来做灾难恢复使用，HLog记录数据的所有变更，一旦region server 宕机，就可以从log中进行恢复；<br>9.2 HLog文件就是一个普通的Hadoop Sequence File，Sequence File的value是key时HLogKey对象，其中记录了写入数据的归属信息，除了table和region名字外，还同时包括sequence number和timestamp<br>timestamp是写入时间，sequence number的起始值为0，或者是最近一次存入文件系统中的sequence number。<br>Sequence File的value是HBase的KeyValue对象，即对应HFile中的KeyValue。</p></blockquote><p>转自： <a href="https://my.oschina.net/u/2000675/blog/663852" target="_blank" rel="noopener">https://my.oschina.net/u/2000675/blog/663852</a></p>]]></content>
     
@@ -35,37 +35,6 @@
     
     
       <category term="hbase" scheme="https://blog.sdj.es/tags/hbase/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>区块链学习笔记（一）</title>
-    <link href="https://blog.sdj.es/2018/04/11/qukuailian-note1/"/>
-    <id>https://blog.sdj.es/2018/04/11/qukuailian-note1/</id>
-    <published>2018-04-11T02:23:11.000Z</published>
-    <updated>2018-11-06T13:23:15.649Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="区块链本质"><a href="#区块链本质" class="headerlink" title="区块链本质"></a>区块链本质</h2><p>它是一种特殊的分布式数据库。</p><h2 id="区块链特征"><a href="#区块链特征" class="headerlink" title="区块链特征"></a>区块链特征</h2><ol><li>分布式去中心化</li><li>无须信任系统</li><li>集体维护</li><li>可靠数据库</li><li>匿名性</li><li>开源<a id="more"></a><h2 id="区块链结构"><a href="#区块链结构" class="headerlink" title="区块链结构"></a>区块链结构</h2>区块链由一个个区块（block）组成。区块很像数据库的记录，每次写入数据，就是创建一个区块。<br>每个区块包含两个部分。</li></ol><p><code>区块头（Head）：记录当前区块的特征值区块体（Body）：实际数据</code></p><p>区块头包含了当前区块的多项特征值</p><p><code>生成时间实际数据（即区块体）的哈希上一个区块的哈希</code><br><img src="/images/15234270837536.png" alt="区块链结构"></p><h2 id="区块链的分叉"><a href="#区块链的分叉" class="headerlink" title="区块链的分叉"></a>区块链的分叉</h2><p>为什么区块链会发生分叉呢？原因就在于去中心化。</p><ol><li><p>网速的延迟</p></li><li><p>双重交易</p></li></ol><p>现在的规则是，新节点总是采用最长的那条区块链。如果区块链有分叉，将看哪个分支在分叉点后面，先达到6个新区块（称为”六次确认”）。按照10分钟一个区块计算，一小时就可以确认。<br><img src="/images/15234283648590.jpg" alt="区块链分叉"></p><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>为了保证数据的可靠性，区块链也有自己的代价。一是效率，数据写入区块链，最少要等待十分钟，所有节点都同步数据，则需要更多的时间；二是能耗，区块的生成需要矿工进行无数无意义的计算，这是非常耗费能源的。</p><p>因此，区块链的适用场景，其实非常有限。</p><p><code>不存在所有成员都信任的管理当局写入的数据不要求实时使用挖矿的收益能够弥补本身的成本</code></p><p>如果无法满足上述的条件，那么传统的数据库是更好的解决方案。目前，区块链最大的应用场景（可能也是唯一的应用场景），就是以比特币为代表的加密货币。</p><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2017/12/blockchain-tutorial.html</a><br><a href="https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/JEkjYdvRw2x3PzxKDR7FQQ</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;区块链本质&quot;&gt;&lt;a href=&quot;#区块链本质&quot; class=&quot;headerlink&quot; title=&quot;区块链本质&quot;&gt;&lt;/a&gt;区块链本质&lt;/h2&gt;&lt;p&gt;它是一种特殊的分布式数据库。&lt;/p&gt;
-&lt;h2 id=&quot;区块链特征&quot;&gt;&lt;a href=&quot;#区块链特征&quot; class=&quot;headerlink&quot; title=&quot;区块链特征&quot;&gt;&lt;/a&gt;区块链特征&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;分布式去中心化&lt;/li&gt;
-&lt;li&gt;无须信任系统&lt;/li&gt;
-&lt;li&gt;集体维护&lt;/li&gt;
-&lt;li&gt;可靠数据库&lt;/li&gt;
-&lt;li&gt;匿名性&lt;/li&gt;
-&lt;li&gt;开源
-    
-    </summary>
-    
-      <category term="区块链" scheme="https://blog.sdj.es/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
-    
-    
-      <category term="区块链" scheme="https://blog.sdj.es/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/"/>
-    
-      <category term="比特币" scheme="https://blog.sdj.es/tags/%E6%AF%94%E7%89%B9%E5%B8%81/"/>
     
   </entry>
   
@@ -346,33 +315,6 @@
       <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
     
       <category term="parquet" scheme="https://blog.sdj.es/tags/parquet/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spark Standalone模式HA环境搭建</title>
-    <link href="https://blog.sdj.es/2016/01/24/spark-ha/"/>
-    <id>https://blog.sdj.es/2016/01/24/spark-ha/</id>
-    <published>2016-01-24T08:10:30.000Z</published>
-    <updated>2018-11-06T13:24:53.297Z</updated>
-    
-    <content type="html"><![CDATA[<p>Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA<br>本篇只介绍基于ZK的HA环境搭建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ SPARK_HOME/conf/spark-env.sh</span><br></pre></td></tr></table></figure></p><p>添加SPARK_DAEMON_JAVA_OPTS的配置信息：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> SPARK_DAEMON_JAVA_OPTS=<span class="string">"-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop000:2181,hadoop001:2181,hadoop002:2181 -Dspark.deploy.zookeeper.dir=/spark"</span></span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure></p><h3 id="配置参数说明："><a href="#配置参数说明：" class="headerlink" title="配置参数说明："></a>配置参数说明：</h3><p>spark.deploy.recoveryMode: 设置恢复模式为zk，默认为NONE<br>spark.deploy.zookeeper.url: 设置ZK集群的url，形如：192.168.1.100:2181,192.168.1.101:2181<br>spark.deploy.zookeeper.dir: 设置zk保存恢复状态的路径，默认为spark<br>实现HA的原理：利用ZK的Leader Election机制，选择一个Active状态的Master，其余的Master均为Standby状态；当Active状态的Master死掉后，通过ZK选举一个Standby状态的Master为Active状态。</p><h3 id="测试步骤："><a href="#测试步骤：" class="headerlink" title="测试步骤："></a>测试步骤：</h3><p>启动standalone集群后，在各个Standby节点上启动start-master.sh，jps观察是否已经正确启动Master进程；<br>将Active状态的Master kill掉，观察8080端口对应的页面，发现已经从Standby状态中选举出一个当作Active状态。<br>采用ZK后由于会有多个Master，在提交任务时不知道哪个为Active状态的Master，可以采用如下的方式提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spark-shell –master spark://hadoop000:7077,hadoop001:7077,hadoop002:7077 –executor-memory 2g –total-executor-cores 1</span><br><span class="line">详细信息参见官方文档：http://spark.apache.org/docs/latest/spark-standalone.html<span class="comment">#standby-masters-with-zookeeper</span></span><br></pre></td></tr></table></figure></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;Spark Standalone模式常见的HA部署方式有两种：基于文件系统的HA和基于ZK的HA&lt;br&gt;本篇只介绍基于ZK的HA环境搭建：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pr
-      
-    
-    </summary>
-    
-      <category term="spark" scheme="https://blog.sdj.es/categories/spark/"/>
-    
-    
-      <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
-    
-      <category term="ha" scheme="https://blog.sdj.es/tags/ha/"/>
     
   </entry>
   
