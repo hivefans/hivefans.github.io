@@ -115,18 +115,18 @@
 
 
 
-  <meta name="description" content="openresty配置放到包含fastcgi_pass或proxy_pass的Location里面1234567891011121314log_format  main  &amp;apos;$remote_addr | [$time_iso8601] | &amp;quot;$request&amp;quot; | &amp;apos; &amp;apos;$status | $body_bytes_sent | &amp;quot;$htt">
-<meta name="keywords" content="elasticsearch">
+  <meta name="description" content="环境配置spark1.0之前版本配置在spark-env.sh配置中配置hbase lib 目录export SPARK_CLASSPATH=/home/work/hadoop/share/hadoop/common/lib/:/home/work/hive/lib/:/home/work/hbase/lib/*:$SPARK_CLASSPATH spark1.0之后的版本配置修改spark-de">
+<meta name="keywords" content="hbase,spark">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用openresty获取kibana查询post参数">
-<meta property="og:url" content="https://blog.sdj.es/2017/06/06/openresty-kibana-post/index.html">
+<meta property="og:title" content="pyspark读取hbase数据为dataframe">
+<meta property="og:url" content="https://blog.sdj.es/2018/12/23/pyspark-read-hbase/index.html">
 <meta property="og:site_name" content="东杰书屋">
-<meta property="og:description" content="openresty配置放到包含fastcgi_pass或proxy_pass的Location里面1234567891011121314log_format  main  &amp;apos;$remote_addr | [$time_iso8601] | &amp;quot;$request&amp;quot; | &amp;apos; &amp;apos;$status | $body_bytes_sent | &amp;quot;$htt">
+<meta property="og:description" content="环境配置spark1.0之前版本配置在spark-env.sh配置中配置hbase lib 目录export SPARK_CLASSPATH=/home/work/hadoop/share/hadoop/common/lib/:/home/work/hive/lib/:/home/work/hbase/lib/*:$SPARK_CLASSPATH spark1.0之后的版本配置修改spark-de">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-06T13:23:28.524Z">
+<meta property="og:updated_time" content="2018-12-23T14:06:15.888Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用openresty获取kibana查询post参数">
-<meta name="twitter:description" content="openresty配置放到包含fastcgi_pass或proxy_pass的Location里面1234567891011121314log_format  main  &amp;apos;$remote_addr | [$time_iso8601] | &amp;quot;$request&amp;quot; | &amp;apos; &amp;apos;$status | $body_bytes_sent | &amp;quot;$htt">
+<meta name="twitter:title" content="pyspark读取hbase数据为dataframe">
+<meta name="twitter:description" content="环境配置spark1.0之前版本配置在spark-env.sh配置中配置hbase lib 目录export SPARK_CLASSPATH=/home/work/hadoop/share/hadoop/common/lib/:/home/work/hive/lib/:/home/work/hbase/lib/*:$SPARK_CLASSPATH spark1.0之后的版本配置修改spark-de">
 
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.sdj.es/2017/06/06/openresty-kibana-post/">
+  <link rel="canonical" href="https://blog.sdj.es/2018/12/23/pyspark-read-hbase/">
 
 
 
@@ -145,7 +145,7 @@
   };
 </script>
 
-  <title>使用openresty获取kibana查询post参数 | 东杰书屋</title>
+  <title>pyspark读取hbase数据为dataframe | 东杰书屋</title>
   
 
 
@@ -382,7 +382,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.sdj.es/2017/06/06/openresty-kibana-post/">
+    <link itemprop="mainEntityOfPage" href="https://blog.sdj.es/2018/12/23/pyspark-read-hbase/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="东杰">
@@ -399,7 +399,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">使用openresty获取kibana查询post参数
+          <h1 class="post-title" itemprop="name headline">pyspark读取hbase数据为dataframe
 
               
             
@@ -425,24 +425,12 @@
                 
               
 
-              <time title="创建时间：2017-06-06 10:23:11" itemprop="dateCreated datePublished" datetime="2017-06-06T10:23:11+08:00">2017-06-06</time>
+              <time title="创建时间：2018-12-23 21:55:08 / 修改时间：22:06:15" itemprop="dateCreated datePublished" datetime="2018-12-23T21:55:08+08:00">2018-12-23</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-06 21:23:28" itemprop="dateModified" datetime="2018-11-06T21:23:28+08:00">2018-11-06</time>
               
             
           </span>
@@ -459,7 +447,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/elasticsearch/" itemprop="url" rel="index"><span itemprop="name">elasticsearch</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/spark-hbase/" itemprop="url" rel="index"><span itemprop="name">spark,hbase</span></a></span>
 
                 
                 
@@ -487,7 +475,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">1.8k</span>
+                <span title="本文字数">2.4k</span>
               
 
               
@@ -521,14 +509,30 @@
       
 
       
-        <h3 id="openresty配置放到包含fastcgi-pass或proxy-pass的Location里面"><a href="#openresty配置放到包含fastcgi-pass或proxy-pass的Location里面" class="headerlink" title="openresty配置放到包含fastcgi_pass或proxy_pass的Location里面"></a>openresty配置放到包含fastcgi_pass或proxy_pass的Location里面</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">log_format  main  &apos;$remote_addr | [$time_iso8601] | &quot;$request&quot; | &apos; &apos;$status | $body_bytes_sent | &quot;$http_referer&quot;  | &apos; &apos;&quot;$http_user_agent&quot; | &quot;$http_x_forwarded_for&quot; |  &quot;$request_body&quot;&apos;;</span><br><span class="line">server &#123;</span><br><span class="line">             listen       80;</span><br><span class="line">             server_name  esclient.test.net;</span><br><span class="line">             location / &#123;</span><br><span class="line">                proxy_pass http://192.168.1.47:5601;</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Connection &quot;&quot;;</span><br><span class="line">                proxy_connect_timeout 5s;</span><br><span class="line">                proxy_read_timeout 10s;</span><br><span class="line">                access_log /usr/local/openresty/nginx/logs/kibana.access.log main;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h3 id="放到任意Location里面"><a href="#放到任意Location里面" class="headerlink" title="放到任意Location里面"></a>放到任意Location里面</h3><p>Location里面加上如下语句</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lua_need_request_body on;  </span><br><span class="line">content_by_lua &apos;local s = ngx.var.request_body&apos;;</span><br></pre></td></tr></table></figure>
-<h3 id="nginx-直接在配置文章中设置日志分割"><a href="#nginx-直接在配置文章中设置日志分割" class="headerlink" title="nginx 直接在配置文章中设置日志分割"></a>nginx 直接在配置文章中设置日志分割</h3><p>直接在nginx配置文件中，配置日志循环，而不需使用logrotate或配置cron任务。需要使用到$time_iso8601 内嵌变量来获取时间。$time_iso8601格式如下：2015-08-07T18:12:02+02:00。然后使用正则表达式来获取所需时间的数据。<br>按天分割日志</p>
-<p>使用下面的代码块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if ($time_iso8601 ~ &quot;^(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)&quot;) &#123;</span><br><span class="line">    set $year $1;</span><br><span class="line">    set $month $2;</span><br><span class="line">    set $day $3;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">access_log /data/logs/nginx/www.ttlsa.com-$year-$month-$day-access.log;</span><br></pre></td></tr></table></figure></p>
-<p>也可以使用Perl语法来捕获，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">if ($time_iso8601 ~ &quot;^(?&lt;year&gt;\d&#123;4&#125;)-(?&lt;month&gt;\d&#123;2&#125;)-(?&lt;day&gt;\d&#123;2&#125;)&quot;) &#123;&#125;</span><br><span class="line">access_log /data/logs/nginx/www.ttlsa.com-$year-$month-$day-access.log;</span><br></pre></td></tr></table></figure></p>
-<p>按时、分、秒分割<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if ($time_iso8601 ~ &quot;^(\d&#123;4&#125;)-(\d&#123;2&#125;)-(\d&#123;2&#125;)T(\d&#123;2&#125;):(\d&#123;2&#125;):(\d&#123;2&#125;)&quot;)</span><br><span class="line">&#123;</span><br><span class="line">    set $year $1;</span><br><span class="line">    set $month $2;</span><br><span class="line">    set $day $3;</span><br><span class="line">    set $hour $4;</span><br><span class="line">    set $minutes $5;</span><br><span class="line">    set $seconds $6;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>spark1.0之前版本配置<br>在spark-env.sh配置中配置hbase lib 目录<br>export SPARK_CLASSPATH=/home/work/hadoop/share/hadoop/common/lib/:/home/work/hive/lib/:/home/work/hbase/lib/*:$SPARK_CLASSPATH</p>
+<p>spark1.0之后的版本配置<br>修改spark-defaults.conf，如下<br>spark.executor.extraClassPath=/home/work/hbase/lib/<br>spark.driver.extraClassPath=/home/work/hbase/lib/</p>
+<p>`</p>
+<p>#!/usr/bin/python</p>
+<h1 id="coding-utf8"><a href="#coding-utf8" class="headerlink" title="coding=utf8"></a>coding=utf8</h1><p>import sys<br>reload(sys)<br>sys.setdefaultencoding(‘utf-8’)<br>import time<br>import json,requests<br>from pyspark.sql.types import *<br>from pyspark.sql import SparkSession<br>from pyspark.sql import Row<br>from pyspark import SparkContext,SparkConf<br>from pyspark.sql import Row<br>import pyspark.sql.functions as F</p>
+<p>conf = SparkConf().setAppName(“spark read hbase”)<br>sc = SparkContext(conf=conf)</p>
+<p>conf = {<br>        “hbase.zookeeper.quorum”: “node1,node2,node3”,<br>        “hbase.mapreduce.inputtable”: “test”,<br>        “hbase.mapreduce.scan.row.start”: “1541692800”<br>        “hbase.mapreduce.scan.row.stop”: “1541692900”<br>    }</p>
+<p>keyConv = “org.apache.spark.examples.pythonconverters.ImmutableBytesWritableToStringConverter”<br>valueConv = “org.apache.spark.examples.pythonconverters.HBaseResultToStringConverter”<br>hbaserdd = sc.newAPIHadoopRDD( \<br>    “org.apache.hadoop.hbase.mapreduce.TableInputFormat”, \<br>    “org.apache.hadoop.hbase.io.ImmutableBytesWritable”, \<br>    “org.apache.hadoop.hbase.client.Result”, \<br>    keyConverter=keyConv, \<br>    valueConverter=valueConv, \<br>    conf=conf)<br>spark = SparkSession(sc)</p>
+<p>def call_transfor(jsonstr):<br>    jsonlist = [json.loads(i) for i in jsonstr]<br>    fdc = {}<br>    for col in jsonlist:<br>        colname = col[‘qualifier’]<br>        value = col[‘value’]<br>        fdc[colname] = value<br>    return fdc</p>
+<p>def rdd_to_df(hbase_rdd):<br>    fdc_split = hbase_rdd.map(lambda x:(x[0],x[1].split(‘\n’)))<br>    fdc_cols = fdc_split.map(lambda x:(x[0],call_transfor(x[1])))<br>    colnames = [‘row_key’] + fdc_cols.map(lambda x:[i for i in x[1]]).take(1)[0]<br>    fdc_dataframe = fdc_cols.map(lambda x:[x[0]]+[x[1][i] for i in x[1]]).toDF(colnames)</p>
+<pre><code>#fdc_rdd = fdc_cols.map(lambda x:[x[0]]+[x[1][i] for i in x[1]])
+return fdc_dataframe
+</code></pre><p>fdc_data = rdd_to_df(hbaserdd)<br>`</p>
+<p>pyspark读取hbase配置参数</p>
+<p>hbase.mapreduce.scan.row.start</p>
+<p>hbase.mapreduce.scan.row.stop</p>
+<p>hbase.mapreduce.scan.column.family</p>
+<p>hbase.mapreduce.scan.columns</p>
+<p>hbase.mapreduce.scan.timestamp</p>
+<p>hbase.mapreduce.scan.timerange.start</p>
+<p>hbase.mapreduce.scan.timerange.end</p>
+<p>hbase.mapreduce.scan.maxversions</p>
+<p>hbase.mapreduce.scan.cacheblocks</p>
+<p>hbase.mapreduce.scan.cachedrows</p>
 
       
     </div>
@@ -576,7 +580,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/elasticsearch/" rel="tag"># elasticsearch</a>
+            <a href="/tags/hbase/" rel="tag"># hbase</a>
+          
+            <a href="/tags/spark/" rel="tag"># spark</a>
           
         </div>
       
@@ -589,8 +595,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/27/es-shard-interaction/" rel="next" title="Elasticsearch 分片交互过程详解">
-                <i class="fa fa-chevron-left"></i> Elasticsearch 分片交互过程详解
+              <a href="/2018/04/19/hbase-module/" rel="next" title="hbase中核心组件与作用">
+                <i class="fa fa-chevron-left"></i> hbase中核心组件与作用
               </a>
             
           </div>
@@ -598,10 +604,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/19/hbase-module/" rel="prev" title="hbase中核心组件与作用">
-                hbase中核心组件与作用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -786,7 +788,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#openresty配置放到包含fastcgi-pass或proxy-pass的Location里面"><span class="nav-number">1.</span> <span class="nav-text">openresty配置放到包含fastcgi_pass或proxy_pass的Location里面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#放到任意Location里面"><span class="nav-number">2.</span> <span class="nav-text">放到任意Location里面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-直接在配置文章中设置日志分割"><span class="nav-number">3.</span> <span class="nav-text">nginx 直接在配置文章中设置日志分割</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#coding-utf8"><span class="nav-number"></span> <span class="nav-text">coding=utf8</span></a></li></div>
             
 
           </div>

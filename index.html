@@ -378,6 +378,217 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.sdj.es/2018/12/23/pyspark-read-hbase/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="东杰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="东杰书屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/12/23/pyspark-read-hbase/" class="post-title-link" itemprop="https://blog.sdj.es/index.html">pyspark读取hbase数据为dataframe</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-12-23 21:55:08 / 修改时间：22:06:15" itemprop="dateCreated datePublished" datetime="2018-12-23T21:55:08+08:00">2018-12-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/spark-hbase/" itemprop="url" rel="index"><span itemprop="name">spark,hbase</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">2.4k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">2 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>spark1.0之前版本配置<br>在spark-env.sh配置中配置hbase lib 目录<br>export SPARK_CLASSPATH=/home/work/hadoop/share/hadoop/common/lib/:/home/work/hive/lib/:/home/work/hbase/lib/*:$SPARK_CLASSPATH</p>
+<p>spark1.0之后的版本配置<br>修改spark-defaults.conf，如下<br>spark.executor.extraClassPath=/home/work/hbase/lib/<br>spark.driver.extraClassPath=/home/work/hbase/lib/</p>
+<p>`</p>
+<p>#!/usr/bin/python</p>
+<h1 id="coding-utf8"><a href="#coding-utf8" class="headerlink" title="coding=utf8"></a>coding=utf8</h1><p>import sys<br>reload(sys)<br>sys.setdefaultencoding(‘utf-8’)<br>import time<br>import json,requests<br>from pyspark.sql.types import *<br>from pyspark.sql import SparkSession<br>from pyspark.sql import Row<br>from pyspark import SparkContext,SparkConf<br>from pyspark.sql import Row<br>import pyspark.sql.functions as F</p>
+<p>conf = SparkConf().setAppName(“spark read hbase”)<br>sc = SparkContext(conf=conf)</p>
+<p>conf = {<br>        “hbase.zookeeper.quorum”: “node1,node2,node3”,<br>        “hbase.mapreduce.inputtable”: “test”,<br>        “hbase.mapreduce.scan.row.start”: “1541692800”<br>        “hbase.mapreduce.scan.row.stop”: “1541692900”<br>    }</p>
+<p>keyConv = “org.apache.spark.examples.pythonconverters.ImmutableBytesWritableToStringConverter”<br>valueConv = “org.apache.spark.examples.pythonconverters.HBaseResultToStringConverter”<br>hbaserdd = sc.newAPIHadoopRDD( \<br>    “org.apache.hadoop.hbase.mapreduce.TableInputFormat”, \<br>    “org.apache.hadoop.hbase.io.ImmutableBytesWritable”, \<br>    “org.apache.hadoop.hbase.client.Result”, \<br>    keyConverter=keyConv, \<br>    valueConverter=valueConv, \<br>    conf=conf)<br>spark = SparkSession(sc)</p>
+<p>def call_transfor(jsonstr):<br>    jsonlist = [json.loads(i) for i in jsonstr]<br>    fdc = {}<br>    for col in jsonlist:<br>        colname = col[‘qualifier’]<br>        value = col[‘value’]<br>        fdc[colname] = value<br>    return fdc</p>
+<p>def rdd_to_df(hbase_rdd):<br>    fdc_split = hbase_rdd.map(lambda x:(x[0],x[1].split(‘\n’)))<br>    fdc_cols = fdc_split.map(lambda x:(x[0],call_transfor(x[1])))<br>    colnames = [‘row_key’] + fdc_cols.map(lambda x:[i for i in x[1]]).take(1)[0]<br>    fdc_dataframe = fdc_cols.map(lambda x:[x[0]]+[x[1][i] for i in x[1]]).toDF(colnames)</p>
+<pre><code>#fdc_rdd = fdc_cols.map(lambda x:[x[0]]+[x[1][i] for i in x[1]])
+return fdc_dataframe
+</code></pre><p>fdc_data = rdd_to_df(hbaserdd)<br>`</p>
+<p>pyspark读取hbase配置参数</p>
+<p>hbase.mapreduce.scan.row.start</p>
+<p>hbase.mapreduce.scan.row.stop</p>
+<p>hbase.mapreduce.scan.column.family</p>
+<p>hbase.mapreduce.scan.columns</p>
+<p>hbase.mapreduce.scan.timestamp</p>
+<p>hbase.mapreduce.scan.timerange.start</p>
+<p>hbase.mapreduce.scan.timerange.end</p>
+<p>hbase.mapreduce.scan.maxversions</p>
+<p>hbase.mapreduce.scan.cacheblocks</p>
+<p>hbase.mapreduce.scan.cachedrows</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://blog.sdj.es/2018/04/19/hbase-module/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2222,212 +2433,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.sdj.es/2016/02/27/how-many-shards-index/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="东杰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="东杰书屋">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2016/02/27/how-many-shards-index/" class="post-title-link" itemprop="https://blog.sdj.es/index.html">Optimizing Elasticsearch-How Many Shards per Index</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2016-02-27 10:58:40" itemprop="dateCreated datePublished" datetime="2016-02-27T10:58:40+08:00">2016-02-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-06 21:24:23" itemprop="dateModified" datetime="2018-11-06T21:24:23+08:00">2018-11-06</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/elasticsearch/" itemprop="url" rel="index"><span itemprop="name">elasticsearch</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-symbolscount">
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">本文字数：</span>
-                
-                <span title="本文字数">10k</span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">9 分钟</span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>A key question in the minds of most Elasticsearch users when they create an index is “How many shards should I use?” In this article, we explain the design tradeoffs and performance consequences of choosing different values for the number of shards. Continue reading if you want to learn how to demystify and optimize your sharding strategy.<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2016/02/27/how-many-shards-index/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-         
-          <!--/noindex-->
-        
-      
-    </p></div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2475,7 +2480,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2496,7 +2501,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2611,7 +2618,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">52k</span>
+    <span title="站点总字数">55k</span>
   
 
   
@@ -2620,7 +2627,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">48 分钟</span>
+    <span title="站点阅读时长">50 分钟</span>
   
 </div>
 
