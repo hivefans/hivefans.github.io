@@ -423,7 +423,7 @@
                 
               
 
-              <time title="创建时间：2018-12-23 21:55:08 / 修改时间：22:06:15" itemprop="dateCreated datePublished" datetime="2018-12-23T21:55:08+08:00">2018-12-23</time>
+              <time title="创建时间：2018-12-23 21:55:08 / 修改时间：22:09:18" itemprop="dateCreated datePublished" datetime="2018-12-23T21:55:08+08:00">2018-12-23</time>
             
 
             
@@ -473,7 +473,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">2.4k</span>
+                <span title="本文字数">2.7k</span>
               
 
               
@@ -508,36 +508,20 @@
 
       
         
+          <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>spark1.0之前版本配置<br>在spark-env.sh配置中配置hbase lib 目录<br>export SPARK_CLASSPATH=/home/work/hadoop/share/hadoop/common/lib/:/home/work/hive/lib/:/home/work/hbase/lib/*:$SPARK_CLASSPATH</p>
+<p>spark1.0之后的版本配置<br>修改spark-defaults.conf，如下<br>spark.executor.extraClassPath=/home/work/hbase/lib/<br>spark.driver.extraClassPath=/home/work/hbase/lib/<br>
+          <!--noindex-->
           
-            <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>spark1.0之前版本配置<br>在spark-env.sh配置中配置hbase lib 目录<br>export SPARK_CLASSPATH=/home/work/hadoop/share/hadoop/common/lib/:/home/work/hive/lib/:/home/work/hbase/lib/*:$SPARK_CLASSPATH</p>
-<p>spark1.0之后的版本配置<br>修改spark-defaults.conf，如下<br>spark.executor.extraClassPath=/home/work/hbase/lib/<br>spark.driver.extraClassPath=/home/work/hbase/lib/</p>
-<p>`</p>
-<p>#!/usr/bin/python</p>
-<h1 id="coding-utf8"><a href="#coding-utf8" class="headerlink" title="coding=utf8"></a>coding=utf8</h1><p>import sys<br>reload(sys)<br>sys.setdefaultencoding(‘utf-8’)<br>import time<br>import json,requests<br>from pyspark.sql.types import *<br>from pyspark.sql import SparkSession<br>from pyspark.sql import Row<br>from pyspark import SparkContext,SparkConf<br>from pyspark.sql import Row<br>import pyspark.sql.functions as F</p>
-<p>conf = SparkConf().setAppName(“spark read hbase”)<br>sc = SparkContext(conf=conf)</p>
-<p>conf = {<br>        “hbase.zookeeper.quorum”: “node1,node2,node3”,<br>        “hbase.mapreduce.inputtable”: “test”,<br>        “hbase.mapreduce.scan.row.start”: “1541692800”<br>        “hbase.mapreduce.scan.row.stop”: “1541692900”<br>    }</p>
-<p>keyConv = “org.apache.spark.examples.pythonconverters.ImmutableBytesWritableToStringConverter”<br>valueConv = “org.apache.spark.examples.pythonconverters.HBaseResultToStringConverter”<br>hbaserdd = sc.newAPIHadoopRDD( \<br>    “org.apache.hadoop.hbase.mapreduce.TableInputFormat”, \<br>    “org.apache.hadoop.hbase.io.ImmutableBytesWritable”, \<br>    “org.apache.hadoop.hbase.client.Result”, \<br>    keyConverter=keyConv, \<br>    valueConverter=valueConv, \<br>    conf=conf)<br>spark = SparkSession(sc)</p>
-<p>def call_transfor(jsonstr):<br>    jsonlist = [json.loads(i) for i in jsonstr]<br>    fdc = {}<br>    for col in jsonlist:<br>        colname = col[‘qualifier’]<br>        value = col[‘value’]<br>        fdc[colname] = value<br>    return fdc</p>
-<p>def rdd_to_df(hbase_rdd):<br>    fdc_split = hbase_rdd.map(lambda x:(x[0],x[1].split(‘\n’)))<br>    fdc_cols = fdc_split.map(lambda x:(x[0],call_transfor(x[1])))<br>    colnames = [‘row_key’] + fdc_cols.map(lambda x:[i for i in x[1]]).take(1)[0]<br>    fdc_dataframe = fdc_cols.map(lambda x:[x[0]]+[x[1][i] for i in x[1]]).toDF(colnames)</p>
-<pre><code>#fdc_rdd = fdc_cols.map(lambda x:[x[0]]+[x[1][i] for i in x[1]])
-return fdc_dataframe
-</code></pre><p>fdc_data = rdd_to_df(hbaserdd)<br>`</p>
-<p>pyspark读取hbase配置参数</p>
-<p>hbase.mapreduce.scan.row.start</p>
-<p>hbase.mapreduce.scan.row.stop</p>
-<p>hbase.mapreduce.scan.column.family</p>
-<p>hbase.mapreduce.scan.columns</p>
-<p>hbase.mapreduce.scan.timestamp</p>
-<p>hbase.mapreduce.scan.timerange.start</p>
-<p>hbase.mapreduce.scan.timerange.end</p>
-<p>hbase.mapreduce.scan.maxversions</p>
-<p>hbase.mapreduce.scan.cacheblocks</p>
-<p>hbase.mapreduce.scan.cachedrows</p>
-
-          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/12/23/pyspark-read-hbase/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
         
       
-    </div>
+    </p></div>
 
     
 
