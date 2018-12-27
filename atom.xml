@@ -362,9 +362,9 @@
       <category term="spark" scheme="https://blog.sdj.es/categories/spark/"/>
     
     
-      <category term="yarn" scheme="https://blog.sdj.es/tags/yarn/"/>
-    
       <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
+    
+      <category term="yarn" scheme="https://blog.sdj.es/tags/yarn/"/>
     
   </entry>
   
@@ -386,9 +386,9 @@
       <category term="hadoop" scheme="https://blog.sdj.es/categories/hadoop/"/>
     
     
-      <category term="yarn" scheme="https://blog.sdj.es/tags/yarn/"/>
-    
       <category term="spark" scheme="https://blog.sdj.es/tags/spark/"/>
+    
+      <category term="yarn" scheme="https://blog.sdj.es/tags/yarn/"/>
     
       <category term="ambari" scheme="https://blog.sdj.es/tags/ambari/"/>
     
