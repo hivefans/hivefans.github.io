@@ -116,7 +116,7 @@
 
 
   <meta name="description" content="为什么要使用YARN?数据共享、资源利用率、更方便的管理集群等。详情参见：http://www.cnblogs.com/luogankun/p/3887019.html Spark YARN版本编译编译hadoop对应的支持YARN的Spark版本12$ export MAVEN_OPTS=&quot;-Xmx2g -XX:MaxPermSize=512M -XX:ReservedCodeCacheSize">
-<meta name="keywords" content="spark,yarn">
+<meta name="keywords" content="yarn,spark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spark on yarn">
 <meta property="og:url" content="https://blog.sdj.es/2016/01/24/spark-on-yarn/index.html">
@@ -595,9 +595,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag"># spark</a>
-          
             <a href="/tags/yarn/" rel="tag"># yarn</a>
+          
+            <a href="/tags/spark/" rel="tag"># spark</a>
           
         </div>
       
@@ -1037,9 +1037,14 @@
             })
           } else {
             
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
-              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
             
           }
         })

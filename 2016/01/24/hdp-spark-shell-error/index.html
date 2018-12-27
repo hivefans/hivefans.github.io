@@ -116,7 +116,7 @@
 
 
   <meta name="description" content="在运行spark-shell中遇到的ERROR lzo.GPLNativeCodeLoader: Could not load native gpl library 解决方法1$ bin/spark-shell –driver-library-path :/usr/hdp/2.2.4.2-2/hadoop/lib/native/Linux-amd64-64 /usr/hdp/2.2.4.2-2/h">
-<meta name="keywords" content="spark,yarn,ambari">
+<meta name="keywords" content="yarn,spark,ambari">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ambari hdp中部署apache spark运行spark shell遇到的错误解决">
 <meta property="og:url" content="https://blog.sdj.es/2016/01/24/hdp-spark-shell-error/index.html">
@@ -582,9 +582,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag"># spark</a>
-          
             <a href="/tags/yarn/" rel="tag"># yarn</a>
+          
+            <a href="/tags/spark/" rel="tag"># spark</a>
           
             <a href="/tags/ambari/" rel="tag"># ambari</a>
           
@@ -997,9 +997,14 @@
             })
           } else {
             
-              var $element = $(document.getElementById(url));
-              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
-              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
             
           }
         })
