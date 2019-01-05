@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.sdj.es/arch/index.html</loc>
+    
+    <lastmod>2019-01-05T12:52:05.749Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.sdj.es/2018/12/23/pyspark-read-hbase/</loc>
     
     <lastmod>2018-12-23T14:20:33.931Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>https://blog.sdj.es/2016/03/19/scala-note-2/</loc>
     
     <lastmod>2018-12-23T00:11:03.224Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.sdj.es/arch/index.html</loc>
-    
-    <lastmod>2018-12-22T23:50:27.572Z</lastmod>
     
   </url>
   
